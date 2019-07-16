@@ -14,6 +14,8 @@
 // #define POINTS_SIDE_LENGTH 100
 // #define MIN_SPEED 2
 // #define MAX_SPEED 5
+// #define PADDLE_SPEED 5
+// #define PADDLE_BOOST_SPEED 10
 
 // PI
 #define ENEMY_WIDTH 50
@@ -26,7 +28,6 @@
 #define MAX_SPEED 4
 #define PADDLE_SPEED 2
 #define PADDLE_BOOST_SPEED 5
-#define
 
 int main() {
 
