@@ -12,6 +12,8 @@
 // #define PADDLE_HEIGHT 100
 // #define LIFE_SIDE_LENGTH 75
 // #define POINTS_SIDE_LENGTH 100
+// #define MIN_SPEED 2
+// #define MAX_SPEED 5
 
 // PI
 #define ENEMY_WIDTH 50
@@ -20,6 +22,8 @@
 #define PADDLE_HEIGHT 50
 #define LIFE_SIDE_LENGTH 35
 #define POINTS_SIDE_LENGTH 50
+#define MIN_SPEED 1
+#define MAX_SPEED 4
 
 int main() {
 
@@ -38,7 +42,7 @@ int main() {
     int paddleInitSpeed = 5;
     int paddleBoostSpeed = 10;
 
-    int hmBlocks = 7;
+    int hmBlocks = 4;
     int hmLives = 3;
     std::vector<sf::RectangleShape> blocks(hmBlocks);
     float blockSpeeds[hmBlocks];
@@ -67,7 +71,7 @@ int main() {
         sf::RectangleShape rect(sf::Vector2f(ENEMY_WIDTH, ENEMY_HEIGHT));
         rect.setPosition(std::rand() % (windowSize.x - ENEMY_WIDTH), 0 - (i * enemyBuffer));
         blocks[i] = rect;
-        blockSpeeds[i] = (std::rand() % 3) + 2;
+        blockSpeeds[i] = (std::rand() % (MAX_SPEED - MIN_SPEED)) + MIN_SPEED;
     }
 
     std::map<int, bool> pressedKeys;
@@ -108,6 +112,9 @@ int main() {
                     window.close();
                     break;
                 case sf::Event::KeyPressed:
+                    if (event.key.code == sf::Keyboard::Num2) {
+                      window.close();
+                    }
                     if (event.key.code == sf::Keyboard::Num1) {
                       score = 0;
                       hmLives = 3;
@@ -198,7 +205,7 @@ int main() {
                         levelUpAmount += levelUpAmountIncrement;
                         levelUpAmountIncrement += 25;
                     }
-                    blockSpeeds[i] = ((std::rand() % 3) + 2) * speedMulitplier;
+                    blockSpeeds[i] = (std::rand() % (MAX_SPEED - MIN_SPEED)) + MIN_SPEED * speedMulitplier;
                     newY = 0 - enemyBuffer;
                     newX = std::rand() % (int)(windowSize.x - blocks[i].getSize().x);
                 } else {
