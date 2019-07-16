@@ -13,7 +13,7 @@
 */*/*/Makefile
 */*/*/dodgy_blocks
 
-*/*/*.xcodeproj/*
+
 */*/*.xcodeproj/project.pbxproj
 */*/*.xcodeproj/xcshareddata/
 */*/*.xcworkspace/contents.xcworkspacedata
