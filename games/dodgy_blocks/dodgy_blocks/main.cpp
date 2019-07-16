@@ -24,6 +24,9 @@
 #define POINTS_SIDE_LENGTH 50
 #define MIN_SPEED 1
 #define MAX_SPEED 4
+#define PADDLE_SPEED 2
+#define PADDLE_BOOST_SPEED 5
+#define
 
 int main() {
 
@@ -39,8 +42,8 @@ int main() {
     paddle.setPosition(windowSize.x / 2, windowSize.y);
 
     int paddleSpeed;
-    int paddleInitSpeed = 5;
-    int paddleBoostSpeed = 10;
+    int paddleInitSpeed = PADDLE_SPEED;
+    int paddleBoostSpeed = PADDLE_BOOST_SPEED;
 
     int hmBlocks = 4;
     int hmLives = 3;
@@ -119,6 +122,9 @@ int main() {
                       score = 0;
                       hmLives = 3;
                       gameOver = false;
+                      speedMulitplier = 1;
+                      levelUpAmount = 50;
+                      levelUpAmountIncrement = 25;
                       for (int i=0;i<hmBlocks;i++) {
                         blocks[i].setSize(sf::Vector2f(ENEMY_WIDTH, ENEMY_HEIGHT));
                         blocks[i].setFillColor(sf::Color(255, 255, 255, 255));
