@@ -96,9 +96,9 @@ public:
     template<class T>
     bool addCallback(StateType state, const std::string & name, void(T::*func)(BindingDetails *), T * instance)
     {
-        auto callbackSet = callbacks.emplace(state, CallbackSet()).first->second;
+        auto callbackSet = callbacks.emplace(state, CallbackSet()).first;
         auto action = std::bind(func, instance, std::placeholders::_1);
-        return callbackSet.emplace(name, action).second;
+        return callbackSet->second.emplace(name, action).second;
     }
     
     bool removeCallback(StateType state, const std::string& name){
@@ -112,6 +112,8 @@ public:
     }
     
     void handlePolledEvent(sf::Event& event);
+    void extracted(Binding *&binding);
+    
     void handleRealTimeEvents();
     
 private:

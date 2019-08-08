@@ -41,7 +41,7 @@ private:
     void registerState(const StateType & type){
         stateFactory[type] = [this]() -> State_Base *
         {
-            return new T(this);
+            return new T(ctx);
         };
     }
     

@@ -2,7 +2,7 @@
 #include "SharedContext.hpp"
 
 StateMachine::StateMachine(SharedContext * ctx) : ctx(ctx) {
-//    registerState<State>(StateType::DIYACMenu);
+    registerState<State_DIYACMenu>(StateType::DIYACMenu);
 }
 
 StateMachine::~StateMachine(){

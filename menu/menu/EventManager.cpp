@@ -24,31 +24,29 @@ void EventManager::setCurrentState(StateType state){
 
 void EventManager::setFocus(const bool& focus){ hasFocus = focus; }
 
-void EventManager::handlePolledEvent(sf::Event& event){
-    // Handling SFML events.
-    for (auto &b_itr : bindings){
-        Binding* bind = b_itr.second;
-        for (auto &e_itr : bind->events){
+void EventManager::handlePolledEvent(sf::Event & event){
+    for (auto & bindingItr : bindings){
+        Binding * binding = bindingItr.second;
+        for (auto &bindingEventItr : binding->events){
             EventType sfmlEvent = (EventType)event.type;
-            if (e_itr.type != sfmlEvent){ continue; }
+            if (bindingEventItr.type != sfmlEvent){ continue; }
             if (sfmlEvent == EventType::KeyDown || sfmlEvent == EventType::KeyUp){
-                if (e_itr.info.code == event.key.code){
-                    std::cout << "Match: " << event.key.code << std::endl;
-                    if (bind->details.keyCode != -1){
-                        bind->details.keyCode = e_itr.info.code;
+                if (bindingEventItr.info.code == event.key.code){
+                    if (binding->details.keyCode != -1){
+                        binding->details.keyCode = bindingEventItr.info.code;
                     }
-                    ++(bind->fullfilledEventCount);
+                    ++(binding->fullfilledEventCount);
                     break;
                 }
             } else {
                 // No need for additional checking.
                 if (sfmlEvent == EventType::WindowResized){
-                    bind->details.size.x = event.size.width;
-                    bind->details.size.y = event.size.height;
+                    binding->details.size.x = event.size.width;
+                    binding->details.size.y = event.size.height;
                 } else if (sfmlEvent == EventType::TextEntered){
-                    bind->details.textEntered = event.text.unicode;
+                    binding->details.textEntered = event.text.unicode;
                 }
-                ++(bind->fullfilledEventCount);
+                ++(binding->fullfilledEventCount);
             }
         }
     }
@@ -97,17 +95,18 @@ void EventManager::handleRealTimeEvents(){
 void EventManager::loadBindingsFromFile(std::string filePath){
     
     std::ifstream bindingsStream;
-    
     bindingsStream.open(filePath);
     
     if (!bindingsStream.is_open()){
-        std::cout << "! Failed loading keys from file: " << filePath << std::endl;
-        return;
+        std::cerr << "! Failed loading keys from file: " << filePath << std::endl;
+        exit(1);
     }
     
     std::string line;
     
     while (std::getline(bindingsStream, line)){
+        
+        if (line[0] == '#' || line.empty()) { continue; }
         
         std::stringstream eventStream(line);
         std::string bindingName;
@@ -132,8 +131,7 @@ void EventManager::loadBindingsFromFile(std::string filePath){
             
             EventType type = EventType(stoi(events.substr(start, end - start)));
             int code = stoi(events.substr(end + typeAndCodeDelimiter.length(),
-                                          events.find(typeAndCodeDelimiter, end + typeAndCodeDelimiter.length())));
-            
+                events.find(typeAndCodeDelimiter, end + typeAndCodeDelimiter.length())));
             EventInfo eventInfo;
             eventInfo.code = code;
             binding->bindEvent(type, eventInfo);

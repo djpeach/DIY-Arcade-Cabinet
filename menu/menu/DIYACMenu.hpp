@@ -7,8 +7,6 @@
 
 #include "SharedContext.hpp"
 
-struct SharedContext;
-
 class DIYACMenu {
     
 public:
@@ -21,6 +19,7 @@ public:
     void update();
     void render();
     void lateUpdate();
+    void closeWindow(BindingDetails * details);
     
 private:
     void restartClock();

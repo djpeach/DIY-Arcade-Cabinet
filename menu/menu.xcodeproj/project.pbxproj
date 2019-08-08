@@ -38,6 +38,7 @@
 		DA3FF26322DFEDA3001FA485 /* menu */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = menu; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA3FF26622DFEDA3001FA485 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DA3FF26D22DFEE35001FA485 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		DAB1CAFB22FC7B9E00DA1000 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		DADC8D7C22F913A800CC4CCD /* DIYACMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DIYACMenu.cpp; sourceTree = "<group>"; };
 		DADC8D7D22F913A800CC4CCD /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		DADC8D7E22F913A800CC4CCD /* StateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StateMachine.cpp; sourceTree = "<group>"; };
@@ -97,6 +98,7 @@
 		DA3FF26522DFEDA3001FA485 /* menu */ = {
 			isa = PBXGroup;
 			children = (
+				DAB1CAFB22FC7B9E00DA1000 /* assets */,
 				DADC8D8522F913A800CC4CCD /* AssetManager.cpp */,
 				DADC8D8322F913A800CC4CCD /* AssetManager.hpp */,
 				DA3FF26D22DFEE35001FA485 /* CMakeLists.txt */,
@@ -317,6 +319,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4262P57PZB;
+				GCC_NO_COMMON_BLOCKS = NO;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -331,6 +334,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4262P57PZB;
+				GCC_NO_COMMON_BLOCKS = NO;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

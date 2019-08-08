@@ -2,7 +2,7 @@
 
 #include "Window.hpp"
 #include "EventManager.hpp"
-#include "StateMachine.cpp"
+#include "StateMachine.hpp"
 
 struct SharedContext {
     Window * window;

@@ -13,9 +13,7 @@ Window::~Window() {
 void Window::pollEvents() {
     sf::Event event;
     while(renderWindow.pollEvent(event)) {
-        if (event.type == sf::Event::Closed) {
-            ctx->eventManager->handlePolledEvent(event);
-        }
+        ctx->eventManager->handlePolledEvent(event);
     }
 }
 
@@ -24,7 +22,7 @@ sf::RenderWindow * Window::getRenderWindow() {
 }
 
 void Window::clear() {
-    renderWindow.clear(sf::Color::Black);
+    renderWindow.clear(sf::Color(50, 50, 50));
 }
 
 void Window::display() {
