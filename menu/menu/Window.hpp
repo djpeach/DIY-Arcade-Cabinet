@@ -14,6 +14,7 @@ public:
     ~Window();
     
     sf::RenderWindow * getRenderWindow();
+    sf::FloatRect getViewSpace();
     
     void pollEvents();
     void clear();

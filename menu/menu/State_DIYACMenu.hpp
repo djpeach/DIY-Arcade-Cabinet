@@ -1,11 +1,26 @@
 #pragma once
 
+#include <vector>
+
 #include "State_Base.hpp"
 #include "EventManager.hpp"
 
 struct Game {
-    Game(const std::string & name) : name(name) {}
+    Game() { clear(); }
+    
     std::string name;
+    std::string exePath;
+    std::string start1;
+    std::string start2;
+    sf::Color bgColor;
+    
+    void clear() {
+        name = "";
+        exePath = "";
+        start1 = "";
+        start2 = "";
+        bgColor = sf::Color(120, 120, 120);
+    }
 };
 
 class State_DIYACMenu : public State_Base {
@@ -28,8 +43,16 @@ public:
     void moveLeft(BindingDetails * details);
     void moveUp(BindingDetails * details);
     void moveDown(BindingDetails * details);
+    void startGame(BindingDetails * details);
     
 private:
+    
+    void getGames();
+    
+    std::vector<Game> games;
     sf::RectangleShape gameTiles[13];
     sf::RectangleShape selectedTileHighlight;
+    int selectedTile;
+    sf::Vector2f windowGrid, tileSize;
+    sf::Vector2i tiles;
 };

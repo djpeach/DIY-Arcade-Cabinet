@@ -21,6 +21,14 @@ sf::RenderWindow * Window::getRenderWindow() {
     return &renderWindow;
 }
 
+sf::FloatRect Window::getViewSpace(){
+    sf::Vector2f viewCenter(renderWindow.getView().getCenter());
+    sf::Vector2f viewSize(renderWindow.getView().getSize());
+    sf::Vector2f viewSizeHalf(viewSize.x / 2, viewSize.y / 2);
+    sf::FloatRect viewSpace(viewCenter - viewSizeHalf, viewSize);
+    return viewSpace;
+}
+
 void Window::clear() {
     renderWindow.clear(sf::Color(50, 50, 50));
 }
