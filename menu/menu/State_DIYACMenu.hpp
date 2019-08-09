@@ -6,16 +6,18 @@
 #include "EventManager.hpp"
 
 struct Game {
-    Game() { clear(); }
+    Game() {
+        clear();
+    }
     
-    std::string name;
+    sf::Text name;
     std::string exePath;
     std::string start1;
     std::string start2;
     sf::Color bgColor;
     
     void clear() {
-        name = "";
+        name.setString("");
         exePath = "";
         start1 = "";
         start2 = "";
@@ -50,7 +52,7 @@ private:
     void getGames();
     
     std::vector<Game> games;
-    sf::RectangleShape gameTiles[13];
+    std::vector<sf::RectangleShape> gameTiles;
     sf::RectangleShape selectedTileHighlight;
     int selectedTile;
     sf::Vector2f windowGrid, tileSize;

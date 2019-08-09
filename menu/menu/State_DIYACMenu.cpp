@@ -25,8 +25,19 @@ void State_DIYACMenu::onCreate() {
         sf::RectangleShape rect(sf::Vector2f(windowGrid.x * tiles.x, windowGrid.y * tiles.y));
         rect.setPosition((((tiles.x + 1) * (i % tiles.x)) + 1) * windowGrid.x, (((tiles.y + 1) * (i / (tiles.y + 1)) + 1)) * windowGrid.y);
         rect.setFillColor(games[i].bgColor);
+        std::cout << std::string(games[i].name.getString()) << std::endl;
+        sf::Font font;
+        if (!font.loadFromFile("assets/fonts/arial.ttf")) {
+            std::cerr << "Could not load font from assets/fonts/arial.ttf" << std::endl;
+            exit(1);
+        }
+        sf::Text & title = games[i].name;
+        title.setFont(font);
+        sf::FloatRect titleBounds = title.getLocalBounds();
+        title.setOrigin(titleBounds.width / 2, titleBounds.height / 2);
+        title.setPosition(rect.getPosition().x + rect.getSize().x / 2, rect.getPosition().y + rect.getSize().y / 2);
         
-        gameTiles[i] = rect;
+        gameTiles.push_back(rect);
     }
     
     selectedTileHighlight.setSize(sf::Vector2f(windowGrid.x * tiles.x, windowGrid.y * tiles.y));
@@ -68,14 +79,21 @@ void State_DIYACMenu::update(const sf::Time & delta) {
 }
 void State_DIYACMenu::draw() {
     ctx->window->getRenderWindow()->draw(selectedTileHighlight);
-    for (int i=0; i<13; ++i) {
+    sf::Font font;
+    if (!font.loadFromFile("assets/fonts/arial.ttf")) {
+        std::cerr << "Could not load font from assets/fonts/arial.ttf" << std::endl;
+        exit(1);
+    }
+    for (int i=0; i<games.size(); ++i) {
         ctx->window->getRenderWindow()->draw(gameTiles[i]);
+        games[i].name.setFont(font);
+        ctx->window->getRenderWindow()->draw(games[i].name);
     }
 }
 
 void State_DIYACMenu::getGames() {
     std::ifstream gamesStream;
-    std::string filePath = "../../games/games.cfg";
+    std::string filePath = "/Users/danielpeach/Dev/DIY-Arcade-Cabinet/games/games.cfg";
     gamesStream.open(filePath);
     
     if (!gamesStream.is_open()){
@@ -98,7 +116,7 @@ void State_DIYACMenu::getGames() {
             std::string name;
             std::getline(lineStream, name);
             name = name.substr(1, name.length());
-            game.name = name;
+            game.name.setString(name);
         } else if (type == "EXE_PATH") {
             std::string exePath;
             std::getline(lineStream, exePath);
