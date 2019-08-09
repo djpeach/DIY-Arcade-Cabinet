@@ -25,7 +25,6 @@ void State_DIYACMenu::onCreate() {
         sf::RectangleShape rect(sf::Vector2f(windowGrid.x * tiles.x, windowGrid.y * tiles.y));
         rect.setPosition((((tiles.x + 1) * (i % tiles.x)) + 1) * windowGrid.x, (((tiles.y + 1) * (i / (tiles.y + 1)) + 1)) * windowGrid.y);
         rect.setFillColor(games[i].bgColor);
-        std::cout << std::string(games[i].name.getString()) << std::endl;
         sf::Font font;
         if (!font.loadFromFile("assets/fonts/arial.ttf")) {
             std::cerr << "Could not load font from assets/fonts/arial.ttf" << std::endl;
@@ -93,7 +92,7 @@ void State_DIYACMenu::draw() {
 
 void State_DIYACMenu::getGames() {
     std::ifstream gamesStream;
-    std::string filePath = "/Users/danielpeach/Dev/DIY-Arcade-Cabinet/games/games.cfg";
+    std::string filePath = "../../games/games.cfg";
     gamesStream.open(filePath);
     
     if (!gamesStream.is_open()){
