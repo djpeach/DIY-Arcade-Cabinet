@@ -20,7 +20,7 @@ int main() {
 
             case sf::Event::KeyPressed:
               switch (event.key.code){
-                case sf::KeyBoard::Slash:
+                case sf::Keyboard::Slash:
                   window.close();
                   break;
                   
