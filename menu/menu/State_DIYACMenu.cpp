@@ -233,8 +233,10 @@ void State_DIYACMenu::moveDown(BindingDetails * details) {
 
 void State_DIYACMenu::openGame(BindingDetails * details) {
     if (details->keyCode == 27) {
+        std::cout << "opening player 1 game" << std::endl;
         games[selectedTile - 1].startButton = "Player 1 Start";
     } else if (details->keyCode == 28) {
+        std::cout << "opening player 2 game" << std::endl;
         games[selectedTile - 1].startButton = "Player 2 Start";
     }
     ctx->stateMachine->changeState(StateType::Instructions);
