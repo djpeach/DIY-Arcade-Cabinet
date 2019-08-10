@@ -45,16 +45,15 @@ void State_Instructions::draw() {
         exit(1);
     }
     game.name.setFont(font);
-    game.name.setCharacterSize(24);
     float textHeight = game.name.getGlobalBounds().height;
-    float rowHeight = introBox.getSize().y / textHeight + 30;
+    float rowHeight = 30;
     int curRow = 1;
     game.name.setCharacterSize(60);
     float introBoxTop = introBox.getGlobalBounds().top;
     game.name.setOrigin(game.name.getGlobalBounds().width / 2, game.name.getGlobalBounds().height);
-    game.name.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight + 5);
+    game.name.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight + 30);
     ctx->window->getRenderWindow()->draw(game.name);
-    ++curRow;
+    curRow += 3;
     game.author.setFont(font);
     game.author.setCharacterSize(24);
     game.author.setOrigin(game.author.getGlobalBounds().width / 2, game.author.getGlobalBounds().height / 2);
@@ -66,7 +65,7 @@ void State_Instructions::draw() {
     game.language.setOrigin(game.language.getGlobalBounds().width / 2, game.language.getGlobalBounds().height / 2);
     game.language.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
     ctx->window->getRenderWindow()->draw(game.language);
-    ++curRow;
+    curRow += 2;
     
     for (int i = 0; i < game.mappings.size(); ++i) {
         sf::Text text;
@@ -90,6 +89,7 @@ void State_Instructions::draw() {
         ctx->window->getRenderWindow()->draw(text);
         ++curRow;
     }
+    ++curRow;
     
     sf::Text text;
     text.setString("Press " + game.startButton + " to start");
@@ -120,6 +120,7 @@ void State_Instructions::startGame(BindingDetails * details) {
         std::string path = game.exePath;
         system(("cd ../../games/" + path + " && " + game.start2).c_str());
     }
+    backToMenu(details);
 }
 
 void State_Instructions::backToMenu(BindingDetails * details) {
