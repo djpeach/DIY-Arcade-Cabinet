@@ -15,6 +15,16 @@ int main() {
               window.close();
               break;
 
+            case sf::Event::KeyPressed:
+              switch (event.key.code){
+                case sf::KeyBoard::Slash:
+                  window.close();
+                  break;
+                  
+                default:
+                  break;
+              }
+
             default:
               // std::cout << "Unknown event" << std::endl;
               break;
