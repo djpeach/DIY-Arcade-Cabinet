@@ -112,14 +112,13 @@ void State_Instructions::setGame(Game & game) {
 }
 
 void State_Instructions::startGame(BindingDetails * details) {
-    if (details->keyCode == 27 && game.startButton == "Player 1 Start") {
+    if (details->keyCode == 27) {
         std::string path = game.exePath;
         system(("cd ../../games/" + path + " && " + game.start1).c_str());
-    } else if (details->keyCode == 28 && game.startButton == "Player 2 Start") {
+    } else if (details->keyCode == 28) {
         std::string path = game.exePath;
         system(("cd ../../games/" + path + " && " + game.start2).c_str());
     }
-    ctx->stateMachine->changeState(StateType::DIYACMenu);
 }
 
 void State_Instructions::backToMenu(BindingDetails * details) {
