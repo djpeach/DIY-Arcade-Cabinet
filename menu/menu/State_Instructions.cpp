@@ -116,11 +116,12 @@ void State_Instructions::startGame(BindingDetails * details) {
         std::cout << std::string(game.name.getString()) << "path: " << game.exePath << "start1: " << game.start1 << std::endl;
         std::string path = game.exePath;
         system(("cd ../../games/" + path + " && " + game.start1).c_str());
+        backToMenu(details);
     } else if (details->keyCode == 28 && game.startButton == "Player 2 Start") {
         std::string path = game.exePath;
         system(("cd ../../games/" + path + " && " + game.start2).c_str());
+        backToMenu(details);
     }
-    backToMenu(details);
 }
 
 void State_Instructions::backToMenu(BindingDetails * details) {
