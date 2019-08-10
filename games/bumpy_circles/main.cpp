@@ -32,7 +32,7 @@ int main() {
     circle.setPosition(SCREEN_W/2, SCREEN_H/2);
 
     while (window.isOpen()) {
-        dt = clock.restart();
+        dt += clock.restart().asSeconds();
 
         sf::Event event;
 
@@ -83,6 +83,10 @@ int main() {
         window.clear();
 
         window.draw(circle);
+
+        if(dt > (1/60)){
+          window.update();
+        }
 
         window.display();
 
