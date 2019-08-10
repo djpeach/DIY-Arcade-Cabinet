@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		DA3FF26722DFEDA3001FA485 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA3FF26622DFEDA3001FA485 /* main.cpp */; };
+		DA8A194222FE56170005ACA3 /* State_Alert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA8A194022FE56170005ACA3 /* State_Alert.cpp */; };
+		DA8A194522FE564C0005ACA3 /* State_Instructions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA8A194322FE564C0005ACA3 /* State_Instructions.cpp */; };
 		DADC8D8622F913A800CC4CCD /* DIYACMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DADC8D7C22F913A800CC4CCD /* DIYACMenu.cpp */; };
 		DADC8D8722F913A800CC4CCD /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DADC8D7D22F913A800CC4CCD /* Window.cpp */; };
 		DADC8D8822F913A800CC4CCD /* StateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DADC8D7E22F913A800CC4CCD /* StateMachine.cpp */; };
@@ -38,6 +40,10 @@
 		DA3FF26322DFEDA3001FA485 /* menu */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = menu; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA3FF26622DFEDA3001FA485 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DA3FF26D22DFEE35001FA485 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		DA8A194022FE56170005ACA3 /* State_Alert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = State_Alert.cpp; sourceTree = "<group>"; };
+		DA8A194122FE56170005ACA3 /* State_Alert.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = State_Alert.hpp; sourceTree = "<group>"; };
+		DA8A194322FE564C0005ACA3 /* State_Instructions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = State_Instructions.cpp; sourceTree = "<group>"; };
+		DA8A194422FE564C0005ACA3 /* State_Instructions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = State_Instructions.hpp; sourceTree = "<group>"; };
 		DAB1CAFB22FC7B9E00DA1000 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		DADC8D7C22F913A800CC4CCD /* DIYACMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DIYACMenu.cpp; sourceTree = "<group>"; };
 		DADC8D7D22F913A800CC4CCD /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
@@ -117,6 +123,10 @@
 				DADC8D8222F913A800CC4CCD /* StateMachine.hpp */,
 				DADC8D7D22F913A800CC4CCD /* Window.cpp */,
 				DADC8D8422F913A800CC4CCD /* Window.hpp */,
+				DA8A194022FE56170005ACA3 /* State_Alert.cpp */,
+				DA8A194122FE56170005ACA3 /* State_Alert.hpp */,
+				DA8A194322FE564C0005ACA3 /* State_Instructions.cpp */,
+				DA8A194422FE564C0005ACA3 /* State_Instructions.hpp */,
 			);
 			path = menu;
 			sourceTree = "<group>";
@@ -195,6 +205,8 @@
 				DADC8D9D22FA616500CC4CCD /* State_DIYACMenu.cpp in Sources */,
 				DADC8D8722F913A800CC4CCD /* Window.cpp in Sources */,
 				DADC8D8622F913A800CC4CCD /* DIYACMenu.cpp in Sources */,
+				DA8A194522FE564C0005ACA3 /* State_Instructions.cpp in Sources */,
+				DA8A194222FE56170005ACA3 /* State_Alert.cpp in Sources */,
 				DADC8D8E22F9147E00CC4CCD /* EntityManager.cpp in Sources */,
 				DADC8D8822F913A800CC4CCD /* StateMachine.cpp in Sources */,
 			);

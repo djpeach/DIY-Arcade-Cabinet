@@ -57,4 +57,7 @@ private:
     int selectedTile;
     sf::Vector2f windowGrid, tileSize;
     sf::Vector2i tiles;
+    bool startingGame;
+    sf::Time startedGameTime;
+    sf::Clock clock;
 };

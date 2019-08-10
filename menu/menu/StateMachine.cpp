@@ -3,6 +3,8 @@
 
 StateMachine::StateMachine(SharedContext * ctx) : ctx(ctx) {
     registerState<State_DIYACMenu>(StateType::DIYACMenu);
+    registerState<State_Instructions>(StateType::Instructions);
+//    registerState<State_Alert>(StateType::Alert);
 }
 
 StateMachine::~StateMachine(){
@@ -91,6 +93,7 @@ void StateMachine::changeState(const StateType & type){
     }
     
     // State with type wasn't found.
+    std::cout << "state with type: " << (int)type << " was not found" << std::endl;
     if (!states.empty()){ states.back().second->deactivate(); }
     createState(type);
     states.back().second->activate();

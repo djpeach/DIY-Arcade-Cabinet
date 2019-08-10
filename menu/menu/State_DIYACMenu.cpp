@@ -79,6 +79,7 @@ void State_DIYACMenu::update(const sf::Time & delta) {
 void State_DIYACMenu::draw() {
     ctx->window->getRenderWindow()->draw(selectedTileHighlight);
     sf::Font font;
+    
     if (!font.loadFromFile("assets/fonts/arial.ttf")) {
         std::cerr << "Could not load font from assets/fonts/arial.ttf" << std::endl;
         exit(1);
@@ -92,7 +93,7 @@ void State_DIYACMenu::draw() {
 
 void State_DIYACMenu::getGames() {
     std::ifstream gamesStream;
-    std::string filePath = "../../games/games.cfg";
+    std::string filePath = "/Users/danielpeach/Dev/DIY-Arcade-Cabinet/games/games.cfg";
     gamesStream.open(filePath);
     
     if (!gamesStream.is_open()){
@@ -172,6 +173,5 @@ void State_DIYACMenu::moveDown(BindingDetails * details) {
 }
 
 void State_DIYACMenu::startGame(BindingDetails * details) {
-    std::string path = games[selectedTile - 1].exePath;
-    system(("cd ../../games/" + path + " && " + games[selectedTile - 1].start1).c_str());
+    ctx->stateMachine->changeState(StateType::Instructions);
 }

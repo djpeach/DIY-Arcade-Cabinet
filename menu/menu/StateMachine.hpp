@@ -4,9 +4,13 @@
 #include <unordered_map>
 
 #include "State_DIYACMenu.hpp"
+#include "State_Instructions.hpp"
+//#include "State_Alert.hpp"
 
 enum class StateType{
-    DIYACMenu = 1
+    DIYACMenu = 1,
+    Alert,
+    Instructions
 };
 
 // State container.

@@ -18,6 +18,7 @@ Window.hpp Window.cpp
 StateMachine.hpp StateMachine.cpp
 State_Base.hpp
 State_DIYACMenu.hpp State_DIYACMenu.cpp
+State_Instructions.hpp State_Instructions.cpp
 )
 
 target_link_libraries(menu sfml-system sfml-window sfml-graphics sfml-audio sfml-network )
