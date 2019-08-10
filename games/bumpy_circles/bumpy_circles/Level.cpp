@@ -89,7 +89,11 @@ void Level::registerCollisions( sf::Vector2f & userPosition, int userRadius ){
         int diffY = abs(userPosition.y - reds[i].position.y);
 
         if ( (diffX < addRad) && (diffY < addRad)){
+<<<<<<< HEAD
             reds[i].collision = true;
+=======
+            reds[i].collision = true;  
+>>>>>>> a7f662c7020f855de5a5aad0727d52d883e83db0
         }
     }
 }
