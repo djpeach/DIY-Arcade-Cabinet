@@ -1,7 +1,14 @@
 #include "Level.hpp"
+#include <iostream>
 
 Level::Level(int maxTime, int numberGreens, int numberReds, int greenMaxSpeed, int redMaxSpeed) : maxScoreTime(maxTime), numberGreens(numberGreens), numberReds(numberReds), greenMaxSpeed(greenMaxSpeed), redMaxSpeed(redMaxSpeed){
-    for (int i = 0; i <= numberGreens; i++){
+    static bool seeded = false;
+    if(!seeded) {
+        srand(time(NULL));
+        seeded = true;
+    }
+    
+    for (int i = 0; i < numberGreens; i++){
         if (greenMaxSpeed != 0){
             speedX = rand() % greenMaxSpeed + 1;
         }else{
@@ -22,7 +29,7 @@ Level::Level(int maxTime, int numberGreens, int numberReds, int greenMaxSpeed, i
 
     }
 
-    for (int i = 0; i <= numberReds; i++){
+    for (int i = 0; i < numberReds; i++){
 
         if (redMaxSpeed != 0){
             speedX = rand() % redMaxSpeed + 1;
@@ -45,18 +52,24 @@ Level::Level(int maxTime, int numberGreens, int numberReds, int greenMaxSpeed, i
 };
 
 void Level::draw(sf::RenderWindow & window){
-    for(int i; i <= greens.size(); i++){
+    for(int i; i < greens.size(); i++){
         sf::CircleShape greenBall(25);
         greenBall.setFillColor(sf::Color(27,128,37));
-        greenBall.setOrigin(greens[i].position.x, greens[i].position.y);
+        greenBall.setOrigin(25, 25);
+        greenBall.setPosition(greens[i].position.x, greens[i].position.y);
+        window.draw(greenBall);
     }
 
-    for(int i; i <= reds.size(); i++){
+    for(int i; i < reds.size(); i++){
         sf::CircleShape redBall(25);
         redBall.setFillColor(sf::Color(27,128,37));
-        redBall.setOrigin(reds[i].position.x, reds[i].position.y);
+        redBall.setOrigin(25, 25);
+        redBall.setPosition(reds[i].position.x, reds[i].position.y);
+        window.draw(redBall);
     }
-}
+};
+
+
 
 
 
