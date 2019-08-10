@@ -232,10 +232,10 @@ void State_DIYACMenu::moveDown(BindingDetails * details) {
 }
 
 void State_DIYACMenu::openGame(BindingDetails * details) {
-    if (details->keyCode == 27) {
+    if (details->keyCode == 22) {
         std::cout << "opening player 1 game" << std::endl;
         games[selectedTile - 1].startButton = "Player 1 Start";
-    } else if (details->keyCode == 28) {
+    } else if (details->keyCode == 8) {
         std::cout << "opening player 2 game" << std::endl;
         games[selectedTile - 1].startButton = "Player 2 Start";
     }

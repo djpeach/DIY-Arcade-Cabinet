@@ -112,11 +112,11 @@ void State_Instructions::setGame(Game & game) {
 }
 
 void State_Instructions::startGame(BindingDetails * details) {
-    if (details->keyCode == 27) {
+    if (details->keyCode == 22) {
         std::cout << "starting player 1 game" << std::endl;
         std::string path = game.exePath;
         system(("cd ../../games/" + path + " && " + game.start1).c_str());
-    } else if (details->keyCode == 28) {
+    } else if (details->keyCode == 8) {
         std::cout << "starting player 2 game" << std::endl;
         std::string path = game.exePath;
         system(("cd ../../games/" + path + " && " + game.start2).c_str());
