@@ -89,7 +89,7 @@ void State_DIYACMenu::draw() {
 
 void State_DIYACMenu::getGames() {
     std::ifstream gamesStream;
-    std::string filePath = "/Users/danielpeach/Dev/DIY-Arcade-Cabinet/games/games.cfg";
+    std::string filePath = "../../games/games.cfg";
     gamesStream.open(filePath);
     
     if (!gamesStream.is_open()){
