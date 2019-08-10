@@ -13,23 +13,25 @@ int main() {
     int changeX = 0;
     int changeY = 0;
 
-    bool upPressed = false; 
-    bool dnPressed = false; 
-    bool rtPressed = false; 
-    bool lfPressed = false; 
+    bool upPressed = false;
+    bool dnPressed = false;
+    bool rtPressed = false;
+    bool lfPressed = false;
 
-    const int USER_R = 50;
+    const int USER_RADIUS = 50;
+    int USER_SPEED = 1000; // px/s
+    float FPS = (float)(1.0/120);
     sf::RenderWindow window(sf::VideoMode(SCREEN_W, SCREEN_H), "Bumpy Circles", sf::Style::Fullscreen);
 
     /*
      CIRCLE SHAPE
      */
-    sf::CircleShape circle(USER_R);
-    
+    sf::CircleShape circle(USER_RADIUS);
+
     // radius and point count can be set after as well
     //shape.setRadius(100);
     //shape.setPointCount(3);
-    
+
     // Red, Green and Blue from 0 to 255
     circle.setFillColor(sf::Color(66,135,245));
     circle.setOrigin(50,50);
@@ -63,11 +65,11 @@ int main() {
                   break;
 
                 case sf::Keyboard::A:
-                  lfPressed = true; 
+                  lfPressed = true;
                   break;
-                
+
                 case sf::Keyboard::D:
-                  rtPressed = true; 
+                  rtPressed = true;
                   break;
               }
               break;
@@ -84,11 +86,11 @@ int main() {
                   break;
 
                 case sf::Keyboard::A:
-                  lfPressed = false; 
+                  lfPressed = false;
                   break;
-                
+
                 case sf::Keyboard::D:
-                  rtPressed = false;  
+                  rtPressed = false;
                   break;
               }
 
@@ -101,22 +103,20 @@ int main() {
 
       }
 
-      if (dt.asSeconds() > (1/60)) {
-
-
+        if (dt.asSeconds() > FPS) {
         if (upPressed){
-          circle.move(0,-10/dt.asSeconds());
+          circle.move(0,-USER_SPEED * dt.asSeconds());
         }
         if (dnPressed){
-          circle.move(0,10/dt.asSeconds());
+          circle.move(0,USER_SPEED * dt.asSeconds());
         }
         if (rtPressed){
-          circle.move(10/dt.asSeconds(),0);
+          circle.move(USER_SPEED * dt.asSeconds(),0);
         }
         if (lfPressed){
-          circle.move(-10/dt.asSeconds(),0);
+          circle.move(-USER_SPEED * dt.asSeconds(),0);
         }
-
+          dt -= sf::seconds(FPS);
       }
 
 
