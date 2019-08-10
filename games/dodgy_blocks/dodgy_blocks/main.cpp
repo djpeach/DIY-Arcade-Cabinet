@@ -116,7 +116,7 @@ int main() {
                     window.close();
                     break;
                 case sf::Event::KeyPressed:
-                    if (event.key.code == sf::Keyboard::Num2) {
+                    if (event.key.code == sf::Keyboard::Slash) {
                       window.close();
                     }
                     if (event.key.code == sf::Keyboard::Num1) {
