@@ -19,12 +19,16 @@ void State_Instructions::onCreate() {
     introBox.setOrigin(introBoxSize.x / 2, introBoxSize.y / 2);
     introBox.setPosition(windowSize.x / 2, windowSize.y / 2);
     
-    ctx->eventManager->addCallback(StateType::Instructions, "gameStart1Player", &State_Instructions::startGame, this);
-    ctx->eventManager->addCallback(StateType::Instructions, "gameStart2Player", &State_Instructions::startGame, this);
-    ctx->eventManager->addCallback(StateType::Instructions, "backToMenu", &State_Instructions::backToMenu, this);
+    ctx->eventManager->addCallback(StateType::Instructions, "player1Go", &State_Instructions::startGame, this);
+    ctx->eventManager->addCallback(StateType::Instructions, "player2Go", &State_Instructions::startGame, this);
+    ctx->eventManager->addCallback(StateType::Instructions, "slashClose", &State_Instructions::backToMenu, this);
 }
 
-void State_Instructions::onDestroy() {}
+void State_Instructions::onDestroy() {
+    ctx->eventManager->removeCallback(StateType::Instructions, "player1Go");
+    ctx->eventManager->removeCallback(StateType::Instructions, "player2Go");
+    ctx->eventManager->removeCallback(StateType::Instructions, "slashClose");
+}
 
 void State_Instructions::activate() {
 }
@@ -112,14 +116,20 @@ void State_Instructions::setGame(Game & game) {
 }
 
 void State_Instructions::startGame(BindingDetails * details) {
-    if (details->keyCode == 22) {
-        std::cout << "starting player 1 game" << std::endl;
+    bool ranGame = false;
+    if (details->keyCode == 27 && game.startButton == "Player 1 Start") {
+        ranGame = true;
         std::string path = game.exePath;
         system(("cd ../../games/" + path + " && " + game.start1).c_str());
-    } else if (details->keyCode == 8) {
-        std::cout << "starting player 2 game" << std::endl;
+    } else if (details->keyCode == 28 && game.startButton == "Player 2 Start") {
+        ranGame = true;
         std::string path = game.exePath;
         system(("cd ../../games/" + path + " && " + game.start2).c_str());
+    }
+    
+    if (ranGame) {
+        ctx->stateMachine->remove(StateType::Instructions);
+        ctx->stateMachine->changeState(StateType::DIYACMenu);
     }
 }
 

@@ -7,15 +7,15 @@ DIYACMenu::DIYACMenu() {
     closed = false;
     
     ctx.eventManager->addCallback(StateType(0), "closeWindow", &DIYACMenu::closeWindow, this);
-    ctx.eventManager->addCallback(StateType::DIYACMenu, "slashCloseWindow", &DIYACMenu::closeWindow, this);
+    ctx.eventManager->addCallback(StateType::DIYACMenu, "slashClose", &DIYACMenu::closeWindow, this);
     
     ctx.stateMachine->changeState(StateType::DIYACMenu);
 }
 
 DIYACMenu::~DIYACMenu() {
+    delete ctx.stateMachine;
     delete ctx.window;
     delete ctx.eventManager;
-    delete ctx.stateMachine;
 }
 
 const sf::Time DIYACMenu::getMenuDeltaTime() {

@@ -45,14 +45,26 @@ void State_DIYACMenu::onCreate() {
     ctx->eventManager->addCallback(StateType::DIYACMenu, "player2MoveLeft", &State_DIYACMenu::moveLeft, this);
     ctx->eventManager->addCallback(StateType::DIYACMenu, "player2MoveUp", &State_DIYACMenu::moveUp, this);
     ctx->eventManager->addCallback(StateType::DIYACMenu, "player2MoveDown", &State_DIYACMenu::moveDown, this);
-    ctx->eventManager->addCallback(StateType::DIYACMenu, "gameOpen1Player", &State_DIYACMenu::openGame, this);
-    ctx->eventManager->addCallback(StateType::DIYACMenu, "gameOpen2Player", &State_DIYACMenu::openGame, this);
+    ctx->eventManager->addCallback(StateType::DIYACMenu, "player1Go", &State_DIYACMenu::openGame, this);
+    ctx->eventManager->addCallback(StateType::DIYACMenu, "player2Go", &State_DIYACMenu::openGame, this);
     
     view.setCenter(windowSize.x / 2, windowSize.y / 2);
     ctx->window->getRenderWindow()->setView(view);
 }
 
-void State_DIYACMenu::onDestroy() {}
+void State_DIYACMenu::onDestroy() {
+    ctx->eventManager->removeCallback(StateType::DIYACMenu, "player1MoveRight");
+    ctx->eventManager->removeCallback(StateType::DIYACMenu, "player1MoveLeft");
+    ctx->eventManager->removeCallback(StateType::DIYACMenu, "player1MoveUp");
+    ctx->eventManager->removeCallback(StateType::DIYACMenu, "player1MoveDown");
+    ctx->eventManager->removeCallback(StateType::DIYACMenu, "player2MoveRight");
+    ctx->eventManager->removeCallback(StateType::DIYACMenu, "player2MoveLeft");
+    ctx->eventManager->removeCallback(StateType::DIYACMenu, "player2MoveUp");
+    ctx->eventManager->removeCallback(StateType::DIYACMenu, "player2MoveDown");
+    ctx->eventManager->removeCallback(StateType::DIYACMenu, "player1Go");
+    ctx->eventManager->removeCallback(StateType::DIYACMenu, "player2Go");
+    
+}
 
 void State_DIYACMenu::activate() {}
 void State_DIYACMenu::deactivate() {}
@@ -232,11 +244,9 @@ void State_DIYACMenu::moveDown(BindingDetails * details) {
 }
 
 void State_DIYACMenu::openGame(BindingDetails * details) {
-    if (details->keyCode == 22) {
-        std::cout << "opening player 1 game" << std::endl;
+    if (details->keyCode == 27) {
         games[selectedTile - 1].startButton = "Player 1 Start";
-    } else if (details->keyCode == 8) {
-        std::cout << "opening player 2 game" << std::endl;
+    } else if (details->keyCode == 28) {
         games[selectedTile - 1].startButton = "Player 2 Start";
     }
     ctx->stateMachine->changeState(StateType::Instructions);

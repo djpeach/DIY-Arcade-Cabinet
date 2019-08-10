@@ -8,6 +8,4 @@ struct SharedContext {
     Window * window;
     StateMachine * stateMachine;
     EventManager * eventManager;
-//    EntityManager * entityManager;
-//    AssetManager * assetManager;
 };
