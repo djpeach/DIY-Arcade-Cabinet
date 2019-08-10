@@ -1,5 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <stdio.h> 
+#include <stdlib.h> 
+#include<time.h> 
+
+#include "Level.hpp"
 
 int main() {
 
@@ -10,29 +15,30 @@ int main() {
 
     const float SCREEN_W = desktopMode.width;
     const float SCREEN_H = desktopMode.height;
-    int changeX = 0;
-    int changeY = 0;
 
     bool upPressed = false;
     bool dnPressed = false;
     bool rtPressed = false;
     bool lfPressed = false;
 
-    const int USER_RADIUS = 50;
+    float screenX = SCREEN_W/2;
+    float screenY = SCREEN_H/2;
+
+    const int numberLevels = 3;
+
+    // Level(maxTime, numberGreen, numberRed, greenMaxSpeed, redMaxSpeed)
+    Level levels[3] = {Level(60, 1, 1, 50, 150), Level(60, 2, 2, 75, 190), Level(60, 3, 3, 100, 215)};
+
+    srand(time(0));
+
+    int USER_RADIUS = 50;
     int USER_SPEED = 1000; // px/s
     float FPS = (float)(1.0/120);
     sf::RenderWindow window(sf::VideoMode(SCREEN_W, SCREEN_H), "Bumpy Circles", sf::Style::Fullscreen);
 
-    /*
-     CIRCLE SHAPE
-     */
     sf::CircleShape circle(USER_RADIUS);
+    int curLvl = 0;
 
-    // radius and point count can be set after as well
-    //shape.setRadius(100);
-    //shape.setPointCount(3);
-
-    // Red, Green and Blue from 0 to 255
     circle.setFillColor(sf::Color(66,135,245));
     circle.setOrigin(50,50);
 
@@ -71,10 +77,11 @@ int main() {
                 case sf::Keyboard::D:
                   rtPressed = true;
                   break;
+                default:
+                  break;
               }
               break;
             }
-
             case sf::Event::KeyReleased: {
               switch (event.key.code){
                 case sf::Keyboard::W:
@@ -92,37 +99,63 @@ int main() {
                 case sf::Keyboard::D:
                   rtPressed = false;
                   break;
+                default:
+                  break;
               }
-
-            default:
-              // std::cout << "Unknown event" << std::endl;
-            break;
+              break;
           }
-          break;
+          default:
+            break;
         }
 
       }
 
         if (dt.asSeconds() > FPS) {
-        if (upPressed){
-          circle.move(0,-USER_SPEED * dt.asSeconds());
+          if (upPressed){
+            if (screenY - (USER_SPEED * dt.asSeconds()) > circle.getRadius()){
+              circle.move(0,-USER_SPEED * dt.asSeconds());
+              screenY -= USER_SPEED * dt.asSeconds();
+            }
+          }
+          if (dnPressed){
+            if ((screenY + circle.getRadius()) + (USER_SPEED * dt.asSeconds()) < SCREEN_H){
+              circle.move(0,USER_SPEED * dt.asSeconds());
+              screenY += USER_SPEED * dt.asSeconds();
+            }
+          }
+          if (rtPressed){
+            if ((screenX + circle.getRadius()) + (USER_SPEED * dt.asSeconds()) < SCREEN_W){
+              circle.move(USER_SPEED * dt.asSeconds(),0);
+              screenX += USER_SPEED * dt.asSeconds();
+            }
+          }
+          if (lfPressed){
+            if (screenX - (USER_SPEED * dt.asSeconds()) > circle.getRadius()){
+              circle.move(-USER_SPEED * dt.asSeconds(),0);
+              screenX -= USER_SPEED * dt.asSeconds();
+            }
+          }
+            dt -= sf::seconds(FPS);
         }
-        if (dnPressed){
-          circle.move(0,USER_SPEED * dt.asSeconds());
-        }
-        if (rtPressed){
-          circle.move(USER_SPEED * dt.asSeconds(),0);
-        }
-        if (lfPressed){
-          circle.move(-USER_SPEED * dt.asSeconds(),0);
-        }
-          dt -= sf::seconds(FPS);
-      }
-
 
         window.clear();
 
+        sf::Vector2f circlePos = circle.getPosition();
+        levels[curLvl].handleCollisions();
+        levels[curLvl].registerCollisions(circlePos, USER_RADIUS);
+
+        levels[curLvl].update(dt);
+
         window.draw(circle);
+
+        levels[curLvl].draw(window);
+        
+        if (levels[curLvl].cleared && curLvl + 1 < numberLevels) {
+          curLvl++;
+        } 
+        if (curLvl + 1 == numberLevels && levels[curLvl].cleared) {
+          exit(1);
+        }
 
         window.display();
 
