@@ -10,13 +10,14 @@ int main() {
 
     const float SCREEN_W = desktopMode.width;
     const float SCREEN_H = desktopMode.height;
-    int changeX = 0;
-    int changeY = 0;
 
     bool upPressed = false;
     bool dnPressed = false;
     bool rtPressed = false;
     bool lfPressed = false;
+
+    float screenX = SCREEN_W/2;
+    float screenY = SCREEN_H/2;
 
     const int USER_RADIUS = 50;
     int USER_SPEED = 1000; // px/s
@@ -104,21 +105,32 @@ int main() {
       }
 
         if (dt.asSeconds() > FPS) {
-        if (upPressed){
-          circle.move(0,-USER_SPEED * dt.asSeconds());
+          if (upPressed){
+            if (screenY - (USER_SPEED * dt.asSeconds()) > circle.getRadius()){
+              circle.move(0,-USER_SPEED * dt.asSeconds());
+              screenY -= USER_SPEED * dt.asSeconds();
+            }
+          }
+          if (dnPressed){
+            if ((screenY + circle.getRadius()) + (USER_SPEED * dt.asSeconds()) < SCREEN_H){
+              circle.move(0,USER_SPEED * dt.asSeconds());
+              screenY += USER_SPEED * dt.asSeconds();
+            }
+          }
+          if (rtPressed){
+            if ((screenX + circle.getRadius()) + (USER_SPEED * dt.asSeconds()) < SCREEN_W){
+              circle.move(USER_SPEED * dt.asSeconds(),0);
+              screenX += USER_SPEED * dt.asSeconds();
+            }
+          }
+          if (lfPressed){
+            if (screenX - (USER_SPEED * dt.asSeconds()) > circle.getRadius()){
+              circle.move(-USER_SPEED * dt.asSeconds(),0);
+              screenX -= USER_SPEED * dt.asSeconds();
+            }
+          }
+            dt -= sf::seconds(FPS);
         }
-        if (dnPressed){
-          circle.move(0,USER_SPEED * dt.asSeconds());
-        }
-        if (rtPressed){
-          circle.move(USER_SPEED * dt.asSeconds(),0);
-        }
-        if (lfPressed){
-          circle.move(-USER_SPEED * dt.asSeconds(),0);
-        }
-          dt -= sf::seconds(FPS);
-      }
-
 
         window.clear();
 
