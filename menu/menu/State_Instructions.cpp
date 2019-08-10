@@ -45,33 +45,34 @@ void State_Instructions::draw() {
         exit(1);
     }
     game.name.setFont(font);
-    game.name.setCharacterSize(60);
+    game.name.setCharacterSize(32);
     float textHeight = game.name.getGlobalBounds().height;
     float rowHeight = introBox.getSize().y / textHeight + 30;
     int curRow = 1;
+    game.name.setCharacterSize(60);
     float introBoxTop = introBox.getGlobalBounds().top;
     game.name.setOrigin(game.name.getGlobalBounds().width / 2, game.name.getGlobalBounds().height);
     game.name.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight + 5);
     ctx->window->getRenderWindow()->draw(game.name);
     ++curRow;
     game.author.setFont(font);
-    game.author.setCharacterSize(32);
+    game.author.setCharacterSize(24);
     game.author.setOrigin(game.author.getGlobalBounds().width / 2, game.author.getGlobalBounds().height / 2);
     game.author.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
     ctx->window->getRenderWindow()->draw(game.author);
     ++curRow;
     game.language.setFont(font);
-    game.language.setCharacterSize(32);
+    game.language.setCharacterSize(24);
     game.language.setOrigin(game.language.getGlobalBounds().width / 2, game.language.getGlobalBounds().height / 2);
     game.language.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
     ctx->window->getRenderWindow()->draw(game.language);
-    curRow += 4;
+    curRow += 2;
     
     for (int i = 0; i < game.mappings.size(); ++i) {
         sf::Text text;
         text.setString(game.mappings[i]);
         text.setFont(font);
-        text.setCharacterSize(32);
+        text.setCharacterSize(24);
         text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
         text.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
         ctx->window->getRenderWindow()->draw(text);
@@ -83,7 +84,7 @@ void State_Instructions::draw() {
         sf::Text text;
         text.setString(game.instructions[i]);
         text.setFont(font);
-        text.setCharacterSize(32);
+        text.setCharacterSize(24);
         text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
         text.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
         ctx->window->getRenderWindow()->draw(text);
@@ -93,14 +94,14 @@ void State_Instructions::draw() {
     sf::Text text;
     text.setString("Press " + game.startButton + " to start");
     text.setFont(font);
-    text.setCharacterSize(32);
+    text.setCharacterSize(24);
     text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
     text.setPosition(introBox.getPosition().x, introBoxTop + introBox.getGlobalBounds().height - rowHeight * 2);
     ctx->window->getRenderWindow()->draw(text);
     
     text.setString("Press the Control Button to go back to the menu");
     text.setFont(font);
-    text.setCharacterSize(32);
+    text.setCharacterSize(24);
     text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
     text.setPosition(introBox.getPosition().x, introBoxTop + introBox.getGlobalBounds().height - rowHeight);
     ctx->window->getRenderWindow()->draw(text);
@@ -123,4 +124,5 @@ void State_Instructions::startGame(BindingDetails * details) {
 
 void State_Instructions::backToMenu(BindingDetails * details) {
     ctx->stateMachine->changeState(StateType::DIYACMenu);
+    ctx->stateMachine->remove(StateType::Instructions);
 }
