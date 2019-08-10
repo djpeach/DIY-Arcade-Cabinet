@@ -1,17 +1,22 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 int main() {
 
     sf::Time dt;
     sf::Clock speedClock;
     sf::Clock gameClock;
-
-
     sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+
     const float SCREEN_W = desktopMode.width;
     const float SCREEN_H = desktopMode.height;
     int changeX = 0;
     int changeY = 0;
+
+    bool upPressed = false; 
+    bool dnPressed = false; 
+    bool rtPressed = false; 
+    bool lfPressed = false; 
 
     const int USER_R = 50;
     sf::RenderWindow window(sf::VideoMode(SCREEN_W, SCREEN_H), "Bumpy Circles", sf::Style::Fullscreen);
@@ -32,8 +37,7 @@ int main() {
     circle.setPosition(SCREEN_W/2, SCREEN_H/2);
 
     while (window.isOpen()) {
-        dt += clock.restart().asSeconds();
-
+      dt += gameClock.restart();
         sf::Event event;
 
         while (window.pollEvent(event)) {
@@ -44,49 +48,81 @@ int main() {
               window.close();
               break;
 
-            case sf::Event::KeyPressed:
+            case sf::Event::KeyPressed: {
               switch (event.key.code){
                 case sf::Keyboard::Slash:
                   window.close();
                   break;
 
                 case sf::Keyboard::W:
-                  changeY = -10;
-                  circle.move(0, changeY);
+                  upPressed = true;
                   break;
 
                 case sf::Keyboard::S:
-                  changeY = +10;
-                  circle.move(0, changeY);
+                  dnPressed = true;
                   break;
 
                 case sf::Keyboard::A:
-                  changeX = -10;
-                  circle.move(changeX, 0);
+                  lfPressed = true; 
                   break;
                 
                 case sf::Keyboard::D:
-                  changeX = +10;
-                  circle.move(changeX, 0);
+                  rtPressed = true; 
+                  break;
+              }
+              break;
+            }
+
+            case sf::Event::KeyReleased: {
+              switch (event.key.code){
+                case sf::Keyboard::W:
+                  upPressed = false;
                   break;
 
-                default:
+                case sf::Keyboard::S:
+                  dnPressed = false;
+                  break;
+
+                case sf::Keyboard::A:
+                  lfPressed = false; 
+                  break;
+                
+                case sf::Keyboard::D:
+                  rtPressed = false;  
                   break;
               }
 
             default:
               // std::cout << "Unknown event" << std::endl;
-              break;
+            break;
           }
+          break;
         }
+
+      }
+
+      if (dt.asSeconds() > (1/60)) {
+
+
+        if (upPressed){
+          circle.move(0,-10/dt.asSeconds());
+        }
+        if (dnPressed){
+          circle.move(0,10/dt.asSeconds());
+        }
+        if (rtPressed){
+          circle.move(10/dt.asSeconds(),0);
+        }
+        if (lfPressed){
+          circle.move(-10/dt.asSeconds(),0);
+        }
+
+      }
+
 
         window.clear();
 
         window.draw(circle);
-
-        if(dt > (1/60)){
-          window.update();
-        }
 
         window.display();
 
