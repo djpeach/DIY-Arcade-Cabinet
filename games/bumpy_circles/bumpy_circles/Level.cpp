@@ -54,11 +54,13 @@ Level::Level(int maxTime, int numberGreens, int numberReds, int greenMaxSpeed, i
 
 void Level::draw(sf::RenderWindow & window){
     for(int i = 0; i < greens.size(); i++){
-        sf::CircleShape greenBall(25);
-        greenBall.setFillColor(sf::Color(27,128,37));
-        greenBall.setOrigin(25, 25);
-        greenBall.setPosition(greens[i].position.x, greens[i].position.y);
-        window.draw(greenBall);
+        if (greens[i].exists){
+            sf::CircleShape greenBall(25);
+            greenBall.setFillColor(sf::Color(27,128,37));
+            greenBall.setOrigin(25, 25);
+            greenBall.setPosition(greens[i].position.x, greens[i].position.y);
+            window.draw(greenBall);
+        }
     }
 
     for(int i = 0; i < reds.size(); i++){
@@ -89,14 +91,28 @@ void Level::registerCollisions( sf::Vector2f & userPosition, int userRadius ){
         int diffY = abs(userPosition.y - reds[i].position.y);
 
         if ( (diffX < addRad) && (diffY < addRad)){
-<<<<<<< HEAD
             reds[i].collision = true;
-=======
-            reds[i].collision = true;  
->>>>>>> a7f662c7020f855de5a5aad0727d52d883e83db0
         }
     }
 }
+
+void Level::handleCollisions(){
+    for(int i = 0; i < greens.size(); i++){
+        if (greens[i].collision && greens[i].exists){
+            // handle
+            greens[i].exists = false;
+
+        }
+    }
+
+    for(int i = 0; i < reds.size(); i++){
+        if (reds[i].collision){
+            
+        }
+    }
+}
+
+
 
 
 

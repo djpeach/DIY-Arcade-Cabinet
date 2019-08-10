@@ -6,7 +6,7 @@
 
 
 struct Circle {
-    Circle(sf::Vector2f speed, sf::Vector2f position) : speed(speed), position(position), exists(false), collision(false) {}
+    Circle(sf::Vector2f speed, sf::Vector2f position) : speed(speed), position(position), exists(true), collision(false) {}
     sf::Vector2f speed, position;
     bool exists, collision;
 };
@@ -20,6 +20,7 @@ class Level{
         void update(sf::RenderWindow & window);
         void draw(sf::RenderWindow & window);
         void registerCollisions(sf::Vector2f & userPosition, int userRadius);
+        void handleCollisions();
 
     private:
         std::vector<Circle> greens, reds;
@@ -29,7 +30,5 @@ class Level{
         bool cleared = false;
 
         sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
-
-        void handleCollisions();
 
 };

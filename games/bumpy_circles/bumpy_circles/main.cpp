@@ -135,12 +135,14 @@ int main() {
         }
 
         window.clear();
+
         sf::Vector2f circlePos = circle.getPosition();
-        levels[0].registerCollisions(circlePos, USER_RADIUS);
+        levels[1].handleCollisions();
+        levels[1].registerCollisions(circlePos, USER_RADIUS);
 
         window.draw(circle);
 
-        levels[0].draw(window);
+        levels[1].draw(window);
         
 
         window.display();
