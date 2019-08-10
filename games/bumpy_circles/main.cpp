@@ -2,7 +2,10 @@
 
 int main() {
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Bumpy Circles", sf::Style::Fullscreen);
+    sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+    const float SCREEN_W = desktopMode.width;
+    const float SCREEN_H = desktopMode.height;
+    sf::RenderWindow window(sf::VideoMode(SCREEN_W, SCREEN_H), "Bumpy Circles", sf::Style::Fullscreen);
 
     while (window.isOpen()) {
 
