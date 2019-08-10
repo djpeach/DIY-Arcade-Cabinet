@@ -32,7 +32,7 @@ void EventManager::handlePolledEvent(sf::Event & event){
             if (bindingEventItr.type != sfmlEvent){ continue; }
             if (sfmlEvent == EventType::KeyDown || sfmlEvent == EventType::KeyUp){
                 if (bindingEventItr.info.code == event.key.code){
-                    if (binding->details.keyCode != -1){
+                    if (binding->details.keyCode == -1){
                         binding->details.keyCode = bindingEventItr.info.code;
                     }
                     ++(binding->fullfilledEventCount);
@@ -59,7 +59,7 @@ void EventManager::handleRealTimeEvents(){
         for (auto &e_itr : binding->events){
             if (e_itr.type == EventType::Keyboard) {
                     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(e_itr.info.code))){
-                        if (binding->details.keyCode != -1){
+                        if (binding->details.keyCode == -1){
                             binding->details.keyCode = e_itr.info.code;
                         }
                         ++(binding->fullfilledEventCount);

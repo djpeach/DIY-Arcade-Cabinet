@@ -7,7 +7,7 @@ DIYACMenu::DIYACMenu() {
     closed = false;
     
     ctx.eventManager->addCallback(StateType(0), "closeWindow", &DIYACMenu::closeWindow, this);
-    ctx.eventManager->addCallback(StateType(0), "slashCloseWindow", &DIYACMenu::closeWindow, this);
+    ctx.eventManager->addCallback(StateType::DIYACMenu, "slashCloseWindow", &DIYACMenu::closeWindow, this);
     
     ctx.stateMachine->changeState(StateType::DIYACMenu);
 }

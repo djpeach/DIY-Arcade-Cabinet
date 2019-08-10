@@ -68,6 +68,10 @@ bool StateMachine::hasState(const StateType& type){
     return false;
 }
 
+State_Base * StateMachine::getCurrentState() {
+    return states.back().second;
+}
+
 void StateMachine::processRequests(){
     while (toRemove.begin() != toRemove.end()){
         removeState(*toRemove.begin());
@@ -93,7 +97,6 @@ void StateMachine::changeState(const StateType & type){
     }
     
     // State with type wasn't found.
-    std::cout << "state with type: " << (int)type << " was not found" << std::endl;
     if (!states.empty()){ states.back().second->deactivate(); }
     createState(type);
     states.back().second->activate();

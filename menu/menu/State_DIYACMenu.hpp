@@ -4,26 +4,7 @@
 
 #include "State_Base.hpp"
 #include "EventManager.hpp"
-
-struct Game {
-    Game() {
-        clear();
-    }
-    
-    sf::Text name;
-    std::string exePath;
-    std::string start1;
-    std::string start2;
-    sf::Color bgColor;
-    
-    void clear() {
-        name.setString("");
-        exePath = "";
-        start1 = "";
-        start2 = "";
-        bgColor = sf::Color(120, 120, 120);
-    }
-};
+#include "Game.hpp"
 
 class State_DIYACMenu : public State_Base {
     
@@ -45,11 +26,12 @@ public:
     void moveLeft(BindingDetails * details);
     void moveUp(BindingDetails * details);
     void moveDown(BindingDetails * details);
-    void startGame(BindingDetails * details);
+    void openGame(BindingDetails * details);
     
 private:
     
     void getGames();
+    std::string translateControlToButton(std::string & control);
     
     std::vector<Game> games;
     std::vector<sf::RectangleShape> gameTiles;

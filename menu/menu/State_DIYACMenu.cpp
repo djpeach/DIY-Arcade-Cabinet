@@ -2,7 +2,6 @@
 #include "SharedContext.hpp"
 
 #include <string>
-#include "stdlib.h"
 
 State_DIYACMenu::State_DIYACMenu(SharedContext * ctx) : State_Base(ctx), games() {}
 State_DIYACMenu::~State_DIYACMenu() {}
@@ -25,16 +24,6 @@ void State_DIYACMenu::onCreate() {
         sf::RectangleShape rect(sf::Vector2f(windowGrid.x * tiles.x, windowGrid.y * tiles.y));
         rect.setPosition((((tiles.x + 1) * (i % tiles.x)) + 1) * windowGrid.x, (((tiles.y + 1) * (i / (tiles.y + 1)) + 1)) * windowGrid.y);
         rect.setFillColor(games[i].bgColor);
-        sf::Font font;
-        if (!font.loadFromFile("assets/fonts/arial.ttf")) {
-            std::cerr << "Could not load font from assets/fonts/arial.ttf" << std::endl;
-            exit(1);
-        }
-        sf::Text & title = games[i].name;
-        title.setFont(font);
-        sf::FloatRect titleBounds = title.getLocalBounds();
-        title.setOrigin(titleBounds.width / 2, titleBounds.height / 2);
-        title.setPosition(rect.getPosition().x + rect.getSize().x / 2, rect.getPosition().y + rect.getSize().y / 2);
         
         gameTiles.push_back(rect);
     }
@@ -52,7 +41,8 @@ void State_DIYACMenu::onCreate() {
     ctx->eventManager->addCallback(StateType::DIYACMenu, "player2MoveLeft", &State_DIYACMenu::moveLeft, this);
     ctx->eventManager->addCallback(StateType::DIYACMenu, "player2MoveUp", &State_DIYACMenu::moveUp, this);
     ctx->eventManager->addCallback(StateType::DIYACMenu, "player2MoveDown", &State_DIYACMenu::moveDown, this);
-    ctx->eventManager->addCallback(StateType::DIYACMenu, "startGame", &State_DIYACMenu::startGame, this);
+    ctx->eventManager->addCallback(StateType::DIYACMenu, "gameOpen1Player", &State_DIYACMenu::openGame, this);
+    ctx->eventManager->addCallback(StateType::DIYACMenu, "gameOpen2Player", &State_DIYACMenu::openGame, this);
     
     view.setCenter(windowSize.x / 2, windowSize.y / 2);
     ctx->window->getRenderWindow()->setView(view);
@@ -86,8 +76,14 @@ void State_DIYACMenu::draw() {
     }
     for (int i=0; i<games.size(); ++i) {
         ctx->window->getRenderWindow()->draw(gameTiles[i]);
-        games[i].name.setFont(font);
-        ctx->window->getRenderWindow()->draw(games[i].name);
+        sf::Text & title = games[i].name;
+        title.setFont(font);
+        title.setCharacterSize(48);
+        sf::FloatRect titleBounds = title.getLocalBounds();
+        title.setOrigin(titleBounds.width / 2, titleBounds.height / 2);
+        sf::FloatRect tileBounds = gameTiles[i].getGlobalBounds();
+        title.setPosition(tileBounds.left + tileBounds.width / 2, tileBounds.top + tileBounds.height + 55);
+        ctx->window->getRenderWindow()->draw(title);
     }
 }
 
@@ -102,9 +98,17 @@ void State_DIYACMenu::getGames() {
     }
     
     std::string line;
-    Game game;
+    bool needNewGame = true;
+    int curGame = -1;
     
     while (std::getline(gamesStream, line)){
+        if (needNewGame) {
+            Game gameToAdd = Game();
+            games.push_back(gameToAdd);
+            ++curGame;
+            needNewGame = false;
+        }
+        Game & game = games[curGame];
         
         if (line[0] == '#' || line.empty()) { continue; }
         
@@ -136,13 +140,64 @@ void State_DIYACMenu::getGames() {
             std::string r, g, b;
             lineStream >> r >> g >> b;
             game.bgColor = sf::Color(stoi(r), stoi(g), stoi(b));
+        } else if (type == "AUTHOR") {
+            std::string author;
+            std::getline(lineStream, author);
+            game.author.setString(author);
+        } else if (type == "LANGUAGE") {
+            std::string language;
+            std::getline(lineStream, language);
+            game.language.setString(language);
+        } else if (type == "MAPPING") {
+            std::string mapping;
+            std::string desc;
+            std::string control;
+            std::getline(lineStream, mapping);
+            mapping = mapping.substr(1, mapping.length());
+            desc = mapping.substr(0, mapping.find(":"));
+            control = mapping.substr(mapping.find(":") + 1, mapping.length());
+            game.mappings.push_back("To " + desc + ", press " + translateControlToButton(control));
+        } else if (type == "INSTRUCTION") {
+            std::string instruction;
+            std::getline(lineStream, instruction);
+            instruction = instruction.substr(1, instruction.length());
+            game.instructions.push_back(instruction);
         } else if (type == "END_GAME_ENTRY") {
-            games.push_back(game);
-            game.clear();
+            needNewGame = true;
         }
         
     }
     gamesStream.close();
+}
+
+std::string State_DIYACMenu::translateControlToButton(std::string & control) {
+    std::unordered_map<std::string, std::string> mappings ({
+        {"Slash", "Control Button"},
+        {"Num1", "Player 1 Start"},
+        {"Num2", "Player 2 Start"},
+        {"W", "Player 1 Up"},
+        {"A", "Player 1 Left"},
+        {"S", "Player 1 Down"},
+        {"D", "Player 1 Right"},
+        {"I", "Player 2 Up"},
+        {"J", "Player 2 Left"},
+        {"K", "Player 2 Down"},
+        {"L", "Player 2 Right"},
+        {"F", "Player 1 Red"},
+        {"E", "Player 1 White"},
+        {"Q", "Player 1 Blue"},
+        {"Z", "Player 1 Yellow"},
+        {"X", "Player 1 Green"},
+        {"C", "Player 1 Blue"},
+        {"H", "Player 1 Red"},
+        {"U", "Player 1 White"},
+        {"O", "Player 1 Blue"},
+        {"B", "Player 1 Yellow"},
+        {"N", "Player 1 Green"},
+        {"M", "Player 1 Blue"},
+    });
+    
+    return mappings[control];
 }
 
 void State_DIYACMenu::showAlert(BindingDetails * details) {}
@@ -172,6 +227,12 @@ void State_DIYACMenu::moveDown(BindingDetails * details) {
     }
 }
 
-void State_DIYACMenu::startGame(BindingDetails * details) {
+void State_DIYACMenu::openGame(BindingDetails * details) {
+    if (details->keyCode == 27) {
+        games[selectedTile - 1].startButton = "Player 1 Start";
+    } else if (details->keyCode == 28) {
+        games[selectedTile - 1].startButton = "Player 2 Start";
+    }
     ctx->stateMachine->changeState(StateType::Instructions);
+    dynamic_cast<State_Instructions *>(ctx->stateMachine->getCurrentState())->setGame(games[selectedTile - 1]);
 }

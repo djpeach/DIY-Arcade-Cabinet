@@ -4,6 +4,7 @@
 
 #include "State_Base.hpp"
 #include "EventManager.hpp"
+#include "Game.hpp"
 
 class State_Instructions : public State_Base {
     
@@ -20,5 +21,11 @@ public:
     void update(const sf::Time & delta);
     void draw();
     
+    void setGame(Game & game);
+    void startGame(BindingDetails * details);
+    void backToMenu(BindingDetails * details);
+    
 private:
+    sf::RectangleShape introBox;
+    Game game;
 };

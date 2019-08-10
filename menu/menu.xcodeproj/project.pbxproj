@@ -44,6 +44,7 @@
 		DA8A194122FE56170005ACA3 /* State_Alert.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = State_Alert.hpp; sourceTree = "<group>"; };
 		DA8A194322FE564C0005ACA3 /* State_Instructions.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = State_Instructions.cpp; sourceTree = "<group>"; };
 		DA8A194422FE564C0005ACA3 /* State_Instructions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = State_Instructions.hpp; sourceTree = "<group>"; };
+		DA8A196822FEE0860005ACA3 /* Game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Game.hpp; sourceTree = "<group>"; };
 		DAB1CAFB22FC7B9E00DA1000 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		DADC8D7C22F913A800CC4CCD /* DIYACMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DIYACMenu.cpp; sourceTree = "<group>"; };
 		DADC8D7D22F913A800CC4CCD /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
@@ -127,6 +128,7 @@
 				DA8A194122FE56170005ACA3 /* State_Alert.hpp */,
 				DA8A194322FE564C0005ACA3 /* State_Instructions.cpp */,
 				DA8A194422FE564C0005ACA3 /* State_Instructions.hpp */,
+				DA8A196822FEE0860005ACA3 /* Game.hpp */,
 			);
 			path = menu;
 			sourceTree = "<group>";

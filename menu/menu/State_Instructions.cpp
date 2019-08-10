@@ -9,20 +9,118 @@ State_Instructions::State_Instructions(SharedContext * ctx) : State_Base(ctx) {
 }
 State_Instructions::~State_Instructions() {}
 
-void State_Instructions::onCreate() {}
+void State_Instructions::onCreate() {
+    sf::Vector2u windowSize = ctx->window->getRenderWindow()->getSize();
+    introBox.setSize(sf::Vector2f(windowSize.x * .8 , windowSize.y * .8 ));
+    introBox.setFillColor(sf::Color(50, 50, 50));
+    introBox.setOutlineColor(sf::Color(240, 20, 20));
+    introBox.setOutlineThickness(10);
+    sf::Vector2f introBoxSize = introBox.getSize();
+    introBox.setOrigin(introBoxSize.x / 2, introBoxSize.y / 2);
+    introBox.setPosition(windowSize.x / 2, windowSize.y / 2);
+    
+    ctx->eventManager->addCallback(StateType::Instructions, "gameStart1Player", &State_Instructions::startGame, this);
+    ctx->eventManager->addCallback(StateType::Instructions, "gameStart2Player", &State_Instructions::startGame, this);
+    ctx->eventManager->addCallback(StateType::Instructions, "backToMenu", &State_Instructions::backToMenu, this);
+}
 
 void State_Instructions::onDestroy() {}
 
 void State_Instructions::activate() {
-    std::cout << "drawing instructions" << std::endl;
 }
 
 void State_Instructions::deactivate() {}
 
 void State_Instructions::update(const sf::Time & delta) {}
+
 void State_Instructions::draw() {
     sf::Vector2u windowSize = ctx->window->getRenderWindow()->getSize();
     sf::RectangleShape rect(sf::Vector2f(windowSize.x, windowSize.y));
     rect.setFillColor(sf::Color(0, 0, 0, 200));
     ctx->window->getRenderWindow()->draw(rect);
+    ctx->window->getRenderWindow()->draw(introBox);
+    sf::Font font;
+    if (!font.loadFromFile("assets/fonts/arial.ttf")) {
+        std::cerr << "Could not load font from assets/fonts/arial.ttf" << std::endl;
+        exit(1);
+    }
+    game.name.setFont(font);
+    game.name.setCharacterSize(60);
+    float textHeight = game.name.getGlobalBounds().height;
+    float rowHeight = introBox.getSize().y / textHeight + 30;
+    int curRow = 1;
+    float introBoxTop = introBox.getGlobalBounds().top;
+    game.name.setOrigin(game.name.getGlobalBounds().width / 2, game.name.getGlobalBounds().height);
+    game.name.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight + 5);
+    ctx->window->getRenderWindow()->draw(game.name);
+    ++curRow;
+    game.author.setFont(font);
+    game.author.setCharacterSize(48);
+    game.author.setOrigin(game.author.getGlobalBounds().width / 2, game.author.getGlobalBounds().height / 2);
+    game.author.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
+    ctx->window->getRenderWindow()->draw(game.author);
+    ++curRow;
+    game.language.setFont(font);
+    game.language.setCharacterSize(48);
+    game.language.setOrigin(game.language.getGlobalBounds().width / 2, game.language.getGlobalBounds().height / 2);
+    game.language.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
+    ctx->window->getRenderWindow()->draw(game.language);
+    curRow += 4;
+    
+    for (int i = 0; i < game.mappings.size(); ++i) {
+        sf::Text text;
+        text.setString(game.mappings[i]);
+        text.setFont(font);
+        text.setCharacterSize(48);
+        text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+        text.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
+        ctx->window->getRenderWindow()->draw(text);
+        ++curRow;
+    }
+    curRow += 2;
+    
+    for (int i = 0; i < game.instructions.size(); ++i) {
+        sf::Text text;
+        text.setString(game.instructions[i]);
+        text.setFont(font);
+        text.setCharacterSize(48);
+        text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+        text.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
+        ctx->window->getRenderWindow()->draw(text);
+        ++curRow;
+    }
+    
+    sf::Text text;
+    text.setString("Press " + game.startButton + " to start");
+    text.setFont(font);
+    text.setCharacterSize(48);
+    text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+    text.setPosition(introBox.getPosition().x, introBoxTop + introBox.getGlobalBounds().height - rowHeight * 2);
+    ctx->window->getRenderWindow()->draw(text);
+    
+    text.setString("Press the Control Button to go back to the menu");
+    text.setFont(font);
+    text.setCharacterSize(48);
+    text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+    text.setPosition(introBox.getPosition().x, introBoxTop + introBox.getGlobalBounds().height - rowHeight);
+    ctx->window->getRenderWindow()->draw(text);
+}
+
+void State_Instructions::setGame(Game & game) {
+    this->game = game;
+}
+
+void State_Instructions::startGame(BindingDetails * details) {
+    if (details->keyCode == 27 && game.startButton == "Player 1 Start") {
+        std::cout << std::string(game.name.getString()) << "path: " << game.exePath << "start1: " << game.start1 << std::endl;
+        std::string path = game.exePath;
+        system(("cd ../../games/" + path + " && " + game.start1).c_str());
+    } else if (details->keyCode == 28 && game.startButton == "Player 2 Start") {
+        std::string path = game.exePath;
+        system(("cd ../../games/" + path + " && " + game.start2).c_str());
+    }
+}
+
+void State_Instructions::backToMenu(BindingDetails * details) {
+    ctx->stateMachine->changeState(StateType::DIYACMenu);
 }

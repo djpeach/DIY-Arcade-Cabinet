@@ -36,6 +36,8 @@ public:
     void changeState(const StateType & type);
     void remove(const StateType & type);
     
+    State_Base * getCurrentState();
+    
 private:
     
     void createState(const StateType & type);
