@@ -1,5 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <stdio.h> 
+#include <stdlib.h> 
+#include<time.h> 
+
+#include "Level.hpp"
 
 int main() {
 
@@ -19,21 +24,17 @@ int main() {
     float screenX = SCREEN_W/2;
     float screenY = SCREEN_H/2;
 
+    Level levels[3] = {Level(60, 1, 1, 0, 10), Level(60, 1, 1, 0, 10), Level(60, 1, 1, 0, 10)};
+
+    srand(time(0));
+
     const int USER_RADIUS = 50;
     int USER_SPEED = 1000; // px/s
     float FPS = (float)(1.0/120);
     sf::RenderWindow window(sf::VideoMode(SCREEN_W, SCREEN_H), "Bumpy Circles", sf::Style::Fullscreen);
 
-    /*
-     CIRCLE SHAPE
-     */
     sf::CircleShape circle(USER_RADIUS);
 
-    // radius and point count can be set after as well
-    //shape.setRadius(100);
-    //shape.setPointCount(3);
-
-    // Red, Green and Blue from 0 to 255
     circle.setFillColor(sf::Color(66,135,245));
     circle.setOrigin(50,50);
 
