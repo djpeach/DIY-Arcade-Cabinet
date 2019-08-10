@@ -52,7 +52,7 @@ Level::Level(int maxTime, int numberGreens, int numberReds, int greenMaxSpeed, i
 };
 
 void Level::draw(sf::RenderWindow & window){
-    for(int i; i < greens.size(); i++){
+    for(int i = 0; i < greens.size(); i++){
         sf::CircleShape greenBall(25);
         greenBall.setFillColor(sf::Color(27,128,37));
         greenBall.setOrigin(25, 25);
@@ -60,10 +60,10 @@ void Level::draw(sf::RenderWindow & window){
         window.draw(greenBall);
     }
 
-    for(int i; i < reds.size(); i++){
-        sf::CircleShape redBall(25);
-        redBall.setFillColor(sf::Color(27,128,37));
-        redBall.setOrigin(25, 25);
+    for(int i = 0; i < reds.size(); i++){
+        sf::CircleShape redBall(15);
+        redBall.setFillColor(sf::Color(204,39,10));
+        redBall.setOrigin(15, 15);
         redBall.setPosition(reds[i].position.x, reds[i].position.y);
         window.draw(redBall);
     }

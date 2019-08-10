@@ -24,6 +24,7 @@ int main() {
     float screenX = SCREEN_W/2;
     float screenY = SCREEN_H/2;
 
+    // Level(maxTime, numberGreen, numberRed, greenMaxSpeed, redMaxSpeed)
     Level levels[3] = {Level(60, 1, 1, 0, 10), Level(60, 2, 1, 0, 10), Level(60, 3, 1, 0, 10)};
 
     srand(time(0));
@@ -137,7 +138,7 @@ int main() {
 
         window.draw(circle);
 
-        levels[1].draw(window);
+        levels[0].draw(window);
 
         window.display();
 
