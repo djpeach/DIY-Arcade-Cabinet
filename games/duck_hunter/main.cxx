@@ -73,6 +73,9 @@ int main() {
 
             case sf::Event::KeyPressed:
               switch (event.key.code) {
+                case sf::Keyboard::Slash:
+                  window.close();
+                  break;
                 case sf::Keyboard::W:
                   w_down = true;
                   break;
