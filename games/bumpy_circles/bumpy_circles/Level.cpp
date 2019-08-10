@@ -77,15 +77,8 @@ void Level::registerCollisions( sf::Vector2f & userPosition, int userRadius ){
         int diffX = abs(userPosition.x - greens[i].position.x);
         int diffY = abs(userPosition.y - greens[i].position.y);
 
-        std::cout << addRad << std::endl;
-        std::cout << diffX << std::endl;
-        std::cout << diffY << std::endl;
-
         if ( (diffX < addRad) && (diffY < addRad)){
             greens[i].collision = true;
-            std::cout << "Hit green" << std::endl;
-
-
         }
     }
 
@@ -96,9 +89,7 @@ void Level::registerCollisions( sf::Vector2f & userPosition, int userRadius ){
         int diffY = abs(userPosition.y - reds[i].position.y);
 
         if ( (diffX < addRad) && (diffY < addRad)){
-            reds[i].collision = true;
-            std::cout << "Hit red" << std::endl;
-            
+            reds[i].collision = true;  
         }
     }
 }
