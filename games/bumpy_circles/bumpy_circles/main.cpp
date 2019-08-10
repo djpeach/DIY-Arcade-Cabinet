@@ -29,7 +29,7 @@ int main() {
 
     srand(time(0));
 
-    const int USER_RADIUS = 50;
+    int USER_RADIUS = 50;
     int USER_SPEED = 1000; // px/s
     float FPS = (float)(1.0/120);
     sf::RenderWindow window(sf::VideoMode(SCREEN_W, SCREEN_H), "Bumpy Circles", sf::Style::Fullscreen);
@@ -135,10 +135,13 @@ int main() {
         }
 
         window.clear();
+        sf::Vector2f circlePos = circle.getPosition();
+        levels[0].registerCollisions(circlePos, USER_RADIUS);
 
         window.draw(circle);
 
         levels[0].draw(window);
+        
 
         window.display();
 

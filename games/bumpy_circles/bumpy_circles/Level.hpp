@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <cmath>
+
 
 struct Circle {
     Circle(sf::Vector2f speed, sf::Vector2f position) : speed(speed), position(position), exists(false), collision(false) {}
@@ -17,7 +19,7 @@ class Level{
 
         void update(sf::RenderWindow & window);
         void draw(sf::RenderWindow & window);
-        void registerCollisions(sf::FloatRect & userBounds);
+        void registerCollisions(sf::Vector2f & userPosition, int userRadius);
 
     private:
         std::vector<Circle> greens, reds;
@@ -29,4 +31,5 @@ class Level{
         sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 
         void handleCollisions();
+
 };

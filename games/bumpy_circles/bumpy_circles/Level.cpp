@@ -1,6 +1,7 @@
 #include "Level.hpp"
 #include <iostream>
 
+
 Level::Level(int maxTime, int numberGreens, int numberReds, int greenMaxSpeed, int redMaxSpeed) : maxScoreTime(maxTime), numberGreens(numberGreens), numberReds(numberReds), greenMaxSpeed(greenMaxSpeed), redMaxSpeed(redMaxSpeed){
     static bool seeded = false;
     if(!seeded) {
@@ -68,6 +69,39 @@ void Level::draw(sf::RenderWindow & window){
         window.draw(redBall);
     }
 };
+
+void Level::registerCollisions( sf::Vector2f & userPosition, int userRadius ){
+    for(int i = 0; i < greens.size(); i++){
+
+        int addRad = 25 + userRadius;
+        int diffX = abs(userPosition.x - greens[i].position.x);
+        int diffY = abs(userPosition.y - greens[i].position.y);
+
+        std::cout << addRad << std::endl;
+        std::cout << diffX << std::endl;
+        std::cout << diffY << std::endl;
+
+        if ( (diffX < addRad) && (diffY < addRad)){
+            greens[i].collision = true;
+            std::cout << "Hit green" << std::endl;
+
+
+        }
+    }
+
+    for(int i = 0; i < reds.size(); i++){
+
+        int addRad = 25 + userRadius;
+        int diffX = abs(userPosition.x - reds[i].position.x);
+        int diffY = abs(userPosition.y - reds[i].position.y);
+
+        if ( (diffX < addRad) && (diffY < addRad)){
+            reds[i].collision = true;
+            std::cout << "Hit red" << std::endl;
+            
+        }
+    }
+}
 
 
 
