@@ -78,7 +78,7 @@ void State_DIYACMenu::draw() {
         ctx->window->getRenderWindow()->draw(gameTiles[i]);
         sf::Text & title = games[i].name;
         title.setFont(font);
-        title.setCharacterSize(48);
+        title.setCharacterSize(32);
         sf::FloatRect titleBounds = title.getLocalBounds();
         title.setOrigin(titleBounds.width / 2, titleBounds.height / 2);
         sf::FloatRect tileBounds = gameTiles[i].getGlobalBounds();

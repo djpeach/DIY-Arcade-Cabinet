@@ -55,13 +55,13 @@ void State_Instructions::draw() {
     ctx->window->getRenderWindow()->draw(game.name);
     ++curRow;
     game.author.setFont(font);
-    game.author.setCharacterSize(48);
+    game.author.setCharacterSize(32);
     game.author.setOrigin(game.author.getGlobalBounds().width / 2, game.author.getGlobalBounds().height / 2);
     game.author.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
     ctx->window->getRenderWindow()->draw(game.author);
     ++curRow;
     game.language.setFont(font);
-    game.language.setCharacterSize(48);
+    game.language.setCharacterSize(32);
     game.language.setOrigin(game.language.getGlobalBounds().width / 2, game.language.getGlobalBounds().height / 2);
     game.language.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
     ctx->window->getRenderWindow()->draw(game.language);
@@ -71,7 +71,7 @@ void State_Instructions::draw() {
         sf::Text text;
         text.setString(game.mappings[i]);
         text.setFont(font);
-        text.setCharacterSize(48);
+        text.setCharacterSize(32);
         text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
         text.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
         ctx->window->getRenderWindow()->draw(text);
@@ -83,7 +83,7 @@ void State_Instructions::draw() {
         sf::Text text;
         text.setString(game.instructions[i]);
         text.setFont(font);
-        text.setCharacterSize(48);
+        text.setCharacterSize(32);
         text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
         text.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
         ctx->window->getRenderWindow()->draw(text);
@@ -93,14 +93,14 @@ void State_Instructions::draw() {
     sf::Text text;
     text.setString("Press " + game.startButton + " to start");
     text.setFont(font);
-    text.setCharacterSize(48);
+    text.setCharacterSize(32);
     text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
     text.setPosition(introBox.getPosition().x, introBoxTop + introBox.getGlobalBounds().height - rowHeight * 2);
     ctx->window->getRenderWindow()->draw(text);
     
     text.setString("Press the Control Button to go back to the menu");
     text.setFont(font);
-    text.setCharacterSize(48);
+    text.setCharacterSize(32);
     text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
     text.setPosition(introBox.getPosition().x, introBoxTop + introBox.getGlobalBounds().height - rowHeight);
     ctx->window->getRenderWindow()->draw(text);
