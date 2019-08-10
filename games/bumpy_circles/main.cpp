@@ -2,8 +2,12 @@
 
 int main() {
 
-    sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+    sf::Time dt;
+    sf::Clock speedClock;
+    sf::Clock gameClock;
 
+
+    sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
     const float SCREEN_W = desktopMode.width;
     const float SCREEN_H = desktopMode.height;
     int changeX = 0;
@@ -28,6 +32,7 @@ int main() {
     circle.setPosition(SCREEN_W/2, SCREEN_H/2);
 
     while (window.isOpen()) {
+        dt = clock.restart();
 
         sf::Event event;
 
@@ -64,12 +69,6 @@ int main() {
                   changeX = +10;
                   circle.move(changeX, 0);
                   break;
-
-                case (sf::Keyboard::W) && (sf::Keyboard::D):
-                changeY = -10;
-                changeX = +10;
-                circle.move(changeX, changeY);
-                break;
 
                 default:
                   break;
