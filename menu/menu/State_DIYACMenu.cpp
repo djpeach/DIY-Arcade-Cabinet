@@ -8,6 +8,10 @@ State_DIYACMenu::~State_DIYACMenu() {}
 
 void State_DIYACMenu::onCreate() {
     
+    if (ctx->stateMachine->hasState(StateType::Instructions)) {
+        ctx->stateMachine->remove(StateType::Instructions);
+    }
+    
     getGames();
     
     selectedTile = 1;

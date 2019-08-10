@@ -45,7 +45,7 @@ void State_Instructions::draw() {
         exit(1);
     }
     game.name.setFont(font);
-    game.name.setCharacterSize(32);
+    game.name.setCharacterSize(24);
     float textHeight = game.name.getGlobalBounds().height;
     float rowHeight = introBox.getSize().y / textHeight + 30;
     int curRow = 1;
@@ -66,7 +66,7 @@ void State_Instructions::draw() {
     game.language.setOrigin(game.language.getGlobalBounds().width / 2, game.language.getGlobalBounds().height / 2);
     game.language.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
     ctx->window->getRenderWindow()->draw(game.language);
-    curRow += 2;
+    ++curRow;
     
     for (int i = 0; i < game.mappings.size(); ++i) {
         sf::Text text;
@@ -78,7 +78,7 @@ void State_Instructions::draw() {
         ctx->window->getRenderWindow()->draw(text);
         ++curRow;
     }
-    curRow += 2;
+    ++curRow;
     
     for (int i = 0; i < game.instructions.size(); ++i) {
         sf::Text text;
@@ -124,5 +124,4 @@ void State_Instructions::startGame(BindingDetails * details) {
 
 void State_Instructions::backToMenu(BindingDetails * details) {
     ctx->stateMachine->changeState(StateType::DIYACMenu);
-    ctx->stateMachine->remove(StateType::Instructions);
 }

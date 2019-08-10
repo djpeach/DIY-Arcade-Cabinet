@@ -12,6 +12,9 @@
 */*/*/cmake_install.cmake
 */*/*/Makefile
 */*/*/dodgy_blocks
+*/*/duck_hunter
+*/*/*/bumpy_circles
+*/*/*/menu
 
 
 */*/*.xcodeproj/project.pbxproj
