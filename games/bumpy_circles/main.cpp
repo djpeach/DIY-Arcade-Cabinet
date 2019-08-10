@@ -3,8 +3,11 @@
 int main() {
 
     sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+
     const float SCREEN_W = desktopMode.width;
     const float SCREEN_H = desktopMode.height;
+    int changeX = 0;
+    int changeY = 0;
 
     const int USER_R = 50;
     sf::RenderWindow window(sf::VideoMode(SCREEN_W, SCREEN_H), "Bumpy Circles", sf::Style::Fullscreen);
@@ -41,7 +44,33 @@ int main() {
                 case sf::Keyboard::Slash:
                   window.close();
                   break;
-                  
+
+                case sf::Keyboard::W:
+                  changeY = -10;
+                  circle.move(0, changeY);
+                  break;
+
+                case sf::Keyboard::S:
+                  changeY = +10;
+                  circle.move(0, changeY);
+                  break;
+
+                case sf::Keyboard::A:
+                  changeX = -10;
+                  circle.move(changeX, 0);
+                  break;
+                
+                case sf::Keyboard::D:
+                  changeX = +10;
+                  circle.move(changeX, 0);
+                  break;
+
+                case (sf::Keyboard::W) && (sf::Keyboard::D):
+                changeY = -10;
+                changeX = +10;
+                circle.move(changeX, changeY);
+                break;
+
                 default:
                   break;
               }
