@@ -4,8 +4,7 @@
 #include <vector>
 
 struct Circle {
-    Circle(sf::Color color, sf::Vector2f speed, sf::Vector2f position) : color(color), speed(speed), position(position), exists(false), collision(false) {}
-    sf::Color color;
+    Circle(sf::Vector2f speed, sf::Vector2f position) : speed(speed), position(position), exists(false), collision(false) {}
     sf::Vector2f speed, position;
     bool exists, collision;
 };

@@ -12,6 +12,7 @@ find_package(SFML 2.5.1 COMPONENTS graphics audio REQUIRED)
 #we add the executable of the program
 add_executable(bumpy_circles
                 main.cpp
+                Level.hpp Level.cpp
                 )
 
 target_link_libraries(bumpy_circles sfml-graphics sfml-audio )
