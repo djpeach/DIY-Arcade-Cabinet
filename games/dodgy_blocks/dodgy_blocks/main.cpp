@@ -3,6 +3,7 @@
 #include <ctime>
 #include <string>
 #include <sqlite3.h>
+#include <cstring>
 
 #include <SFML/Graphics.hpp>
 
