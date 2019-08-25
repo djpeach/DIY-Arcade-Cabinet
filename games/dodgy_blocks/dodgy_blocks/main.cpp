@@ -38,11 +38,9 @@ int scoreStringsCallback(void *NotUsed, int argc, char **argv, char **azColName)
 
   for (int i=0;i<argc;i++) {
     if (strcmp(azColName[i], "NAME") == 0) {
-      std::cout << "got name" << std::endl;
-      scoreStrings[curStoreString] += argv[i];
+      scoreStrings[curStoreString] = argv[i];
       scoreStrings[curStoreString] += ": ";
     } else if (strcmp(azColName[i], "SCORE") == 0) {
-      std::cout << "got score" << std::endl;
       scoreStrings[curStoreString] += argv[i];
       curStoreString++;
     }
@@ -403,10 +401,8 @@ int main() {
           sql = "SELECT NAME, SCORE FROM 'HIGHSCORES' ORDER BY SCORE DESC LIMIT 10;";
           rcGet = sqlite3_exec(db, sql.c_str(), scoreStringsCallback, 0, &errMsg);
           sqlite3_close(db);
+          curStoreString = 0;
           scoresSaved = true;
-          for (int i=0;i<10;i++) {
-            std::cout << scoreStrings[i] << std::endl;
-          }
         }
 
         window.clear();
@@ -421,7 +417,8 @@ int main() {
             window.draw(nameText);
             window.draw(letterText);
         } else if (showingScores) {
-          for(int i=0;i<5;i++) {
+          for(int i=0;i<10;i++) {
+            highscores[i].setString(scoreStrings[i]);
             window.draw(highscores[i]);
           }
         } else {
