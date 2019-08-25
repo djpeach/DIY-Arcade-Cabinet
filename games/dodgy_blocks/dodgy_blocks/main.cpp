@@ -321,7 +321,7 @@ int main() {
                     }
                     score++;
                     if (score > 0 && score % levelUpAmount == 0 && speedMulitplier < 3) {
-                        speedMulitplier += 0.3f;
+                        speedMulitplier += 0.5f;
                         levelUpAmount += levelUpAmountIncrement;
                         levelUpAmountIncrement += 25;
                     }
