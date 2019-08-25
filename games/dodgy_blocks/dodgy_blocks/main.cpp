@@ -40,6 +40,24 @@ int callback(void *NotUsed, int argc, char **argv, char **azColName)
 
 int main() {
 
+    sqlite3 *db;
+    char * errMsgTable = 0;
+    int rc;
+    std::string sql;
+    rc = sqlite3_open("dodgy_blocks.db", &db);
+
+    if (rc) {
+      std::cout << "DB Error: " << sqlite3_errmsg(db) << std::endl;
+      sqlite3_close(db);
+      return (1);
+    }
+    sql = "CREATE TABLE IF NOT EXISTS HIGHSCORES ("
+          "ID INTEGER PRIMARY KEY     AUTOINCREMENT,"
+          "NAME           TEXT    NOT NULL,"
+          "SCORE          INTEGER     NOT NULL);";
+    rc = sqlite3_exec(db, sql.c_str(), callback, 0, &errMsgTable);
+    sqlite3_close(db);
+
     std::srand((uint)time(nullptr));
 
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "", sf::Style::Fullscreen);
@@ -110,6 +128,15 @@ int main() {
     nameText.setOrigin(nameTextBounds.width / 2, nameTextBounds.height / 2);
     nameText.setPosition(windowSize.x / 2, (windowSize.y / 2) - 400);
     nameText.setString(name);
+
+    sf::Text gameOverInstructionText;
+    gameOverInstructionText.setFont(font);
+    gameOverInstructionText.setString("Press P1 Red to submit score");
+    gameOverInstructionText.setFillColor(sf::Color::White);
+    gameOverInstructionText.setCharacterSize(100);
+    sf::FloatRect gameOverInstructionTextBounds = gameOverInstructionText.getGlobalBounds();
+    gameOverInstructionText.setOrigin(gameOverInstructionTextBounds.width / 2, gameOverInstructionTextBounds.height / 2);
+    gameOverInstructionText.setPosition(windowSize.x / 2, windowSize.y / 2);
 
     sf::Text letterText;
     letterText.setFont(font);
@@ -312,7 +339,20 @@ int main() {
         }
 
         if (showingScores && !scoresSaved) {
-          std::cout << "saving scores" << std::endl;
+          sqlite3 *db;
+          char * errMsg = 0;
+          int rc;
+          std::string sql;
+          rc = sqlite3_open("dodgy_blocks.db", &db);
+
+          if (rc) {
+            std::cout << "DB Error: " << sqlite3_errmsg(db) << std::endl;
+            sqlite3_close(db);
+            return (1);
+          }
+          sql = "INSERT INTO HIGHSCORES ('NAME', 'SCORE') VALUES ('" + name + "', " + std::to_string(score) + ");";
+          rc = sqlite3_exec(db, sql.c_str(), callback, 0, &errMsg);
+          sqlite3_close(db);
           scoresSaved = true;
         }
 
@@ -322,6 +362,7 @@ int main() {
           gameOverScore.setString(std::to_string(score));
           window.draw(gameOverText);
           window.draw(gameOverScore);
+          window.draw(gameOverInstructionText);
         } else if (gettingName) {
             window.draw(getNameText);
             window.draw(nameText);
