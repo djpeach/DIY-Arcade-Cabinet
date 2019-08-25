@@ -320,8 +320,8 @@ int main() {
                         blocks[i].setFillColor(sf::Color(255, 255, 255, 255));
                     }
                     score++;
-                    if (score > 0 && score % levelUpAmount == 0 && speedMulitplier < 3) {
-                        speedMulitplier += 0.5f;
+                    if (score > 0 && score % levelUpAmount == 0) {
+                        speedMulitplier += 0.4f;
                         levelUpAmount += levelUpAmountIncrement;
                         levelUpAmountIncrement += 25;
                     }
