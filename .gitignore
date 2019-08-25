@@ -21,3 +21,5 @@ menu/menu/menu
 */*/*.xcodeproj/xcshareddata/
 */*/*.xcworkspace/contents.xcworkspacedata
 games/bumpy_circles/bumpy_circles/bumpy_circles
+
+**/*.db
