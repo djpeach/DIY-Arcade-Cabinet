@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
+#include <sqlite3.h>
 
 #include <SFML/Graphics.hpp>
 
@@ -28,6 +29,14 @@
 #define MAX_SPEED 4
 #define PADDLE_SPEED 2
 #define PADDLE_BOOST_SPEED 5
+
+// Create a callback function
+int callback(void *NotUsed, int argc, char **argv, char **azColName)
+{
+
+
+  return 0;
+}
 
 int main() {
 
@@ -56,6 +65,8 @@ int main() {
     std::vector<sf::RectangleShape> lives(hmLives);
     bool extraLifeOnScreen = false;
     bool gameOver = false;
+    bool showingGameOver = true;
+    bool scoresSaved = false;
 
     int levelUpAmount = 50;
     int levelUpAmountIncrement = 25;
@@ -85,6 +96,30 @@ int main() {
         std::cout << "Could not load font" << std::endl;
         return 1;
     }
+
+    std::string letters[26] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+    int curLetterIndex = 0;
+    std::string name = "";
+
+    sf::Text nameText;
+    nameText.setFont(font);
+    nameText.setString("AAA");
+    nameText.setFillColor(sf::Color::Yellow);
+    nameText.setCharacterSize(80);
+    sf::FloatRect nameTextBounds = nameText.getGlobalBounds();
+    nameText.setOrigin(nameTextBounds.width / 2, nameTextBounds.height / 2);
+    nameText.setPosition(windowSize.x / 2, (windowSize.y / 2) - 400);
+    nameText.setString(name);
+
+    sf::Text letterText;
+    letterText.setFont(font);
+    letterText.setString("A");
+    letterText.setFillColor(sf::Color::Cyan);
+    letterText.setCharacterSize(120);
+    sf::FloatRect letterTextBounds = letterText.getGlobalBounds();
+    letterText.setOrigin(letterTextBounds.width / 2, letterTextBounds.height / 2);
+    letterText.setPosition(windowSize.x / 2, windowSize.y / 2);
+
     sf::Text scoreText;
     scoreText.setFont(font);
     scoreText.setString(std::to_string(score));
@@ -92,14 +127,23 @@ int main() {
     scoreText.setCharacterSize(80);
     scoreText.setPosition(25, 25);
 
+    sf::Text getNameText;
+    bool gettingName = false;
+    bool showingScores = false;
     sf::Text gameOverText;
     sf::Text gameOverScore;
     gameOverText.setFont(font);
+    getNameText.setFont(font);
     gameOverText.setString("Game Over");
+    getNameText.setString("Use up & down to enter your name,\n      press P1 Red to select letter");
     gameOverText.setCharacterSize(200);
+    getNameText.setCharacterSize(70);
     sf::FloatRect gameOverTextBounds = gameOverText.getGlobalBounds();
     gameOverText.setOrigin(gameOverTextBounds.width / 2, gameOverTextBounds.height / 2);
     gameOverText.setPosition(windowSize.x / 2, (windowSize.y / 2) - 200);
+    sf::FloatRect getNameTextBounds = getNameText.getGlobalBounds();
+    getNameText.setOrigin(getNameTextBounds.width / 2, getNameTextBounds.height / 2);
+    getNameText.setPosition(windowSize.x / 2, (windowSize.y / 2) - 200);
     gameOverScore.setFont(font);
     gameOverScore.setCharacterSize(150);
     gameOverScore.setString("000");
@@ -116,10 +160,44 @@ int main() {
                     window.close();
                     break;
                 case sf::Event::KeyPressed:
+                    if (gameOver && showingGameOver) {
+                      if (event.key.code == sf::Keyboard::F) {
+                        showingGameOver = false;
+                        gettingName = true;
+                      }
+                    } else if (gettingName) {
+                      if (name.length() < 3) {
+                        if (event.key.code == sf::Keyboard::W) {
+                          if (curLetterIndex == 25) {
+                            curLetterIndex = 0;
+                          } else {
+                            curLetterIndex++;
+                          }
+                        }
+                        if (event.key.code == sf::Keyboard::S) {
+                          if (curLetterIndex == 0) {
+                            curLetterIndex = 25;
+                          } else {
+                            curLetterIndex--;
+                          }
+                        }
+                        if (event.key.code == sf::Keyboard::F) {
+                          name += letters[curLetterIndex];
+                          curLetterIndex = 0;
+                        }
+                        letterText.setString(letters[curLetterIndex]);
+                        nameText.setString(name);
+                      } else {
+                        if (event.key.code == sf::Keyboard::F) {
+                          gettingName = false;
+                          showingScores = true;
+                        }
+                      }
+                    }
                     if (event.key.code == sf::Keyboard::Slash) {
                       window.close();
                     }
-                    if (event.key.code == sf::Keyboard::Num1) {
+                    if (scoresSaved && event.key.code == sf::Keyboard::Num1) {
                       score = 0;
                       hmLives = 3;
                       gameOver = false;
@@ -132,6 +210,14 @@ int main() {
                         sf::Vector2f blockPos = blocks[i].getPosition();
                         blocks[i].setPosition(blockPos.x, blockPos.y - windowSize.y);
                       }
+                      extraLifeOnScreen = false;
+                      gameOver = false;
+                      showingGameOver = true;
+                      scoresSaved = false;
+                      gettingName = false;
+                      showingScores = false;
+                      name = "";
+                      nameText.setString(name);
                     }
                     pressedKeys[event.key.code] = true;
                     break;
@@ -225,21 +311,32 @@ int main() {
             scoreText.setString(std::to_string(score));
         }
 
+        if (showingScores && !scoresSaved) {
+          std::cout << "saving scores" << std::endl;
+          scoresSaved = true;
+        }
+
         window.clear();
 
-        if (!gameOver) {
-            window.draw(paddle);
-            for (int i=0;i<hmBlocks;i++) {
-                window.draw(blocks[i]);
-            }
-            for (int i=0;i<hmLives;i++) {
-                window.draw(lives[i]);
-            }
-            window.draw(scoreText);
+        if (gameOver && showingGameOver) {
+          gameOverScore.setString(std::to_string(score));
+          window.draw(gameOverText);
+          window.draw(gameOverScore);
+        } else if (gettingName) {
+            window.draw(getNameText);
+            window.draw(nameText);
+            window.draw(letterText);
+        } else if (showingScores) {
+          window.clear(sf::Color::Blue);
         } else {
-            gameOverScore.setString(std::to_string(score));
-            window.draw(gameOverText);
-            window.draw(gameOverScore);
+          window.draw(paddle);
+          for (int i=0;i<hmBlocks;i++) {
+              window.draw(blocks[i]);
+          }
+          for (int i=0;i<hmLives;i++) {
+              window.draw(lives[i]);
+          }
+          window.draw(scoreText);
         }
 
         window.display();

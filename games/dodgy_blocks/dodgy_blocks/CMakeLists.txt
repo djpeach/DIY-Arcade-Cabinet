@@ -14,4 +14,4 @@ add_executable(dodgy_blocks
 main.cpp
 )
 
-target_link_libraries(dodgy_blocks sfml-system sfml-window sfml-graphics sfml-audio sfml-network )
+target_link_libraries(dodgy_blocks sfml-system sfml-window sfml-graphics sfml-audio sfml-network sqlite3)
