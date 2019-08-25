@@ -31,9 +31,11 @@
 #define PADDLE_BOOST_SPEED 5
 
 // Create a callback function
-int callback(void *NotUsed, int argc, char **argv, char **azColName)
-{
+int callback(void *NotUsed, int argc, char **argv, char **azColName) {
 
+  for (int i=0;i<argc;i++) {
+    std::cout << azColName[i] << ": " << argv[i] << std::endl;
+  }
 
   return 0;
 }
@@ -360,17 +362,28 @@ int main() {
         if (showingScores && !scoresSaved) {
           sqlite3 *db;
           char * errMsg = 0;
-          int rc;
+          int rcStore;
           std::string sql;
-          rc = sqlite3_open("dodgy_blocks.db", &db);
+          rcStore = sqlite3_open("dodgy_blocks.db", &db);
 
-          if (rc) {
+          if (rcStore) {
             std::cout << "DB Error: " << sqlite3_errmsg(db) << std::endl;
             sqlite3_close(db);
             return (1);
           }
           sql = "INSERT INTO HIGHSCORES ('NAME', 'SCORE') VALUES ('" + name + "', " + std::to_string(score) + ");";
-          rc = sqlite3_exec(db, sql.c_str(), callback, 0, &errMsg);
+          rcStore = sqlite3_exec(db, sql.c_str(), callback, 0, &errMsg);
+          int rcGet;
+          errMsg = 0;
+          rcGet = sqlite3_open("dodgy_blocks.db", &db);
+
+          if (rcGet) {
+            std::cout << "DB Error: " << sqlite3_errmsg(db) << std::endl;
+            sqlite3_close(db);
+            return (1);
+          }
+          sql = "SELECT * FROM 'HIGHSCORES';";
+          rcGet = sqlite3_exec(db, sql.c_str(), callback, 0, &errMsg);
           sqlite3_close(db);
           scoresSaved = true;
         }
