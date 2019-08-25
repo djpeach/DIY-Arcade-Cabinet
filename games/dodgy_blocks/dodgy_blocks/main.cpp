@@ -30,12 +30,30 @@
 #define PADDLE_SPEED 2
 #define PADDLE_BOOST_SPEED 5
 
+std::string scoreStrings[10];
+int curStoreString = 0;
+
 // Create a callback function
-int callback(void *NotUsed, int argc, char **argv, char **azColName) {
+int scoreStringsCallback(void *NotUsed, int argc, char **argv, char **azColName) {
 
   for (int i=0;i<argc;i++) {
-    std::cout << azColName[i] << ": " << argv[i] << std::endl;
+    if (strcmp(azColName[i], "NAME") == 0) {
+      std::cout << "got name" << std::endl;
+      scoreStrings[curStoreString] += argv[i];
+      scoreStrings[curStoreString] += ": ";
+    } else if (strcmp(azColName[i], "SCORE") == 0) {
+      std::cout << "got score" << std::endl;
+      scoreStrings[curStoreString] += argv[i];
+      curStoreString++;
+    }
   }
+
+  return 0;
+}
+
+int callback(void *NotUsed, int argc, char **argv, char **azColName) {
+
+  std::cout << argc << std::endl;
 
   return 0;
 }
@@ -382,10 +400,13 @@ int main() {
             sqlite3_close(db);
             return (1);
           }
-          sql = "SELECT * FROM 'HIGHSCORES';";
-          rcGet = sqlite3_exec(db, sql.c_str(), callback, 0, &errMsg);
+          sql = "SELECT NAME, SCORE FROM 'HIGHSCORES' ORDER BY SCORE DESC LIMIT 10;";
+          rcGet = sqlite3_exec(db, sql.c_str(), scoreStringsCallback, 0, &errMsg);
           sqlite3_close(db);
           scoresSaved = true;
+          for (int i=0;i<10;i++) {
+            std::cout << scoreStrings[i] << std::endl;
+          }
         }
 
         window.clear();
