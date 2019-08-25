@@ -88,6 +88,7 @@ int main() {
 
     int levelUpAmount = 50;
     int levelUpAmountIncrement = 25;
+    sf::Text highscores[10];
 
     float enemyBuffer = windowSize.y / hmBlocks;
 
@@ -115,6 +116,24 @@ int main() {
         return 1;
     }
 
+    for (int i=0;i<10;++i) {
+      sf::Text score;
+      if (i == 0) {
+        score.setFillColor(sf::Color::Green);
+      } else if (i == 1) {
+        score.setFillColor(sf::Color::Cyan);
+      } else if (i == 2) {
+        score.setFillColor(sf::Color::Yellow);
+      } else {
+        score.setFillColor(sf::Color::White);
+      }
+      score.setFont(font);
+      score.setCharacterSize(70);
+      score.setString("AAA: 22788");
+      score.setPosition(50, (((windowSize.y - 50) / 11) * (i + 1)) + (i * 25));
+      highscores[i] = score;
+    }
+
     std::string letters[26] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     int curLetterIndex = 0;
     std::string name = "";
@@ -133,7 +152,7 @@ int main() {
     gameOverInstructionText.setFont(font);
     gameOverInstructionText.setString("Press P1 Red to submit score");
     gameOverInstructionText.setFillColor(sf::Color::White);
-    gameOverInstructionText.setCharacterSize(100);
+    gameOverInstructionText.setCharacterSize(70);
     sf::FloatRect gameOverInstructionTextBounds = gameOverInstructionText.getGlobalBounds();
     gameOverInstructionText.setOrigin(gameOverInstructionTextBounds.width / 2, gameOverInstructionTextBounds.height / 2);
     gameOverInstructionText.setPosition(windowSize.x / 2, windowSize.y / 2);
@@ -368,7 +387,9 @@ int main() {
             window.draw(nameText);
             window.draw(letterText);
         } else if (showingScores) {
-          window.clear(sf::Color::Blue);
+          for(int i=0;i<5;i++) {
+            window.draw(highscores[i]);
+          }
         } else {
           window.draw(paddle);
           for (int i=0;i<hmBlocks;i++) {
