@@ -60,14 +60,25 @@ int callback(void *NotUsed, int argc, char **argv, char **azColName) {
 
 int main() {
 
+    sf::Music music;
+
+
     sf::SoundBuffer extraPointsSoundBuffer;
     sf::SoundBuffer extraLifeSoundBuffer;
     sf::SoundBuffer lostALifeSoundBuffer;
 
-    if(!extraPointsSoundBuffer.loadFromFile("extraPoints.wav") || !extraLifeSoundBuffer.loadFromFile("extraLife.wav") || !lostALifeSoundBuffer.loadFromFile("lostALife.wav")) {
+    if(!extraPointsSoundBuffer.loadFromFile("extraPoints.wav") ||
+      !extraLifeSoundBuffer.loadFromFile("extraLife.wav") ||
+      !lostALifeSoundBuffer.loadFromFile("lostALife.wav") ||
+      !music.openFromFile("music.wav")
+    ) {
       std::cout << "Could not load a sound from file" << std::endl;
       return -1;
     }
+
+    music.setLoop(true);
+    music.setVolume(40.f);
+    music.play();
 
     sf::Sound extraPointsSound;
     sf::Sound extraLifeSound;
@@ -346,7 +357,7 @@ int main() {
                         } else {
                           extraPointsSound.play();
                           score += 10;
-                          blocks[i].setPosition(std::rand() % (int)(windowSize.x - blocks[i].getSize().x), blockPos.y - (windowSize.y * 2));
+                          blocks[i].setPosition(std::rand() % (int)(windowSize.x - blocks[i].getSize().x), blockPos.y + 100);
                         }
                     } else if (blocks[i].getSize().y == POINTS_SIDE_LENGTH) {
                         extraPointsSound.play();
