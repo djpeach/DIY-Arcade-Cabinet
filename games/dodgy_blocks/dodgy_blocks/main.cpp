@@ -344,7 +344,7 @@ int main() {
                             hmLives++;
                             blocks[i].setPosition(std::rand() % (int)(windowSize.x - blocks[i].getSize().x), blockPos.y - (windowSize.y * 2));
                         } else {
-                          extraLifeSound.play();
+                          extraPointsSound.play();
                           score += 10;
                           blocks[i].setPosition(std::rand() % (int)(windowSize.x - blocks[i].getSize().x), blockPos.y - (windowSize.y * 2));
                         }
