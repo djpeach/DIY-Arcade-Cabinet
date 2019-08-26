@@ -6,7 +6,7 @@ You can find full instructions and files in the wiki.
 
 # Installation
 
-Go (here to download raspbian)[https://www.raspberrypi.org/downloads/raspbian/]. (Flash)[https://www.balena.io/etcher/] the image to a microSD card, at least 32 GB. Pop the card into your raspberrry pi, and boot up the system. Open a terminal and get ready to run a whole bunch of commands.
+Go [here to download raspbian](https://www.raspberrypi.org/downloads/raspbian/). [Flash](https://www.balena.io/etcher/) the image to a microSD card, at least 32 GB. Pop the card into your raspberrry pi, and boot up the system. Open a terminal and get ready to run a whole bunch of commands.
 
 You will obviously need a copy of this code. Either fork your own version, or use mine, with its games and config. Up to you.
 
