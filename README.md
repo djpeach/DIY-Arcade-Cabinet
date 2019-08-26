@@ -25,6 +25,7 @@ You will need to create a run script, using the editor of your choice. If you wa
 
 ```
 sudo apt-get install vim
+
 ```
 
 I store my run script in `/usr/local/bin/custom/run_ac_menu`. 
