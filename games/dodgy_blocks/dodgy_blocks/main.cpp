@@ -6,6 +6,7 @@
 #include <cstring>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 // MAC
 // #define ENEMY_WIDTH 100
@@ -58,6 +59,23 @@ int callback(void *NotUsed, int argc, char **argv, char **azColName) {
 }
 
 int main() {
+
+    sf::SoundBuffer extraPointsSoundBuffer;
+    sf::SoundBuffer extraLifeSoundBuffer;
+    sf::SoundBuffer lostALifeSoundBuffer;
+
+    if(!extraPointsSoundBuffer.loadFromFile("extraPoints.wav") || !extraLifeSoundBuffer.loadFromFile("extraLife.wav") || !lostALifeSoundBuffer.loadFromFile("lostALife.wav")) {
+      std::cout << "Could not load a sound from file" << std::endl;
+      return -1;
+    }
+
+    sf::Sound extraPointsSound;
+    sf::Sound extraLifeSound;
+    sf::Sound lostALifeSound;
+
+    extraPointsSound.setBuffer(extraPointsSoundBuffer);
+    extraLifeSound.setBuffer(extraLifeSoundBuffer);
+    lostALifeSound.setBuffer(lostALifeSoundBuffer);
 
     sqlite3 *db;
     char * errMsgTable = 0;
@@ -322,20 +340,25 @@ int main() {
                     sf::Vector2f blockPos = blocks[i].getPosition();
                     if (blocks[i].getSize().x == LIFE_SIDE_LENGTH) {
                         if (hmLives < 3) {
+                            extraLifeSound.play();
                             hmLives++;
                             blocks[i].setPosition(std::rand() % (int)(windowSize.x - blocks[i].getSize().x), blockPos.y - (windowSize.y * 2));
                         } else {
+                          extraLifeSound.play();
                           score += 10;
                           blocks[i].setPosition(std::rand() % (int)(windowSize.x - blocks[i].getSize().x), blockPos.y - (windowSize.y * 2));
                         }
                     } else if (blocks[i].getSize().y == POINTS_SIDE_LENGTH) {
+                        extraPointsSound.play();
                         score += 25;
                         blocks[i].setPosition(std::rand() % (int)(windowSize.x - blocks[i].getSize().x), blockPos.y - (windowSize.y * 2));
                     } else {
                         if (hmLives > 0) {
+                            lostALifeSound.play();
                             hmLives--;
                             blocks[i].setPosition(std::rand() % (int)(windowSize.x - blocks[i].getSize().x), blockPos.y - (windowSize.y * 2));
                         } else {
+                            lostALifeSound.play();
                             gameOver = true;
                         }
                     }
