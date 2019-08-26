@@ -324,6 +324,9 @@ int main() {
                         if (hmLives < 3) {
                             hmLives++;
                             blocks[i].setPosition(std::rand() % (int)(windowSize.x - blocks[i].getSize().x), blockPos.y - (windowSize.y * 2));
+                        } else {
+                          score += 10;
+                          blocks[i].setPosition(std::rand() % (int)(windowSize.x - blocks[i].getSize().x), blockPos.y - (windowSize.y * 2));
                         }
                     } else if (blocks[i].getSize().y == POINTS_SIDE_LENGTH) {
                         score += 25;
