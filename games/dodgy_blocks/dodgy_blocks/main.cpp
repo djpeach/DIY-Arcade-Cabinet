@@ -178,7 +178,11 @@ int main() {
       score.setFont(font);
       score.setCharacterSize(70);
       score.setString("AAA: 22788");
-      score.setPosition(50, (((windowSize.y - 50) / 11) * (i + 1)) + (i * 25));
+      if (i < 5) {
+        score.setPosition(50, (((windowSize.y - 50) / 11) * (i + 1)) + (i * 25));
+      } else {
+        score.setPosition(((windowSize.x - 50) / 2), (((windowSize.y - 50) / 11) * ((i - 5) + 1)) + ((i - 5) * 25));
+      }
       highscores[i] = score;
     }
 
