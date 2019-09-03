@@ -1,15 +1,12 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-
 #include <SFML/Graphics.hpp>
 
 struct SharedContext;
 
 class State_Base {
 public:
-  State_Base(SharedContext & ctx, std::string name);
+  State_Base(SharedContext & ctx);
   virtual ~State_Base();
 
   virtual void handleEvent(sf::Event e) = 0;
@@ -17,6 +14,4 @@ public:
   virtual void render() = 0;
 protected:
   SharedContext & ctx;
-  bool isTransparent;
-  std::string name;
 };

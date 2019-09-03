@@ -2,23 +2,27 @@
 
 StateMachine::StateMachine() {}
 
-void StateMachine::addState(std::unique_ptr<State_Base> state) {
-  states.push_back(std::move(state));
+void StateMachine::pushState(std::unique_ptr<State_Base> state, bool shouldPopCurrent) {
+  if (!states.empty() && shouldPopCurrent) {
+    states.pop();
+  }
+  states.push(std::move(state));
+}
+
+void StateMachine::popState() {
+  if (!states.empty()) {
+    states.pop();
+  }
 }
 
 void StateMachine::handleEvent(sf::Event e) {
-  auto & topState = states.back();
-  topState->handleEvent(e);
+  states.top()->handleEvent(e);
 }
 
 void StateMachine::updateStates() {
-  for (auto & state : states) {
-    state->update();
-  }
+  states.top()->update();
 }
 
 void StateMachine::renderStates() {
-  for (auto & state : states) {
-    state->render();
-  }
+  states.top()->render();
 }

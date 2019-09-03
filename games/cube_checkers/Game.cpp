@@ -4,7 +4,7 @@
 
 Game::Game(std::string name) :
 ctx(name) {
-  ctx.stateMachine.addState(std::make_unique<State_SplashScreen>(ctx, "Intro State"));
+  ctx.stateMachine.pushState(std::make_unique<State_SplashScreen>(ctx));
 }
 
 void Game::run() {

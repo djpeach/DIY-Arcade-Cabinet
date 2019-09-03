@@ -3,19 +3,21 @@
 #include <SFML/Graphics.hpp>
 
 #include "State_Base.hpp"
+#include "Button.hpp"
 
 struct SharedContext;
 
-class State_SplashScreen : public State_Base {
+class State_MainMenu : public State_Base {
 public:
-  State_SplashScreen(SharedContext & ctx);
-  ~State_SplashScreen();
+  State_MainMenu(SharedContext & ctx);
+  ~State_MainMenu();
 
   void handleEvent(sf::Event e);
   void update();
   void render();
 private:
   sf::Text titleText;
-  sf::Text introText;
   sf::Font font;
+  Button playBtn;
+  Button instructionsBtn;
 };

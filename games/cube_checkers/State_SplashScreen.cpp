@@ -1,7 +1,8 @@
 #include "State_SplashScreen.hpp"
+#include "State_MainMenu.hpp"
 #include "Game.hpp"
 
-State_SplashScreen::State_SplashScreen(SharedContext & ctx, std::string name) : State_Base(ctx, name) {
+State_SplashScreen::State_SplashScreen(SharedContext & ctx) : State_Base(ctx) {
   if (!font.loadFromFile("assets/font/Regular.ttf")) {
     std::cerr << "State_SplashScreen could not load font from file: assets/font/Regular.ttf" << std::endl;
     exit(1);
@@ -30,6 +31,8 @@ State_SplashScreen::~State_SplashScreen() {}
 void State_SplashScreen::handleEvent(sf::Event e) {
   if (e.type == sf::Event::Closed) {
     ctx.window.close();
+  } else if (e.type == sf::Event::KeyPressed) {
+    ctx.stateMachine.pushState(std::make_unique<State_MainMenu>(ctx));
   }
 }
 

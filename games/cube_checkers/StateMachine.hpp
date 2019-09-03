@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <stack>
 #include <memory>
 
 #include <SFML/Graphics.hpp>
@@ -11,11 +11,12 @@ class StateMachine {
 public:
   StateMachine();
 
-  void addState(std::unique_ptr<State_Base> state);
+  void pushState(std::unique_ptr<State_Base> state, bool shouldPopCurrent = true);
+  void popState();
 
   void handleEvent(sf::Event e);
   void updateStates();
   void renderStates();
 private:
-  std::vector<std::unique_ptr<State_Base>> states;
+  std::stack<std::unique_ptr<State_Base>> states;
 };
