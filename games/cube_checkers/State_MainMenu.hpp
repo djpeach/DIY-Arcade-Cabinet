@@ -17,6 +17,7 @@ public:
   void render();
 private:
   sf::Text titleText;
+  sf::Text instructionText;
   sf::Font font;
   Button playBtn;
   Button instructionsBtn;

@@ -5,6 +5,7 @@
 #include "Game.hpp"
 
 State_MainMenu::State_MainMenu(SharedContext & ctx) : State_Base(ctx),
+titleText(), instructionText(),
 playBtn(), instructionsBtn() {
   if (!font.loadFromFile("assets/font/Regular.ttf")) {
     std::cerr << "State_SplashScreen could not load font from file: assets/font/Regular.ttf" << std::endl;
@@ -15,11 +16,18 @@ playBtn(), instructionsBtn() {
   titleText.setFillColor(sf::Color::Red);
   titleText.setCharacterSize(140);
   titleText.setString("Main Menu");
-  sf::FloatRect titleTextBounds = titleText.getLocalBounds();
+  sf::FloatRect titleTextBounds = titleText.getGlobalBounds();
   titleText.setOrigin(titleTextBounds.width / 2, titleTextBounds.height / 2);
 
+  instructionText.setFont(font);
+  instructionText.setCharacterSize(50);
+  instructionText.setString("Press Red to select");
+  sf::FloatRect instructionTextBounds = instructionText.getGlobalBounds();
+  instructionText.setOrigin(instructionTextBounds.width / 2, instructionTextBounds.height / 2);
+
   sf::Vector2u windowSize = ctx.window.getSize();
-  titleText.setPosition(windowSize.x / 2, windowSize.y / 2 - 400);
+  titleText.setPosition(windowSize.x / 2, windowSize.y / 2 - 500);
+  instructionText.setPosition(windowSize.x / 2, windowSize.y / 2 - 370);
 
   playBtn.setBackgroundColor(sf::Color::Red);
   playBtn.setLabel("Play Cube Checkers");
@@ -57,6 +65,7 @@ void State_MainMenu::update() {}
 
 void State_MainMenu::render() {
   ctx.window.draw(titleText);
+  ctx.window.draw(instructionText);
   ctx.window.draw(playBtn);
   ctx.window.draw(instructionsBtn);
 }
