@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "State_Base.hpp"
 
 Game::Game(std::string name) :
 window(sf::VideoMode::getDesktopMode(), name, sf::Style::Fullscreen),
@@ -6,7 +7,8 @@ stateMachine() {}
 
 void Game::run() {
 
-  // TODO: create and add some states, pass in to store as pointers (use move?)
+  auto introState = std::make_unique<State_Base>(window, "Intro State");
+  stateMachine.addState(std::move(introState));
 
   stateMachine.run();
   // while (window.isOpen()) {

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <memory>
 
@@ -7,8 +9,7 @@ class StateMachine {
 public:
   StateMachine();
 
-  void addState(); // TODO: Determine what to pass in to add to states as a unique_ptr
-
+  void addState(std::unique_ptr<State_Base> state);
   void run();
 private:
   std::vector<std::unique_ptr<State_Base>> states;
