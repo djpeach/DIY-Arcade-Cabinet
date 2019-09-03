@@ -2,13 +2,15 @@
 
 #include "State_MainMenu.hpp"
 #include "State_SplashScreen.hpp"
+#include "State_Instructions.hpp"
+#include "State_Game.hpp"
 #include "Game.hpp"
 
 State_MainMenu::State_MainMenu(SharedContext & ctx) : State_Base(ctx),
 titleText(), instructionText(),
 playBtn(), instructionsBtn() {
   if (!font.loadFromFile("assets/font/Regular.ttf")) {
-    std::cerr << "State_SplashScreen could not load font from file: assets/font/Regular.ttf" << std::endl;
+    std::cerr << "State_MainMenu could not load font from file: assets/font/Regular.ttf" << std::endl;
     exit(1);
   }
 
@@ -55,6 +57,13 @@ void State_MainMenu::handleEvent(sf::Event e) {
         playBtn.toggleSelected();
         instructionsBtn.toggleSelected();
         break;
+      case sf::Keyboard::F:
+      case sf::Keyboard::H:
+        if (playBtn.getSelected()) {
+          ctx.stateMachine.pushState(std::make_unique<State_Game>(ctx), false);
+        } else if (instructionsBtn.getSelected()) {
+          ctx.stateMachine.pushState(std::make_unique<State_Instructions>(ctx), false);
+        }
       default:
         break;
     }
