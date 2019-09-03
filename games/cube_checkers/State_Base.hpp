@@ -8,10 +8,11 @@
 class State_Base {
 public:
   State_Base(sf::RenderWindow & window, std::string name);
+  virtual ~State_Base();
 
-  void update();
-  void render();
-private:
+  virtual void update() = 0;
+  virtual void render() = 0;
+protected:
   bool isTransparent;
   sf::RenderWindow & window;
   std::string name;

@@ -1,5 +1,6 @@
 #include "Game.hpp"
 #include "State_Base.hpp"
+#include "State_SplashScreen.hpp"
 
 Game::Game(std::string name) :
 window(sf::VideoMode::getDesktopMode(), name, sf::Style::Fullscreen),
@@ -7,7 +8,7 @@ stateMachine() {}
 
 void Game::run() {
 
-  auto introState = std::make_unique<State_Base>(window, "Intro State");
+  auto introState = std::make_unique<State_SplashScreen>(window, "Intro State");
   stateMachine.addState(std::move(introState));
 
   stateMachine.run();
