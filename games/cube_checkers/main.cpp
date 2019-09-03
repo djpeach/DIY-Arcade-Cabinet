@@ -1,19 +1,11 @@
 #include <iostream>
-#include <SFML/Graphics.hpp>
+
+#include "Game.hpp"
 
 int main() {
-  sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Cube Checkers", sf::Style::Fullscreen);
-
-  while (window.isOpen()) {
-    sf::Event e;
-
-    while (window.pollEvent(e)) {
-      if (e.type == sf::Event::Closed) {
-        window.close();
-      }
-    }
-
-    window.clear();
-    window.display();
-  }
+  Game cube_checkers("Cube Checkers");
+  cube_checkers.run();
 }
+
+// Add basic main file
+// Extrapolate to Game class

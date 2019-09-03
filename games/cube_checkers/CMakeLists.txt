@@ -12,6 +12,7 @@ find_package(SFML 2.5.1 COMPONENTS system window graphics audio network REQUIRED
 #we add the executable of the program
 add_executable(cube_checkers
 main.cpp
+Game.hpp Game.cpp
 )
 
 target_link_libraries(cube_checkers sfml-system sfml-window sfml-graphics sfml-audio sfml-network sqlite3)
