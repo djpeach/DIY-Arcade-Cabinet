@@ -3,25 +3,21 @@
 #include "State_SplashScreen.hpp"
 
 Game::Game(std::string name) :
-window(sf::VideoMode::getDesktopMode(), name, sf::Style::Fullscreen),
-stateMachine() {}
+ctx(name) {
+  ctx.stateMachine.addState(std::make_unique<State_SplashScreen>(ctx, "Intro State"));
+}
 
 void Game::run() {
+  while(ctx.window.isOpen()) {
+    sf::Event e;
+    while(ctx.window.pollEvent(e)) {
+      ctx.stateMachine.handleEvent(e);
+    }
 
-  auto introState = std::make_unique<State_SplashScreen>(window, "Intro State");
-  stateMachine.addState(std::move(introState));
+    ctx.stateMachine.updateStates();
 
-  stateMachine.run();
-  // while (window.isOpen()) {
-  //   sf::Event e;
-
-  //   while (window.pollEvent(e)) {
-  //     if (e.type == sf::Event::Closed) {
-  //       window.close();
-  //     }
-  //   }
-
-  //   window.clear(sf::Color(220, 220, 220));
-  //   window.display();
-  // }
+    ctx.window.clear();
+    ctx.stateMachine.renderStates();
+    ctx.window.display();
+  }
 }

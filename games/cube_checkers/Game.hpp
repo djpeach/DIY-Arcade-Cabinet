@@ -8,12 +8,20 @@
 
 #include "StateMachine.hpp"
 
+struct SharedContext {
+  SharedContext(std::string name) :
+  window(sf::VideoMode::getDesktopMode(), name, sf::Style::Fullscreen),
+  stateMachine() {}
+
+  sf::RenderWindow window;
+  StateMachine stateMachine;
+};
+
 class Game {
 public:
   Game(std::string name);
 
   void run();
 private:
-  sf::RenderWindow window;
-  StateMachine stateMachine;
+  SharedContext ctx;
 };
