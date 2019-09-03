@@ -1,5 +1,19 @@
 #include <iostream>
+#include <SFML/Graphics.hpp>
 
 int main() {
-  std::cout << "main" << std::endl;
+  sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Cube Checkers", sf::Style::Fullscreen);
+
+  while (window.isOpen()) {
+    sf::Event e;
+
+    while (window.pollEvent(e)) {
+      if (e.type == sf::Event::Closed) {
+        window.close();
+      }
+    }
+
+    window.clear();
+    window.display();
+  }
 }
