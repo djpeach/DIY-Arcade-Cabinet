@@ -9,3 +9,4 @@ int main() {
 
 // Add basic main file
 // Extrapolate to Game class
+// Add states and stateMachine

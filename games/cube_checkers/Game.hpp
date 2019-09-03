@@ -1,6 +1,9 @@
 #include <iostream>
 #include <string>
+
 #include <SFML/Graphics.hpp>
+
+#include "StateMachine.hpp"
 
 class Game {
 public:
@@ -9,4 +12,5 @@ public:
   void run();
 private:
   sf::RenderWindow window;
+  StateMachine stateMachine;
 };
