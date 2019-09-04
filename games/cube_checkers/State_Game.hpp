@@ -20,5 +20,6 @@ public:
 private:
   std::vector<Tile> board;
   int curPlayer;
-  int player1Tile, player2Tile;
+  int player1Index, player2Index;
+  Tile player1Tile, player2Tile;
 };

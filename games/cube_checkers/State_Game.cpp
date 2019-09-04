@@ -5,7 +5,7 @@
 #include "Game.hpp"
 
 State_Game::State_Game(SharedContext & ctx) : State_Base(ctx),
-curPlayer(0), player1Tile(63), player2Tile(0) {
+curPlayer(0), player1Index(63), player2Index(0) {
   sf::Vector2u windowSize = ctx.window.getSize();
   sf::Vector2f tileSize(windowSize.x / 8, windowSize.y / 8);
   for (int i=0; i<64; i++) {
@@ -14,6 +14,13 @@ curPlayer(0), player1Tile(63), player2Tile(0) {
     sf::Color tileColor = sf::Color(whiteHue, whiteHue, whiteHue);
     Tile tile(tileSize, tilePosition, tileColor);
     board.push_back(tile);
+    if (i == 0) {
+      tile.setColor(sf::Color(50, 50, 50, 100));
+      player1Tile = tile;
+    } else if (i == 63) {
+      tile.setColor(sf::Color(200, 15, 15, 120));
+      player2Tile = tile;
+    }
   }
 }
 
@@ -30,19 +37,20 @@ void State_Game::handleEvent(sf::Event e) {
       default:
         break;
     }
+
     if (curPlayer == 0) {
       switch (e.key.code) {
         case sf::Keyboard::W:
-          player1Tile = player1Tile - 8 >= 0 ? player1Tile - 8 : player1Tile + 56;
+          player1Index = player1Index - 8 >= 0 ? player1Index - 8 : player1Index + 56;
           break;
         case sf::Keyboard::S:
-          player1Tile = player1Tile + 8 <= 63 ? player1Tile + 8 : player1Tile - 56;
+          player1Index = player1Index + 8 <= 63 ? player1Index + 8 : player1Index - 56;
           break;
         case sf::Keyboard::A:
-          player1Tile = player1Tile % 8 == 0 ? player1Tile + 7 : player1Tile - 1;
+          player1Index = player1Index % 8 == 0 ? player1Index + 7 : player1Index - 1;
           break;
         case sf::Keyboard::D:
-          player1Tile = (player1Tile + 1) % 8 == 0 ? player1Tile - 7 : player1Tile + 1;
+          player1Index = (player1Index + 1) % 8 == 0 ? player1Index - 7 : player1Index + 1;
           break;
         case sf::Keyboard::F:
           curPlayer = !curPlayer;
@@ -52,16 +60,16 @@ void State_Game::handleEvent(sf::Event e) {
     } else if (curPlayer == 1) {
       switch (e.key.code) {
         case sf::Keyboard::I:
-          player2Tile = player2Tile - 8 >= 0 ? player2Tile - 8 : player2Tile + 56;
+          player2Index = player2Index - 8 >= 0 ? player2Index - 8 : player2Index + 56;
           break;
         case sf::Keyboard::K:
-          player2Tile = player2Tile + 8 <= 63 ? player2Tile + 8 : player2Tile - 56;
+          player2Index = player2Index + 8 <= 63 ? player2Index + 8 : player2Index - 56;
           break;
         case sf::Keyboard::J:
-          player2Tile = player2Tile % 8 == 0 ? player2Tile + 7 : player2Tile - 1;
+          player2Index = player2Index % 8 == 0 ? player2Index + 7 : player2Index - 1;
           break;
         case sf::Keyboard::L:
-          player2Tile = (player2Tile + 1) % 8 == 0 ? player2Tile - 7 : player2Tile + 1;
+          player2Index = (player2Index + 1) % 8 == 0 ? player2Index - 7 : player2Index + 1;
           break;
         case sf::Keyboard::H:
           curPlayer = !curPlayer;
@@ -73,29 +81,17 @@ void State_Game::handleEvent(sf::Event e) {
 }
 
 void State_Game::update() {
-  if (curPlayer == 0) {
-    for(int i=0; i<64; i++) {
-      if (i == player1Tile) {
-        board[i].setColor(sf::Color(250, 250, 150));
-      } else {
-        unsigned int whiteHue = (i / 8) % 2 == 0 ? 115 + (100 * (i % 2)) : 115 + (100 * !(i % 2));
-        board[i].setColor(sf::Color(whiteHue, whiteHue, whiteHue));
-      }
-    }
-  } else if (curPlayer == 1) {
-    for(int i=0; i<64; i++) {
-      if (i == player2Tile) {
-        board[i].setColor(sf::Color(250, 250, 150));
-      } else {
-        unsigned int whiteHue = (i / 8) % 2 == 0 ? 115 + (100 * (i % 2)) : 115 + (100 * !(i % 2));
-        board[i].setColor(sf::Color(whiteHue, whiteHue, whiteHue));
-      }
-    }
-  }
+  sf::Vector2u windowSize = ctx.window.getSize();
+  sf::Vector2f tileSize(windowSize.x / 8, windowSize.y / 8);
+
+  player1Tile.setPosition(sf::Vector2f(tileSize.x * (player1Index % 8), tileSize.y * floor(player1Index / 8)));
+  player2Tile.setPosition(sf::Vector2f(tileSize.x * (player2Index % 8), tileSize.y * floor(player2Index / 8)));
 }
 
 void State_Game::render() {
   for (auto & tile : board) {
     ctx.window.draw(tile);
   }
+  ctx.window.draw(player1Tile);
+  ctx.window.draw(player2Tile);
 }
