@@ -20,7 +20,7 @@ bodyText(), getBackText() {
 
   bodyText.setFont(font);
   bodyText.setFillColor(sf::Color::Black);
-  bodyText.setCharacterSize(50);
+  bodyText.setCharacterSize(30);
   std::string bodyTextString =
   "\nCube Checkers plays like regualar checkers. You must play all your pieces on the dark squares. \n"
   "Pieces can only move diagnolly forward, and you must jump an opponent's piece if you can. A piece that \n"
