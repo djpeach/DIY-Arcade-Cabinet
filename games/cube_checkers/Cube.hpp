@@ -2,9 +2,16 @@
 
 #include <SFML/Graphics.hpp>
 
-class Tile {
+class Cube : public sf::Drawable {
 public:
-  Tile();
-private:
+  Cube();
 
+  void setColor(sf::Color color);
+
+  void draw(sf::RenderTarget & target, sf::RenderStates states) const;
+private:
+  sf::RectangleShape rect;
+  int value;
+  sf::Text valueText;
+  sf::Font font;
 };

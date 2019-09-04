@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "State_Base.hpp"
-#include "Tile.hpp"
+#include "Player.hpp"
 
 struct SharedContext;
 
@@ -19,7 +19,5 @@ public:
   void render();
 private:
   std::vector<Tile> board;
-  int curPlayer;
-  int player1Index, player2Index;
-  Tile player1Tile, player2Tile;
+  Player player1, player2;
 };
