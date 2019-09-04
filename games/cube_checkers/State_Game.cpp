@@ -3,6 +3,7 @@
 
 #include "State_Game.hpp"
 #include "Game.hpp"
+#include "Cube.hpp"
 
 State_Game::State_Game(SharedContext & ctx) : State_Base(ctx),
 player1(), player2() {
@@ -13,22 +14,31 @@ player1(), player2() {
   for (int i=0; i<64; i++) {
     sf::Vector2f tilePosition(tileSize.x * (i % 8), tileSize.y * floor(i / 8));
     unsigned int whiteHue = (i / 8) % 2 != 0 ? 115 + (100 * (i % 2)) : 115 + (100 * !(i % 2));
+    if (whiteHue == 115) {
+      if ((i / 8) < 3) {
+        Cube cube = Cube(tileSize * 0.8f, sf::Vector2f(tilePosition.x + tileSize.x / 2, tilePosition.y + tileSize.y / 2), sf::Color(200, 15, 15));
+        player1.addCube(cube);
+      } else if ((i / 8) > 4) {
+        Cube cube = Cube(tileSize * 0.8f, sf::Vector2f(tilePosition.x + tileSize.x / 2, tilePosition.y + tileSize.y / 2), sf::Color(20, 20, 20));
+        player2.addCube(cube);
+      }
+    }
     sf::Color tileColor = sf::Color(whiteHue, whiteHue, whiteHue);
     Tile tile(tileSize, tilePosition, tileColor);
     board.push_back(tile);
 
     if (i == 0) {
-      tile.setColor(sf::Color(50, 50, 50, 100));
+      tile.setColor(sf::Color(200, 15, 15, 120));
       player1.setTile(tile);
     } else if (i == 63) {
-      tile.setColor(sf::Color(200, 15, 15, 120));
+      tile.setColor(sf::Color(50, 50, 50, 100));
       player2.setTile(tile);
     }
 
   }
 
-  player1.index = 0;
-  player2.index = 63;
+  player1.index = 1;
+  player2.index = 62;
   player1.isTurn = true;
 }
 

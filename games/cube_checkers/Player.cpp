@@ -2,8 +2,6 @@
 
 #include "Player.hpp"
 
-#include <iostream>
-
 Player::Player() {}
 
 void Player::setTile(Tile tile) {
@@ -16,4 +14,11 @@ void Player::updatePositionByTileSize(sf::Vector2f tileSize) {
 
 void Player::draw(sf::RenderTarget & target, sf::RenderStates states) const {
   target.draw(curTile, states);
+  for (int i=0;i<pieces.size();i++) {
+    target.draw(pieces[i], states);
+  }
+}
+
+void Player::addCube(Cube cube) {
+  pieces.push_back(cube);
 }
