@@ -71,8 +71,7 @@ void State_Game::handleEvent(sf::Event e) {
           player1.index = (player1.index + 1) % 8 == 0 ? player1.index - 7 : player1.index + 1;
           break;
         case sf::Keyboard::F:
-          player1.isTurn = false;
-          player2.isTurn = true;
+          selectPiece();
         default:
           break;
       }
@@ -97,6 +96,25 @@ void State_Game::handleEvent(sf::Event e) {
           break;
       }
     }
+  }
+}
+
+void State_Game::selectPiece() {
+  if (player1.isTurn) {
+    if (player1.selectedPiece) {
+      Cube * pieceOnSelectedTile;
+      if ((pieceOnSelectedTile = player1.getPieceOnTile(player1.curTile))) {
+        player1.selectPiece();
+      } else if ((pieceOnSelectedTile = player2.getPieceOnTile(player1.curTile))) {
+        std::cout << "opponent piece here" << std::endl;
+      } else {
+        std::cout << "no piece here" << std::endl;
+      }
+    } else {
+      player1.selectPiece();
+    }
+  } else if (player2.isTurn) {
+
   }
 }
 

@@ -8,6 +8,8 @@ class Player {
 public:
   bool isTurn;
   int index;
+  Tile curTile;
+  Cube * selectedPiece;
 
   Player();
 
@@ -16,9 +18,11 @@ public:
 
   void addCube(Cube cube);
 
+  void selectPiece();
+  Cube * getPieceOnTile(Tile tile);
+
   void draw(sf::RenderWindow & window);
 private:
-  Tile curTile;
-public:
+  bool pieceIsSelected;
   std::vector<Cube> pieces;
 };

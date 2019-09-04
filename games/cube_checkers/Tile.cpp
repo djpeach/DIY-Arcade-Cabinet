@@ -17,6 +17,10 @@ void Tile::setColor(sf::Color color) {
   rect.setFillColor(color);
 }
 
+sf::FloatRect Tile::getBounds() {
+  return rect.getGlobalBounds();
+}
+
 void Tile::draw(sf::RenderTarget & target, sf::RenderStates states) const {
   target.draw(rect, states);
 }

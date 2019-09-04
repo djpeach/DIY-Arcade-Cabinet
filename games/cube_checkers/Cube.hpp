@@ -7,6 +7,10 @@ public:
   Cube(sf::Vector2f size, sf::Vector2f pos, sf::Color color);
 
   sf::Vector2f getSize();
+  sf::FloatRect getBounds();
+
+  void highlight();
+  void unhighlight();
 
   void draw(sf::RenderWindow & window);
 private:

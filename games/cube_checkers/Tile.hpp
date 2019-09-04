@@ -9,6 +9,7 @@ public:
 
   void setColor(sf::Color color);
   void setPosition(sf::Vector2f pos);
+  sf::FloatRect getBounds();
 
   void draw(sf::RenderTarget & target, sf::RenderStates states) const;
 private:

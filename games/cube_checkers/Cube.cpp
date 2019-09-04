@@ -22,6 +22,18 @@ sf::Vector2f Cube::getSize() {
   return rect.getSize();
 }
 
+sf::FloatRect Cube::getBounds() {
+  return rect.getGlobalBounds();
+}
+
+void Cube::highlight() {
+  rect.setOutlineThickness(5);
+}
+
+void Cube::unhighlight() {
+  rect.setOutlineThickness(0);
+}
+
 void Cube::draw(sf::RenderWindow & window) {
   window.draw(rect);
 

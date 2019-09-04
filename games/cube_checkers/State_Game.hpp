@@ -18,6 +18,8 @@ public:
   void update();
   void render();
 private:
+  void selectPiece();
+
   std::vector<Tile> board;
   Player player1, player2;
 };
