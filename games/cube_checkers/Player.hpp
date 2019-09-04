@@ -4,7 +4,7 @@
 #include "Tile.hpp"
 #include "Cube.hpp"
 
-class Player : public sf::Drawable {
+class Player {
 public:
   bool isTurn;
   int index;
@@ -16,7 +16,7 @@ public:
 
   void addCube(Cube cube);
 
-  void draw(sf::RenderTarget & target, sf::RenderStates states) const;
+  void draw(sf::RenderWindow & window);
 private:
   Tile curTile;
 public:

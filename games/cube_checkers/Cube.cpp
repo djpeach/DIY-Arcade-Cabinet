@@ -27,7 +27,7 @@ sf::Vector2f Cube::getSize() {
   return rect.getSize();
 }
 
-void Cube::draw(sf::RenderTarget & target, sf::RenderStates states) const {
-  target.draw(rect, states);
-  target.draw(valueText, states);
+void Cube::draw(sf::RenderWindow & window) {
+  window.draw(rect);
+  // window.draw(valueText);
 }

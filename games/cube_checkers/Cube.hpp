@@ -2,13 +2,13 @@
 
 #include <SFML/Graphics.hpp>
 
-class Cube : public sf::Drawable {
+class Cube {
 public:
   Cube(sf::Vector2f size, sf::Vector2f pos, sf::Color color);
 
   sf::Vector2f getSize();
 
-  void draw(sf::RenderTarget & target, sf::RenderStates states) const;
+  void draw(sf::RenderWindow & window);
 private:
   sf::RectangleShape rect;
   int value;

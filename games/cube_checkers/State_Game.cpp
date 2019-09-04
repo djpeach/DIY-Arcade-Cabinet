@@ -112,6 +112,6 @@ void State_Game::render() {
   for (auto & tile : board) {
     ctx.window.draw(tile);
   }
-  ctx.window.draw(player1);
-  ctx.window.draw(player2);
+  player1.draw(ctx.window);
+  player2.draw(ctx.window);
 }
