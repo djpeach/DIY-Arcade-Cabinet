@@ -10,6 +10,7 @@ public:
   int index;
   Tile curTile;
   Cube * selectedPiece;
+  std::string name;
 
   Player();
 
@@ -20,9 +21,15 @@ public:
 
   void selectPiece();
   Cube * getPieceOnTile(Tile tile);
+  void capturePiece(Cube * piece);
+  void removePiece(Cube * piece);
+  void movePiece();
 
   void draw(sf::RenderWindow & window);
+
+  bool operator== (const Player & rhs);
 private:
   bool pieceIsSelected;
   std::vector<Cube> pieces;
+  int score;
 };

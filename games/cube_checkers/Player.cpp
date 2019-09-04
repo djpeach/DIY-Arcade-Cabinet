@@ -5,7 +5,8 @@
 
 Player::Player() :
 selectedPiece(nullptr),
-pieceIsSelected(false) {}
+pieceIsSelected(false),
+score(0) {}
 
 void Player::setTile(Tile tile) {
   curTile = tile;
@@ -30,7 +31,7 @@ void Player::selectPiece() {
   if (selectedPiece) {
     selectedPiece->unhighlight();
   }
-  
+
   sf::FloatRect curTileBounds = curTile.getBounds();
   for (int i=0;i<pieces.size();i++) {
     sf::FloatRect pieceBounds = pieces[i].getBounds();
@@ -56,4 +57,36 @@ Cube * Player::getPieceOnTile(Tile tile) {
     }
   }
   return nullptr;
+}
+
+void Player::capturePiece(Cube * piece) {
+  score += piece->value;
+  selectedPiece->setPosition(piece->getPosition());
+  selectedPiece->unhighlight();
+  pieceIsSelected = false;
+  selectedPiece = nullptr;
+}
+
+void Player::movePiece() {
+  selectedPiece->setPosition(curTile.getPosition());
+  selectedPiece->unhighlight();
+  pieceIsSelected = false;
+  selectedPiece = nullptr;
+}
+
+void Player::removePiece(Cube * piece) {
+  sf::FloatRect pieceToRemoveBounds = piece->getBounds();
+  for (int i=0;i<pieces.size();i++) {
+    sf::FloatRect pieceBounds = pieces[i].getBounds();
+    if (pieceBounds.left >= pieceToRemoveBounds.left &&
+        pieceBounds.top >= pieceToRemoveBounds.top &&
+        pieceBounds.left + pieceBounds.width <= pieceToRemoveBounds.left + pieceToRemoveBounds.width &&
+        pieceBounds.top + pieceBounds.height <= pieceToRemoveBounds.top + pieceToRemoveBounds.height) {
+      pieces.erase(pieces.begin() + i);
+    }
+  }
+}
+
+bool Player::operator== (const Player & rhs) {
+  return this->name == rhs.name;
 }

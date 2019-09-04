@@ -13,6 +13,11 @@ void Tile::setPosition(sf::Vector2f pos) {
   rect.setPosition(pos);
 }
 
+sf::Vector2f Tile::getPosition() {
+  sf::RectangleShape rectToReturn = rect;
+  return sf::Vector2f(rectToReturn.getPosition().x + rect.getSize().x / 2, rectToReturn.getPosition().y + rect.getSize().y / 2);
+}
+
 void Tile::setColor(sf::Color color) {
   rect.setFillColor(color);
 }

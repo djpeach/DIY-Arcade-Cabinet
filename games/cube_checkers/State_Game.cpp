@@ -25,6 +25,7 @@ player1(), player2() {
     }
     sf::Color tileColor = sf::Color(whiteHue, whiteHue, whiteHue);
     Tile tile(tileSize, tilePosition, tileColor);
+    tile.index = i;
     board.push_back(tile);
 
     if (i == 0) {
@@ -40,6 +41,8 @@ player1(), player2() {
   player1.index = 1;
   player2.index = 62;
   player1.isTurn = true;
+  player1.name = "Player 1";
+  player2.name = "Player 2";
 }
 
 State_Game::~State_Game() {}
@@ -100,20 +103,43 @@ void State_Game::handleEvent(sf::Event e) {
 }
 
 void State_Game::selectPiece() {
-  if (player1.isTurn) {
-    if (player1.selectedPiece) {
-      Cube * pieceOnSelectedTile;
-      if ((pieceOnSelectedTile = player1.getPieceOnTile(player1.curTile))) {
-        player1.selectPiece();
-      } else if ((pieceOnSelectedTile = player2.getPieceOnTile(player1.curTile))) {
-        std::cout << "opponent piece here" << std::endl;
-      } else {
-        std::cout << "no piece here" << std::endl;
+  Player & currentPlayer = player1.isTurn ? player1 : player2;
+  Player & otherPlayer = player1.isTurn ? player2 : player1;
+  Cube * pieceOnSelectedTile;
+
+  if (currentPlayer.getPieceOnTile(currentPlayer.curTile)) {
+    currentPlayer.selectPiece();
+    calcAllowedTiles(currentPlayer, otherPlayer);
+  }
+}
+
+Tile State_Game::getTileAtIndex(int i) {
+  sf::Vector2u windowSize = ctx.window.getSize();
+  sf::Vector2f tileSize(windowSize.x / 8, windowSize.y / 8);
+  sf::Vector2f tilePosition(tileSize.x * (i % 8), tileSize.y * floor(i / 8));
+  Tile tile(tileSize, tilePosition, sf::Color(15, 200, 15, 100));
+  tile.index = i;
+  return tile;
+}
+
+void State_Game::calcAllowedTiles(Player & currentPlayer, Player & otherPlayer) {
+  allowedTiles.clear();
+  int initIndex = currentPlayer.index;
+  Cube * pieceOnSelectedTile;
+  int selectedPieceValue = currentPlayer.getPieceOnTile(currentPlayer.curTile)->value;
+
+  if (currentPlayer == player1 || selectedPieceValue == 6) {
+    if (initIndex / 8 < 7) {
+      if (initIndex % 8 > 0) {
+        if (!otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 7)) && !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex + 7))) {
+          allowedTiles.push_back(getTileAtIndex(initIndex + 7));
+        }
+        if (!otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 9)) && !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex + 9))) {
+          allowedTiles.push_back(getTileAtIndex(initIndex + 9));
+        }
       }
-    } else {
-      player1.selectPiece();
     }
-  } else if (player2.isTurn) {
+  } else if (currentPlayer == player2 || selectedPieceValue == 6) {
 
   }
 }
@@ -128,6 +154,9 @@ void State_Game::update() {
 
 void State_Game::render() {
   for (auto & tile : board) {
+    ctx.window.draw(tile);
+  }
+  for (auto & tile : allowedTiles) {
     ctx.window.draw(tile);
   }
   player1.draw(ctx.window);

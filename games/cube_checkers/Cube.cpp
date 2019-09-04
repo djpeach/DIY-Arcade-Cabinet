@@ -26,6 +26,15 @@ sf::FloatRect Cube::getBounds() {
   return rect.getGlobalBounds();
 }
 
+sf::Vector2f Cube::getPosition() {
+  return rect.getPosition();
+}
+
+void Cube::setPosition(sf::Vector2f pos) {
+  valueText.setPosition(pos.x - 12, pos.y - 30);
+  rect.setPosition(pos);
+}
+
 void Cube::highlight() {
   rect.setOutlineThickness(5);
 }

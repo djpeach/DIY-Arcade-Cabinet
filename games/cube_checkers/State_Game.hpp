@@ -19,7 +19,10 @@ public:
   void render();
 private:
   void selectPiece();
+  Tile getTileAtIndex(int i);
+  void calcAllowedTiles(Player & currentPlayer, Player & otherPlayer);
 
   std::vector<Tile> board;
+  std::vector<Tile> allowedTiles;
   Player player1, player2;
 };
