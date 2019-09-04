@@ -1,8 +1,11 @@
 #pragma once
 
+#include <vector>
+
 #include <SFML/Graphics.hpp>
 
 #include "State_Base.hpp"
+#include "Tile.hpp"
 
 struct SharedContext;
 
@@ -15,6 +18,7 @@ public:
   void update();
   void render();
 private:
-  sf::Text bodyText;
-  sf::Font font;
+  std::vector<Tile> board;
+  int curPlayer;
+  int player1Tile, player2Tile;
 };

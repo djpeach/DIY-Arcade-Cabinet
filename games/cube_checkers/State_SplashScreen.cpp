@@ -9,7 +9,7 @@ State_SplashScreen::State_SplashScreen(SharedContext & ctx) : State_Base(ctx) {
   }
 
   titleText.setFont(font);
-  titleText.setFillColor(sf::Color::Red);
+  titleText.setFillColor(sf::Color(200, 15, 15));
   titleText.setCharacterSize(140);
   titleText.setString("Cube Checkers");
   sf::FloatRect titleTextBounds = titleText.getLocalBounds();
@@ -32,7 +32,11 @@ void State_SplashScreen::handleEvent(sf::Event e) {
   if (e.type == sf::Event::Closed) {
     ctx.window.close();
   } else if (e.type == sf::Event::KeyPressed) {
-    ctx.stateMachine.pushState(std::make_unique<State_MainMenu>(ctx));
+    if (e.key.code == sf::Keyboard::Slash) {
+      ctx.window.close();
+    } else {
+      ctx.stateMachine.pushState(std::make_unique<State_MainMenu>(ctx));
+    }
   }
 }
 

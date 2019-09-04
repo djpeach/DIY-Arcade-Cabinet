@@ -15,7 +15,7 @@ playBtn(), instructionsBtn() {
   }
 
   titleText.setFont(font);
-  titleText.setFillColor(sf::Color::Red);
+  titleText.setFillColor(sf::Color(200, 15, 15));
   titleText.setCharacterSize(140);
   titleText.setString("Main Menu");
   sf::FloatRect titleTextBounds = titleText.getGlobalBounds();
@@ -31,13 +31,13 @@ playBtn(), instructionsBtn() {
   titleText.setPosition(windowSize.x / 2, windowSize.y / 2 - 300);
   instructionText.setPosition(windowSize.x / 2, windowSize.y / 2 - 170);
 
-  playBtn.setBackgroundColor(sf::Color::Red);
+  playBtn.setBackgroundColor(sf::Color(200, 15, 15));
   playBtn.setLabel("Play Cube Checkers");
   playBtn.setOrigin(sf::Vector2f(playBtn.getSize().x / 2, playBtn.getSize().y / 2));
   playBtn.setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y / 2 + 50));
   playBtn.setSelected(true);
 
-  instructionsBtn.setBackgroundColor(sf::Color::Red);
+  instructionsBtn.setBackgroundColor(sf::Color(200, 15, 15));
   instructionsBtn.setLabel("How to Play");
   instructionsBtn.setOrigin(sf::Vector2f(instructionsBtn.getSize().x / 2, instructionsBtn.getSize().y / 2));
   instructionsBtn.setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y / 2 + 200));
@@ -64,6 +64,10 @@ void State_MainMenu::handleEvent(sf::Event e) {
         } else if (instructionsBtn.getSelected()) {
           ctx.stateMachine.pushState(std::make_unique<State_Instructions>(ctx), false);
         }
+        break;
+      case sf::Keyboard::Slash:
+        ctx.window.close();
+        break;
       default:
         break;
     }

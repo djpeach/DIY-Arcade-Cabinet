@@ -45,6 +45,9 @@ void State_Instructions::handleEvent(sf::Event e) {
       case sf::Keyboard::H:
         ctx.stateMachine.popState();
         break;
+      case sf::Keyboard::Slash:
+        ctx.window.close();
+        break;
       default:
         break;
     }
@@ -54,7 +57,7 @@ void State_Instructions::handleEvent(sf::Event e) {
 void State_Instructions::update() {}
 
 void State_Instructions::render() {
-  ctx.window.clear(sf::Color::Red);
+  ctx.window.clear(sf::Color(200, 15, 15));
   ctx.window.draw(getBackText);
   ctx.window.draw(bodyText);
 }
