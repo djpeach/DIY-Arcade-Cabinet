@@ -28,19 +28,19 @@ playBtn(), instructionsBtn() {
   instructionText.setOrigin(instructionTextBounds.width / 2, instructionTextBounds.height / 2);
 
   sf::Vector2u windowSize = ctx.window.getSize();
-  titleText.setPosition(windowSize.x / 2, windowSize.y / 2 - 500);
-  instructionText.setPosition(windowSize.x / 2, windowSize.y / 2 - 370);
+  titleText.setPosition(windowSize.x / 2, windowSize.y / 2 - 300);
+  instructionText.setPosition(windowSize.x / 2, windowSize.y / 2 - 170);
 
   playBtn.setBackgroundColor(sf::Color::Red);
   playBtn.setLabel("Play Cube Checkers");
   playBtn.setOrigin(sf::Vector2f(playBtn.getSize().x / 2, playBtn.getSize().y / 2));
-  playBtn.setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y / 2 - 150));
+  playBtn.setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y / 2 + 50));
   playBtn.setSelected(true);
 
   instructionsBtn.setBackgroundColor(sf::Color::Red);
   instructionsBtn.setLabel("How to Play");
   instructionsBtn.setOrigin(sf::Vector2f(instructionsBtn.getSize().x / 2, instructionsBtn.getSize().y / 2));
-  instructionsBtn.setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y / 2));
+  instructionsBtn.setPosition(sf::Vector2f(windowSize.x / 2, windowSize.y / 2 + 200));
 }
 
 State_MainMenu::~State_MainMenu() {}

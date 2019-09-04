@@ -14,7 +14,7 @@ bodyText(), getBackText() {
   }
 
   getBackText.setFont(font);
-  getBackText.setCharacterSize(65);
+  getBackText.setCharacterSize(45);
   getBackText.setString("Press Red to go back");
   getBackText.setPosition(PADDING, PADDING);
 
@@ -23,12 +23,13 @@ bodyText(), getBackText() {
   bodyText.setCharacterSize(30);
   std::string bodyTextString =
   "\nCube Checkers plays like regualar checkers. You must play all your pieces on the dark squares. \n"
-  "Pieces can only move diagnolly forward, and you must jump an opponent's piece if you can. A piece that \n"
-  "makes it to the other side becomes a king and can move diagnolly both directions. \n\n"
-  "However, with Cube Checkers, each piece has a value. 1 being the beginning value and 6 being a king. \n"
-  "You can only jump pieces that are lower or equal to rank to you. Pieces gain rank by being 'flipped'. You \n"
-  "flip a piece at the end of every turn. But you may not flip the piece that you moved, and you flip no pieces \n"
-  "after a jump. The game is over when all your opponents pieces are gone, or cannot make another move.";
+  "Pieces can only move diagnolly forward, and you must jump an opponent's piece if you can. A \n"
+  "piece that makes it to the other side becomes a king and can move diagnolly both directions. \n\n"
+  "However, with Cube Checkers, each piece has a value. 1 being the beginning value and 6 being \n"
+  "a king. You can only jump pieces that are lower or equal to rank to you. Pieces gain rank by \n"
+  "being 'flipped'. You flip a piece at the end of every turn. But you may not flip the piece that \n"
+  "you moved, and you flip no pieces after a jump. The game is over when all your opponents pieces \n"
+  "are gone, or cannot make another move.";
   bodyText.setString(bodyTextString);
   bodyText.setPosition(PADDING, (PADDING + getBackText.getCharacterSize() + 30));
 }
