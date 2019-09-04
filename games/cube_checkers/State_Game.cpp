@@ -6,7 +6,7 @@
 State_Game::State_Game(SharedContext & ctx) : State_Base(ctx),
 bodyText() {
   if (!font.loadFromFile("assets/font/Regular.ttf")) {
-    std::cerr << "State_Instructions could not load font from file: assets/font/Regular.ttf" << std::endl;
+    std::cerr << "State_Game could not load font from file: assets/font/Regular.ttf" << std::endl;
     exit(1);
   }
 

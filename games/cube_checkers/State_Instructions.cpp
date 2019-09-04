@@ -3,19 +3,34 @@
 #include "State_Instructions.hpp"
 #include "Game.hpp"
 
+#define PADDING 50
+
 State_Instructions::State_Instructions(SharedContext & ctx) : State_Base(ctx),
-bodyText() {
-  if (!font.loadFromFile("assets/font/Regular.ttf")) {
-    std::cerr << "State_Instructions could not load font from file: assets/font/Regular.ttf" << std::endl;
+bodyText(), getBackText() {
+
+  if (!font.loadFromFile("assets/font/Bold.ttf")) {
+    std::cerr << "State_Instructions could not load font from file: assets/font/Bold.ttf" << std::endl;
     exit(1);
   }
 
+  getBackText.setFont(font);
+  getBackText.setCharacterSize(65);
+  getBackText.setString("Press Red to go back");
+  getBackText.setPosition(PADDING, PADDING);
+
   bodyText.setFont(font);
   bodyText.setFillColor(sf::Color::Black);
-  bodyText.setCharacterSize(140);
-  bodyText.setString("Instructions");
-  sf::FloatRect bodyTextBounds = bodyText.getGlobalBounds();
-  // bodyText.setOrigin(bodyTextBounds.width / 2, bodyTextBounds.height / 2);
+  bodyText.setCharacterSize(50);
+  std::string bodyTextString =
+  "\nCube Checkers plays like regualar checkers. You must play all your pieces on the dark squares. \n"
+  "Pieces can only move diagnolly forward, and you must jump an opponent's piece if you can. A piece that \n"
+  "makes it to the other side becomes a king and can move diagnolly both directions. \n\n"
+  "However, with Cube Checkers, each piece has a value. 1 being the beginning value and 6 being a king. \n"
+  "You can only jump pieces that are lower or equal to rank to you. Pieces gain rank by being 'flipped'. You \n"
+  "flip a piece at the end of every turn. But you may not flip the piece that you moved, and you flip no pieces \n"
+  "after a jump. The game is over when all your opponents pieces are gone, or cannot make another move.";
+  bodyText.setString(bodyTextString);
+  bodyText.setPosition(PADDING, (PADDING + getBackText.getCharacterSize() + 30));
 }
 
 State_Instructions::~State_Instructions() {}
@@ -23,6 +38,15 @@ State_Instructions::~State_Instructions() {}
 void State_Instructions::handleEvent(sf::Event e) {
   if (e.type == sf::Event::Closed) {
     ctx.window.close();
+  } else if (e.type == sf::Event::KeyPressed) {
+    switch (e.key.code) {
+      case sf::Keyboard::F:
+      case sf::Keyboard::H:
+        ctx.stateMachine.popState();
+        break;
+      default:
+        break;
+    }
   }
 }
 
@@ -30,5 +54,6 @@ void State_Instructions::update() {}
 
 void State_Instructions::render() {
   ctx.window.clear(sf::Color::Red);
+  ctx.window.draw(getBackText);
   ctx.window.draw(bodyText);
 }

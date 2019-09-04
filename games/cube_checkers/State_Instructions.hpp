@@ -15,6 +15,7 @@ public:
   void update();
   void render();
 private:
+  sf::Text getBackText;
   sf::Text bodyText;
   sf::Font font;
 };
