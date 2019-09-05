@@ -20,9 +20,11 @@ public:
 private:
   void selectPiece();
   Tile getTileAtIndex(int i);
-  void calcAllowedTiles(Player & currentPlayer, Player & otherPlayer);
+  void calcallowedMoves(Player & currentPlayer, Player & otherPlayer);
+  void getPotentialJumps();
 
   std::vector<Tile> board;
-  std::vector<Tile> allowedTiles;
+  std::vector<Tile> allowedMoves;
+  std::vector<Tile> potentialJumps;
   Player player1, player2;
 };

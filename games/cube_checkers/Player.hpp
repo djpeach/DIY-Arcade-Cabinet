@@ -10,6 +10,7 @@ public:
   Tile curTile;
   Cube * selectedPiece;
   std::string name;
+  std::vector<Cube> pieces;
 
   Player();
 
@@ -28,6 +29,5 @@ public:
 
   bool operator== (const Player & rhs);
 private:
-  std::vector<Cube> pieces;
   int score;
 };

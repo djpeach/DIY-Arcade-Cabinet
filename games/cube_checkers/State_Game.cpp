@@ -105,6 +105,8 @@ void State_Game::update() {
   sf::Vector2u windowSize = ctx.window.getSize();
   sf::Vector2f tileSize(windowSize.x / 8, windowSize.y / 8);
 
+  getPotentialJumps();
+
   player1.updatePositionByTileSize(tileSize);
   player2.updatePositionByTileSize(tileSize);
 }
@@ -113,7 +115,12 @@ void State_Game::render() {
   for (auto & tile : board) {
     ctx.window.draw(tile);
   }
-  for (auto & tile : allowedTiles) {
+  for (auto & tile : allowedMoves) {
+    tile.setColor(sf::Color(15, 200, 15, 100));
+    ctx.window.draw(tile);
+  }
+  for (auto & tile : potentialJumps) {
+    tile.setColor(sf::Color(130, 200, 250));
     ctx.window.draw(tile);
   }
   player1.draw(ctx.window);
@@ -127,14 +134,33 @@ void State_Game::selectPiece() {
 
   std::cout << currentPlayer.curTile.index << std::endl;
 
+  getPotentialJumps();
+
+  std::cout << potentialJumps.size() << std::endl;
+
   if (currentPlayer.getPieceOnTile(currentPlayer.curTile)) {
-    currentPlayer.selectPiece();
-    calcAllowedTiles(currentPlayer, otherPlayer);
+    std::cout << "my piece here" << std::endl;
+    bool canSelect = false;
+    if (potentialJumps.empty()) {
+      std::cout << "no potential jumps" << std::endl;
+      canSelect = true;
+    } else {
+      for (auto tile : potentialJumps) {
+        std::cout << "tile.index " << tile.index << " == currentPlayer.curTile.index " << currentPlayer.curTile.index << std::endl;
+        if (tile.index == currentPlayer.curTile.index) {
+          canSelect = true;
+        }
+      }
+    }
+    if (canSelect) {
+      currentPlayer.selectPiece();
+      calcallowedMoves(currentPlayer, otherPlayer);
+    }
   } else if (currentPlayer.selectedPiece) {
-    for (auto & allowedTile : allowedTiles) {
+    for (auto & allowedTile : allowedMoves) {
       if (allowedTile.index == currentPlayer.curTile.index) {
         currentPlayer.movePiece();
-        allowedTiles.clear();
+        allowedMoves.clear();
         player1.isTurn = !player1.isTurn;
         player2.isTurn = !player2.isTurn;
       }
@@ -146,13 +172,13 @@ Tile State_Game::getTileAtIndex(int i) {
   sf::Vector2u windowSize = ctx.window.getSize();
   sf::Vector2f tileSize(windowSize.x / 8, windowSize.y / 8);
   sf::Vector2f tilePosition(tileSize.x * (i % 8), tileSize.y * floor(i / 8));
-  Tile tile(tileSize, tilePosition, sf::Color(15, 200, 15, 100));
+  Tile tile(tileSize, tilePosition, sf::Color::White);
   tile.index = i;
   return tile;
 }
 
-void State_Game::calcAllowedTiles(Player & currentPlayer, Player & otherPlayer) {
-  allowedTiles.clear();
+void State_Game::calcallowedMoves(Player & currentPlayer, Player & otherPlayer) {
+  allowedMoves.clear();
   int initIndex = currentPlayer.selectedPiece->index;
   int selectedPieceValue = currentPlayer.selectedPiece->value;
 
@@ -162,28 +188,28 @@ void State_Game::calcAllowedTiles(Player & currentPlayer, Player & otherPlayer) 
         if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 7)) &&
             !otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 14)) &&
             !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex + 14))) { // can jump opponent's piece left
-          allowedTiles.push_back(getTileAtIndex(initIndex + 14));
+          allowedMoves.push_back(getTileAtIndex(initIndex + 14));
         }
       }
       if ((initIndex + 2) % 8 > 0) { // can check two cols right
         if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 9)) &&
             !otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 18)) &&
             !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex + 18))) { // can jump opponent's piece right
-          allowedTiles.push_back(getTileAtIndex(initIndex + 18));
+          allowedMoves.push_back(getTileAtIndex(initIndex + 18));
         }
       }
     }
-    if (allowedTiles.empty() && initIndex / 8 < 7) { // can check at least one row down
+    if (allowedMoves.empty() && initIndex / 8 < 7) { // can check at least one row down
       if (initIndex % 8 > 0) { // can check at least one col left
         if (!otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 7)) &&
            !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex + 7))) { // no pieces in the way
-          allowedTiles.push_back(getTileAtIndex(initIndex + 7));
+          allowedMoves.push_back(getTileAtIndex(initIndex + 7));
         }
       }
       if ((initIndex + 1) % 8 > 0) { // can check at least one col right
         if (!otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 9)) &&
            !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex + 9))) { // no pieces in the way
-          allowedTiles.push_back(getTileAtIndex(initIndex + 9));
+          allowedMoves.push_back(getTileAtIndex(initIndex + 9));
         }
       }
     }
@@ -193,28 +219,75 @@ void State_Game::calcAllowedTiles(Player & currentPlayer, Player & otherPlayer) 
         if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 9)) &&
             !otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 18)) &&
             !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex - 18))) { // can jump opponent's piece left
-          allowedTiles.push_back(getTileAtIndex(initIndex - 18));
+          allowedMoves.push_back(getTileAtIndex(initIndex - 18));
         }
       }
       if ((initIndex + 2) % 8 > 0) { // can check two cols right
         if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 7)) &&
             !otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 14)) &&
             !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex - 14))) { // can jump opponent's piece right
-          allowedTiles.push_back(getTileAtIndex(initIndex - 14));
+          allowedMoves.push_back(getTileAtIndex(initIndex - 14));
         }
       }
     }
-    if (allowedTiles.empty() && initIndex / 8 > 0) { // can check at least one row up
+    if (allowedMoves.empty() && initIndex / 8 > 0) { // can check at least one row up
       if (initIndex % 8 > 0) { // can check at least one col left
         if (!otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 9)) &&
            !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex - 9))) { // no pieces in the way
-          allowedTiles.push_back(getTileAtIndex(initIndex - 9));
+          allowedMoves.push_back(getTileAtIndex(initIndex - 9));
         }
       }
       if ((initIndex + 1) % 8 > 0) { // can check at least one col right
         if (!otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 7)) &&
            !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex - 7))) { // no pieces in the way
-          allowedTiles.push_back(getTileAtIndex(initIndex - 7));
+          allowedMoves.push_back(getTileAtIndex(initIndex - 7));
+        }
+      }
+    }
+  }
+}
+
+void State_Game::getPotentialJumps() {
+  potentialJumps.clear();
+
+  Player & currentPlayer = player1.isTurn ? player1 : player2;
+  Player & otherPlayer = player1.isTurn ? player2 : player1;
+
+  for (auto piece : currentPlayer.pieces) {
+    int initIndex = piece.index;
+    if (piece.value == 6 || currentPlayer == player1) { // checking downward
+      if (initIndex / 8 < 6) { // can check two rows down
+        if ((initIndex - 1) % 8 > 0) { // can check two cols left
+          if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 7)) &&
+              !otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 14)) &&
+              !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex + 14))) { // can jump opponent's piece left
+            potentialJumps.push_back(getTileAtIndex(initIndex));
+          }
+        }
+        if ((initIndex + 2) % 8 > 0) { // can check two cols right
+          if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 9)) &&
+              !otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 18)) &&
+              !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex + 18))) { // can jump opponent's piece right
+            potentialJumps.push_back(getTileAtIndex(initIndex));
+          }
+        }
+      }
+    }
+    if (piece.value == 6 || currentPlayer == player2) { // checking upward
+      if (initIndex / 8 > 1) { // can check two rows up
+        if ((initIndex - 1) % 8 > 0) { // can check two cols left
+          if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 9)) &&
+              !otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 18)) &&
+              !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex - 18))) { // can jump opponent's piece left
+            potentialJumps.push_back(getTileAtIndex(initIndex));
+          }
+        }
+        if ((initIndex + 2) % 8 > 0) { // can check two cols right
+          if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 7)) &&
+              !otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 14)) &&
+              !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex - 14))) { // can jump opponent's piece right
+            potentialJumps.push_back(getTileAtIndex(initIndex));
+          }
         }
       }
     }
