@@ -132,21 +132,17 @@ void State_Game::selectPiece() {
   Player & otherPlayer = player1.isTurn ? player2 : player1;
   Cube * pieceOnSelectedTile;
 
-  std::cout << currentPlayer.curTile.index << std::endl;
+  // leave to view indexes easily
+  std::cout << "tile index: " << currentPlayer.curTile.index << std::endl;
 
   getPotentialJumps();
 
-  std::cout << potentialJumps.size() << std::endl;
-
   if (currentPlayer.getPieceOnTile(currentPlayer.curTile)) {
-    std::cout << "my piece here" << std::endl;
     bool canSelect = false;
     if (potentialJumps.empty()) {
-      std::cout << "no potential jumps" << std::endl;
       canSelect = true;
     } else {
       for (auto tile : potentialJumps) {
-        std::cout << "tile.index " << tile.index << " == currentPlayer.curTile.index " << currentPlayer.curTile.index << std::endl;
         if (tile.index == currentPlayer.curTile.index) {
           canSelect = true;
         }
@@ -159,10 +155,22 @@ void State_Game::selectPiece() {
   } else if (currentPlayer.selectedPiece) {
     for (auto & allowedTile : allowedMoves) {
       if (allowedTile.index == currentPlayer.curTile.index) {
+        std::cout << "currentPlayer.curTile.index " << currentPlayer.curTile.index << " - currentPlayer.selectedPiece->index " << currentPlayer.selectedPiece->index << " = " << currentPlayer.curTile.index - currentPlayer.selectedPiece->index << std::endl;
+
+        if (abs(currentPlayer.curTile.index - currentPlayer.selectedPiece->index) > 9) {
+          otherPlayer.removePiece(otherPlayer.getPieceOnTile(getTileAtIndex(currentPlayer.selectedPiece->index + ((currentPlayer.curTile.index - currentPlayer.selectedPiece->index) / 2))));
+          getPotentialJumpsForTile(currentPlayer.curTile);
+        }
+
         currentPlayer.movePiece();
         allowedMoves.clear();
-        player1.isTurn = !player1.isTurn;
-        player2.isTurn = !player2.isTurn;
+
+        if (potentialJumps.empty()) {
+          player1.isTurn = !player1.isTurn;
+          player2.isTurn = !player2.isTurn;
+        }
+
+        break;
       }
     }
   }
@@ -288,6 +296,51 @@ void State_Game::getPotentialJumps() {
               !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex - 14))) { // can jump opponent's piece right
             potentialJumps.push_back(getTileAtIndex(initIndex));
           }
+        }
+      }
+    }
+  }
+}
+
+void State_Game::getPotentialJumpsForTile(Tile tile) {
+  potentialJumps.clear();
+
+  Player & currentPlayer = player1.isTurn ? player1 : player2;
+  Player & otherPlayer = player1.isTurn ? player2 : player1;
+  int initIndex = tile.index;
+
+  if (currentPlayer.selectedPiece->value == 6 || currentPlayer == player1) { // checking downward
+    if (initIndex / 8 < 6) { // can check two rows down
+      if ((initIndex - 1) % 8 > 0) { // can check two cols left
+        if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 7)) &&
+            !otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 14)) &&
+            !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex + 14))) { // can jump opponent's piece left
+          potentialJumps.push_back(getTileAtIndex(initIndex));
+        }
+      }
+      if ((initIndex + 2) % 8 > 0) { // can check two cols right
+        if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 9)) &&
+            !otherPlayer.getPieceOnTile(getTileAtIndex(initIndex + 18)) &&
+            !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex + 18))) { // can jump opponent's piece right
+          potentialJumps.push_back(getTileAtIndex(initIndex));
+        }
+      }
+    }
+  }
+  if (currentPlayer.selectedPiece->value == 6 || currentPlayer == player2) { // checking upward
+    if (initIndex / 8 > 1) { // can check two rows up
+      if ((initIndex - 1) % 8 > 0) { // can check two cols left
+        if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 9)) &&
+            !otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 18)) &&
+            !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex - 18))) { // can jump opponent's piece left
+          potentialJumps.push_back(getTileAtIndex(initIndex));
+        }
+      }
+      if ((initIndex + 2) % 8 > 0) { // can check two cols right
+        if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 7)) &&
+            !otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 14)) &&
+            !currentPlayer.getPieceOnTile(getTileAtIndex(initIndex - 14))) { // can jump opponent's piece right
+          potentialJumps.push_back(getTileAtIndex(initIndex));
         }
       }
     }

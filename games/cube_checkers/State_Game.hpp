@@ -22,6 +22,7 @@ private:
   Tile getTileAtIndex(int i);
   void calcallowedMoves(Player & currentPlayer, Player & otherPlayer);
   void getPotentialJumps();
+  void getPotentialJumpsForTile(Tile tile);
 
   std::vector<Tile> board;
   std::vector<Tile> allowedMoves;
