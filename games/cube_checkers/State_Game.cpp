@@ -155,7 +155,6 @@ void State_Game::selectPiece() {
   } else if (currentPlayer.selectedPiece) {
     for (auto & allowedTile : allowedMoves) {
       if (allowedTile.index == currentPlayer.curTile.index) {
-        std::cout << "currentPlayer.curTile.index " << currentPlayer.curTile.index << " - currentPlayer.selectedPiece->index " << currentPlayer.selectedPiece->index << " = " << currentPlayer.curTile.index - currentPlayer.selectedPiece->index << std::endl;
 
         if (abs(currentPlayer.curTile.index - currentPlayer.selectedPiece->index) > 9) {
           otherPlayer.removePiece(otherPlayer.getPieceOnTile(getTileAtIndex(currentPlayer.selectedPiece->index + ((currentPlayer.curTile.index - currentPlayer.selectedPiece->index) / 2))));
