@@ -157,6 +157,7 @@ void State_Game::selectPiece() {
       if (allowedTile.index == currentPlayer.curTile.index) {
 
         if (abs(currentPlayer.curTile.index - currentPlayer.selectedPiece->index) > 9) {
+          currentPlayer.capturePiece(otherPlayer.getPieceOnTile(getTileAtIndex(currentPlayer.selectedPiece->index + ((currentPlayer.curTile.index - currentPlayer.selectedPiece->index) / 2))));
           otherPlayer.removePiece(otherPlayer.getPieceOnTile(getTileAtIndex(currentPlayer.selectedPiece->index + ((currentPlayer.curTile.index - currentPlayer.selectedPiece->index) / 2))));
           getPotentialJumpsForTile(currentPlayer.curTile);
         }

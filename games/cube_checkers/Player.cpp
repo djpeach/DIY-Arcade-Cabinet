@@ -56,14 +56,16 @@ Cube * Player::getPieceOnTile(Tile tile) {
 
 void Player::capturePiece(Cube * piece) {
   score += piece->value;
-  selectedPiece->setPosition(piece->getPosition());
-  selectedPiece->unhighlight();
-  selectedPiece = nullptr;
 }
 
 void Player::movePiece() {
   selectedPiece->setPosition(curTile.getPosition());
   selectedPiece->index = curTile.index;
+  if (selectedPiece->index / 8 >= 7 && name == "Player 1") {
+    selectedPiece->value = 6;
+  } else if (selectedPiece->index / 8 <= 0 && name == "Player 2") {
+    selectedPiece->value = 6;
+  }
   selectedPiece->unhighlight();
   selectedPiece = nullptr;
 }
