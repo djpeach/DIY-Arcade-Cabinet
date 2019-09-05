@@ -11,8 +11,6 @@ value(1), font(), rect(), valueText("", font, 60) {
   rect.setOrigin(size.x / 2, size.y / 2);
   rect.setPosition(pos);
   rect.setFillColor(color);
-  std::string valueString = std::to_string(value);
-  valueText.setString(valueString);
   sf::FloatRect valueTextBounds = valueText.getGlobalBounds();
   valueText.setOrigin(valueTextBounds.width / 2, valueTextBounds.height / 2);
   valueText.setPosition(rect.getPosition().x - 12, rect.getPosition().y - 30);
@@ -51,6 +49,8 @@ void Cube::draw(sf::RenderWindow & window) {
     exit(1);
   }
   valueText.setFont(font);
+  std::string valueString = std::to_string(value);
+  valueText.setString(valueString);
 
   window.draw(valueText);
 }

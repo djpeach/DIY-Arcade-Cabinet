@@ -5,6 +5,7 @@
 class Cube {
 public:
   int value;
+  int index;
 
   Cube(sf::Vector2f size, sf::Vector2f pos, sf::Color color);
 

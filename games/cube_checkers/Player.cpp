@@ -1,11 +1,11 @@
 #include <exception>
 #include <cmath>
+#include <iostream>
 
 #include "Player.hpp"
 
 Player::Player() :
 selectedPiece(nullptr),
-pieceIsSelected(false),
 score(0) {}
 
 void Player::setTile(Tile tile) {
@@ -13,7 +13,7 @@ void Player::setTile(Tile tile) {
 }
 
 void Player::updatePositionByTileSize(sf::Vector2f tileSize) {
-  curTile.setPosition(sf::Vector2f(tileSize.x * (index % 8), tileSize.y * floor(index / 8)));
+  curTile.setPosition(sf::Vector2f(tileSize.x * (curTile.index % 8), tileSize.y * floor(curTile.index / 8)));
 }
 
 void Player::draw(sf::RenderWindow & window) {
@@ -46,14 +46,9 @@ void Player::selectPiece() {
 }
 
 Cube * Player::getPieceOnTile(Tile tile) {
-  sf::FloatRect curTileBounds = tile.getBounds();
-  for (int i=0;i<pieces.size();i++) {
-    sf::FloatRect pieceBounds = pieces[i].getBounds();
-    if (pieceBounds.left >= curTileBounds.left &&
-        pieceBounds.top >= curTileBounds.top &&
-        pieceBounds.left + pieceBounds.width < curTileBounds.left + curTileBounds.width &&
-        pieceBounds.top + pieceBounds.height < curTileBounds.top + curTileBounds.height) {
-      return &pieces[i];
+  for (auto & piece : pieces) {
+    if (piece.index == tile.index) {
+      return &piece;
     }
   }
   return nullptr;
@@ -63,14 +58,13 @@ void Player::capturePiece(Cube * piece) {
   score += piece->value;
   selectedPiece->setPosition(piece->getPosition());
   selectedPiece->unhighlight();
-  pieceIsSelected = false;
   selectedPiece = nullptr;
 }
 
 void Player::movePiece() {
   selectedPiece->setPosition(curTile.getPosition());
+  selectedPiece->index = curTile.index;
   selectedPiece->unhighlight();
-  pieceIsSelected = false;
   selectedPiece = nullptr;
 }
 

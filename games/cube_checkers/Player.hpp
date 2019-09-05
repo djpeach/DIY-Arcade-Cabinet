@@ -7,7 +7,6 @@
 class Player {
 public:
   bool isTurn;
-  int index;
   Tile curTile;
   Cube * selectedPiece;
   std::string name;
@@ -29,7 +28,6 @@ public:
 
   bool operator== (const Player & rhs);
 private:
-  bool pieceIsSelected;
   std::vector<Cube> pieces;
   int score;
 };
