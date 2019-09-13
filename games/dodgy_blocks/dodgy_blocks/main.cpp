@@ -262,7 +262,9 @@ int main() {
                     break;
                 case sf::Event::KeyPressed:
                   if (event.key.code == sf::Keyboard::Q) {
-                    demoMode = !demoMode;
+                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) {
+                      demoMode = !demoMode;
+                    }
                   }
                     if (gameOver && showingGameOver) {
                       if (event.key.code == sf::Keyboard::F) {
