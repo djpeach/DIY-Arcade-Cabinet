@@ -108,7 +108,8 @@ int main() {
 
     std::srand((uint)time(nullptr));
 
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "", sf::Style::Fullscreen);
+    // sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode(1280, 1024), "Dodgy Blocks");
     sf::Vector2u windowSize = window.getSize();
 
     sf::RectangleShape paddle(sf::Vector2f(PADDLE_WIDTH, PADDLE_HEIGHT));
@@ -250,6 +251,8 @@ int main() {
     gameOverScore.setOrigin(gameOverScoreBounds.width / 2, gameOverScoreBounds.height / 2);
     gameOverScore.setPosition(windowSize.x / 2, (windowSize.y / 2) + 200);
 
+    bool demoMode = false;
+
     while(window.isOpen()) {
         sf::Event event;
         while(window.pollEvent(event)) {
@@ -258,6 +261,9 @@ int main() {
                     window.close();
                     break;
                 case sf::Event::KeyPressed:
+                  if (event.key.code == sf::Keyboard::Q) {
+                    demoMode = !demoMode;
+                  }
                     if (gameOver && showingGameOver) {
                       if (event.key.code == sf::Keyboard::F) {
                         showingGameOver = false;
@@ -295,7 +301,7 @@ int main() {
                     if (event.key.code == sf::Keyboard::Slash) {
                       window.close();
                     }
-                    if (scoresSaved && event.key.code == sf::Keyboard::Num1) {
+                    if ((scoresSaved || showingGameOver) && event.key.code == sf::Keyboard::Num1) {
                       score = 0;
                       hmLives = 3;
                       gameOver = false;
@@ -307,6 +313,11 @@ int main() {
                         blocks[i].setFillColor(sf::Color(255, 255, 255, 255));
                         sf::Vector2f blockPos = blocks[i].getPosition();
                         blocks[i].setPosition(blockPos.x, blockPos.y - windowSize.y);
+                        if (demoMode) {
+                          blockSpeeds[i] = (std::rand() % (MAX_SPEED - MIN_SPEED)) + MIN_SPEED * 2.2;
+                        } else {
+                          blockSpeeds[i] = (std::rand() % (MAX_SPEED - MIN_SPEED)) + MIN_SPEED * speedMulitplier;
+                        }
                       }
                       extraLifeOnScreen = false;
                       gameOver = false;
@@ -351,13 +362,13 @@ int main() {
             }
 
             for (int i=0;i<hmBlocks;i++) {
-                if (blocks[i].getGlobalBounds().intersects(paddle.getGlobalBounds())) {
+                if (blocks[i].getGlobalBounds().intersects(paddle.getGlobalBounds()) && !demoMode) {
                     sf::Vector2f blockPos = blocks[i].getPosition();
                     if (blocks[i].getSize().x == LIFE_SIDE_LENGTH) {
                         if (hmLives < 3) {
                             extraLifeSound.play();
                             hmLives++;
-                            blocks[i].setPosition(std::rand() % (int)(windowSize.x - blocks[i].getSize().x), blockPos.y - (windowSize.y * 2));
+                            blocks[i].move(sf::Vector2f(0, paddleSize.y + 25));
                         } else {
                           extraPointsSound.play();
                           score += 10;
@@ -382,7 +393,7 @@ int main() {
                 sf::Vector2f blockPos = blocks[i].getPosition();
                 float newY, newX;
                 if (blockPos.y > windowSize.y) {
-                    if (blocks[i].getSize().x < 100) {
+                    if (blocks[i].getSize().x == LIFE_SIDE_LENGTH) {
                         extraLifeOnScreen = false;
                     }
                     int extraLifeChance = std::rand() % 10;
@@ -399,7 +410,7 @@ int main() {
                         blocks[i].setFillColor(sf::Color(255, 255, 255, 255));
                     }
                     score++;
-                    if (score > 0 && score % levelUpAmount == 0) {
+                    if (score > 0 && score % levelUpAmount == 0 && !demoMode) {
                         speedMulitplier += 0.4f;
                         levelUpAmount += levelUpAmountIncrement;
                         levelUpAmountIncrement += 25;
