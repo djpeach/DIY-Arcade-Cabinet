@@ -1,26 +1,16 @@
 .DS_Store
 
-*/*/.DS_Store
-*/*/CMakeCache.txt
-*/*/CMakeFiles/*
-*/*/cmake_install.cmake
-*/*/Makefile
+**/.DS_Store
+**/CMakeCache.txt
+**/CMakeFiles/**
+**/cmake_install.cmake
+**/Makefile
 
-*/*/*/.DS_Store
-*/*/*/CMakeCache.txt
-*/*/*/CMakeFiles/*
-*/*/*/cmake_install.cmake
-*/*/*/Makefile
-*/*/*/dodgy_blocks
-*/*/duck_hunter
-*/*/*/bumpy_circles
-games/cube_checkers/cube_checkers
-menu/menu/menu
+**/menu
 
 
-*/*/*.xcodeproj/project.pbxproj
-*/*/*.xcodeproj/xcshareddata/
-*/*/*.xcworkspace/contents.xcworkspacedata
-games/bumpy_circles/bumpy_circles/bumpy_circles
+**/*.xcodeproj/project.pbxproj
+**/*.xcodeproj/xcshareddata/
+**/*.xcworkspace/contents.xcworkspacedata
 
 **/*.db
