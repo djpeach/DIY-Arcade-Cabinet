@@ -221,7 +221,8 @@ void State_Game::calcallowedMoves(Player & currentPlayer, Player & otherPlayer) 
         }
       }
     }
-  } else if (currentPlayer == player2 || selectedPieceValue == 6) { // subtractions - ups
+  }
+  if (currentPlayer == player2 || selectedPieceValue == 6) { // subtractions - ups
     if (initIndex / 8 > 1) { // can check two rows up
       if ((initIndex - 1) % 8 > 0) { // can check two cols left
         if (otherPlayer.getPieceOnTile(getTileAtIndex(initIndex - 9)) &&
