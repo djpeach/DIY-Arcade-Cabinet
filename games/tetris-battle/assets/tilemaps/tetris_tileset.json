@@ -1,0 +1,14 @@
+{ "columns":10,
+ "image":"tetris-tilemapimage.png",
+ "imageheight":480,
+ "imagewidth":320,
+ "margin":0,
+ "name":"tetris-tilemap",
+ "spacing":0,
+ "tilecount":150,
+ "tiledversion":"1.2.1",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":1.2
+}
