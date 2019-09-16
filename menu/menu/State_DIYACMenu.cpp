@@ -17,8 +17,10 @@ void State_DIYACMenu::onCreate() {
     selectedTile = 1;
 
     sf::Vector2u windowSize = ctx->window->getRenderWindow()->getSize();
-    windowGrid.x = windowSize.x / 13;
-    windowGrid.y = windowSize.y / 7;
+    grid.x = 13;
+    grid.y = 7;
+    windowGrid.x = windowSize.x / grid.x;
+    windowGrid.y = windowSize.y / grid.y;
     tiles.x = 3;
     tiles.y = 2;
     tileSize.x = windowGrid.x * tiles.x;
@@ -85,6 +87,7 @@ void State_DIYACMenu::update(const sf::Time & delta) {
 void State_DIYACMenu::draw() {
     ctx->window->getRenderWindow()->draw(selectedTileHighlight);
     sf::Font font;
+    sf::Vector2u windowSize = ctx->window->getRenderWindow()->getSize();
 
     if (!font.loadFromFile("assets/fonts/arial.ttf")) {
         std::cerr << "Could not load font from assets/fonts/arial.ttf" << std::endl;
@@ -93,14 +96,21 @@ void State_DIYACMenu::draw() {
     for (int i=0; i<games.size(); ++i) {
         ctx->window->getRenderWindow()->draw(gameTiles[i]);
         // ctx->window->getRenderWindow()->draw(games[i].logo);
+        sf::Texture texture;
+        texture.loadFromFile("assets/images/logo.png");
+        sf::Sprite logo;
+        logo.setTexture(texture);
         sf::Text & title = games[i].name;
         title.setFont(font);
         title.setCharacterSize(32);
         sf::FloatRect titleBounds = title.getLocalBounds();
         title.setOrigin(titleBounds.width / 2, titleBounds.height / 2);
         sf::FloatRect tileBounds = gameTiles[i].getGlobalBounds();
+        logo.setScale(1.f / (float)(grid.x) * (float)(tiles.x) + 0.0011f, 1.f / (float)(grid.y) * (float)(tiles.y));
+        logo.setPosition(gameTiles[i].getPosition().x, gameTiles[i].getPosition().y);
         title.setPosition(tileBounds.left + tileBounds.width / 2, tileBounds.top + tileBounds.height + 55);
         ctx->window->getRenderWindow()->draw(title);
+        ctx->window->getRenderWindow()->draw(logo);
     }
 }
 
