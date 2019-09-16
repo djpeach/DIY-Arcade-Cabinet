@@ -108,8 +108,8 @@ int main() {
 
     std::srand((uint)time(nullptr));
 
-    // sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "", sf::Style::Fullscreen);
-    sf::RenderWindow window(sf::VideoMode(1280, 1024), "Dodgy Blocks");
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "", sf::Style::Fullscreen);
+    // sf::RenderWindow window(sf::VideoMode(1280, 1024), "Dodgy Blocks");
     sf::Vector2u windowSize = window.getSize();
 
     sf::RectangleShape paddle(sf::Vector2f(PADDLE_WIDTH, PADDLE_HEIGHT));
