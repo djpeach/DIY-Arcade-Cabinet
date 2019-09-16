@@ -4,7 +4,7 @@
 #include <string>
 #include "stdlib.h"
 
-State_Instructions::State_Instructions(SharedContext * ctx) : State_Base(ctx) {
+State_Instructions::State_Instructions(SharedContext * ctx) : State_Base(ctx), canStartGame(false), drewLoading(false) {
     setTransparent(true);
 }
 State_Instructions::~State_Instructions() {}
@@ -18,7 +18,7 @@ void State_Instructions::onCreate() {
     sf::Vector2f introBoxSize = introBox.getSize();
     introBox.setOrigin(introBoxSize.x / 2, introBoxSize.y / 2);
     introBox.setPosition(windowSize.x / 2, windowSize.y / 2);
-    
+
     ctx->eventManager->addCallback(StateType::Instructions, "player1Go", &State_Instructions::startGame, this);
     ctx->eventManager->addCallback(StateType::Instructions, "player2Go", &State_Instructions::startGame, this);
     ctx->eventManager->addCallback(StateType::Instructions, "slashClose", &State_Instructions::backToMenu, this);
@@ -35,7 +35,18 @@ void State_Instructions::activate() {
 
 void State_Instructions::deactivate() {}
 
-void State_Instructions::update(const sf::Time & delta) {}
+void State_Instructions::update(const sf::Time & delta) {
+  if (canStartGame && drewLoading) {
+    std::string path = game.exePath;
+    if (game.startButton == "Player 1 Start") {
+      system(("cd ../../games/" + path + " && " + game.start1).c_str());
+    } else if (game.startButton == "Player 2 Start") {
+      system(("cd ../../games/" + path + " && " + game.start2).c_str());
+    }
+    ctx->stateMachine->remove(StateType::Instructions);
+    ctx->stateMachine->changeState(StateType::DIYACMenu);
+  }
+}
 
 void State_Instructions::draw() {
     sf::Vector2u windowSize = ctx->window->getRenderWindow()->getSize();
@@ -70,45 +81,56 @@ void State_Instructions::draw() {
     game.language.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
     ctx->window->getRenderWindow()->draw(game.language);
     curRow += 2;
-    
-    for (int i = 0; i < game.mappings.size(); ++i) {
-        sf::Text text;
-        text.setString(game.mappings[i]);
-        text.setFont(font);
-        text.setCharacterSize(24);
-        text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
-        text.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
-        ctx->window->getRenderWindow()->draw(text);
-        ++curRow;
+
+    if (!canStartGame) {
+      for (int i = 0; i < game.mappings.size(); ++i) {
+          sf::Text text;
+          text.setString(game.mappings[i]);
+          text.setFont(font);
+          text.setCharacterSize(24);
+          text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+          text.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
+          ctx->window->getRenderWindow()->draw(text);
+          ++curRow;
+      }
+      ++curRow;
+
+      for (int i = 0; i < game.instructions.size(); ++i) {
+          sf::Text text;
+          text.setString(game.instructions[i]);
+          text.setFont(font);
+          text.setCharacterSize(24);
+          text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+          text.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
+          ctx->window->getRenderWindow()->draw(text);
+          ++curRow;
+      }
+      ++curRow;
+
+      sf::Text text;
+      text.setString("Press " + game.startButton + " to start");
+      text.setFont(font);
+      text.setCharacterSize(24);
+      text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+      text.setPosition(introBox.getPosition().x, introBoxTop + introBox.getGlobalBounds().height - rowHeight * 2);
+      ctx->window->getRenderWindow()->draw(text);
+
+      text.setString("Press the Control Button to go back to the menu");
+      text.setFont(font);
+      text.setCharacterSize(24);
+      text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+      text.setPosition(introBox.getPosition().x, introBoxTop + introBox.getGlobalBounds().height - rowHeight);
+      ctx->window->getRenderWindow()->draw(text);
+    } else {
+      sf::Text text;
+      text.setString("Loading. . .");
+      text.setFont(font);
+      text.setCharacterSize(50);
+      text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+      text.setPosition(introBox.getPosition().x, introBox.getPosition().y);
+      ctx->window->getRenderWindow()->draw(text);
+      drewLoading = true;
     }
-    ++curRow;
-    
-    for (int i = 0; i < game.instructions.size(); ++i) {
-        sf::Text text;
-        text.setString(game.instructions[i]);
-        text.setFont(font);
-        text.setCharacterSize(24);
-        text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
-        text.setPosition(introBox.getPosition().x, introBoxTop + curRow * rowHeight);
-        ctx->window->getRenderWindow()->draw(text);
-        ++curRow;
-    }
-    ++curRow;
-    
-    sf::Text text;
-    text.setString("Press " + game.startButton + " to start");
-    text.setFont(font);
-    text.setCharacterSize(24);
-    text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
-    text.setPosition(introBox.getPosition().x, introBoxTop + introBox.getGlobalBounds().height - rowHeight * 2);
-    ctx->window->getRenderWindow()->draw(text);
-    
-    text.setString("Press the Control Button to go back to the menu");
-    text.setFont(font);
-    text.setCharacterSize(24);
-    text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
-    text.setPosition(introBox.getPosition().x, introBoxTop + introBox.getGlobalBounds().height - rowHeight);
-    ctx->window->getRenderWindow()->draw(text);
 }
 
 void State_Instructions::setGame(Game & game) {
@@ -116,20 +138,8 @@ void State_Instructions::setGame(Game & game) {
 }
 
 void State_Instructions::startGame(BindingDetails * details) {
-    bool ranGame = false;
-    if (details->keyCode == 27 && game.startButton == "Player 1 Start") {
-        ranGame = true;
-        std::string path = game.exePath;
-        system(("cd ../../games/" + path + " && " + game.start1).c_str());
-    } else if (details->keyCode == 28 && game.startButton == "Player 2 Start") {
-        ranGame = true;
-        std::string path = game.exePath;
-        system(("cd ../../games/" + path + " && " + game.start2).c_str());
-    }
-    
-    if (ranGame) {
-        ctx->stateMachine->remove(StateType::Instructions);
-        ctx->stateMachine->changeState(StateType::DIYACMenu);
+    if ((details->keyCode == 27 && game.startButton == "Player 1 Start") || (details->keyCode == 28 && game.startButton == "Player 2 Start")) {
+        canStartGame = true;
     }
 }
 
