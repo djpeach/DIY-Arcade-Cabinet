@@ -95,7 +95,9 @@ void State_DIYACMenu::draw() {
     }
     for (int i=0; i<games.size(); ++i) {
         ctx->window->getRenderWindow()->draw(gameTiles[i]);
-        // ctx->window->getRenderWindow()->draw(games[i].logo);
+        if(games[i].hasLogo) {
+          ctx->window->getRenderWindow()->draw(games[i].logo);
+        }
         sf::Texture texture;
         texture.loadFromFile("assets/images/logo.png");
         sf::Sprite logo;
@@ -158,6 +160,12 @@ void State_DIYACMenu::getGames() {
             std::getline(lineStream, exePath);
             exePath = exePath.substr(1, exePath.length());
             game.exePath = exePath;
+        } else if (type == "LOGO") {
+            std::string logoPath;
+            std::getline(lineStream, logoPath);
+            logoPath = logoPath.substr(1, logoPath.length());
+            game.setLogo(logoPath);
+            game.hasLogo = true;
         } else if (type == "START1") {
             std::string start1;
             std::getline(lineStream, start1);
