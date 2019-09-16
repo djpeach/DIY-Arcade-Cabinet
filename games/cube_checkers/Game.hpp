@@ -10,8 +10,8 @@
 
 struct SharedContext {
   SharedContext(std::string name) :
-  // window(sf::VideoMode::getDesktopMode(), name, sf::Style::Fullscreen),
-  window(sf::VideoMode(1280, 1024), name),
+  window(sf::VideoMode::getDesktopMode(), name, sf::Style::Fullscreen),
+  // window(sf::VideoMode(1280, 1024), name),
   stateMachine() {}
 
   sf::RenderWindow window;

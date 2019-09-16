@@ -27,6 +27,7 @@ public:
     bool hasLogo;
     sf::Sprite logo;
     sf::Texture logoTexture;
+    std::string logoPath;
 
     void clear() {
         name.setString("");
@@ -40,5 +41,6 @@ public:
         bgColor = sf::Color(120, 120, 120);
         startButton = "";
         hasLogo = false;
+        logoPath = "";
     }
 };

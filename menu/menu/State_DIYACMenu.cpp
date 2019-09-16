@@ -29,7 +29,11 @@ void State_DIYACMenu::onCreate() {
     for (int i=0; i<games.size(); ++i) {
         sf::RectangleShape rect(sf::Vector2f(windowGrid.x * tiles.x, windowGrid.y * tiles.y));
         rect.setPosition((((tiles.x + 1) * (i % tiles.x)) + 1) * windowGrid.x, (((tiles.y + 1) * (i / (tiles.y + 1)) + 1)) * windowGrid.y);
-        rect.setFillColor(games[i].bgColor);
+        if (!games[i].hasLogo) {
+          rect.setFillColor(games[i].bgColor);
+        } else {
+          rect.setFillColor(sf::Color(50, 50, 50, 0));
+        }
 
         gameTiles.push_back(rect);
     }
@@ -96,23 +100,31 @@ void State_DIYACMenu::draw() {
     for (int i=0; i<games.size(); ++i) {
         ctx->window->getRenderWindow()->draw(gameTiles[i]);
         if(games[i].hasLogo) {
-          ctx->window->getRenderWindow()->draw(games[i].logo);
+          sf::Texture texture;
+          if (!texture.loadFromFile("../../games/" + games[i].exePath + games[i].logoPath)) {
+            std::cout << "could not load logo from path ../../games/" + games[i].exePath + games[i].logoPath << std::endl;
+          }
+          sf::Sprite logo;
+          logo.setTexture(texture);
+          float scale;
+          if (tileSize.x <= tileSize.y) {
+            scale = (float)(tileSize.x / texture.getSize().x);
+          } else if (tileSize.y <= tileSize.x) {
+            scale = (float)(tileSize.y / texture.getSize().y);
+          }
+          logo.setScale(scale, scale);
+          sf::Vector2f logoOffset = sf::Vector2f(gameTiles[i].getSize().x - logo.getGlobalBounds().width, gameTiles[i].getSize().y - logo.getGlobalBounds().height);
+          logo.setPosition(gameTiles[i].getPosition().x + logoOffset.x / 2, gameTiles[i].getPosition().y + logoOffset.y / 2);
+          ctx->window->getRenderWindow()->draw(logo);
         }
-        sf::Texture texture;
-        texture.loadFromFile("assets/images/logo.png");
-        sf::Sprite logo;
-        logo.setTexture(texture);
         sf::Text & title = games[i].name;
         title.setFont(font);
         title.setCharacterSize(32);
         sf::FloatRect titleBounds = title.getLocalBounds();
         title.setOrigin(titleBounds.width / 2, titleBounds.height / 2);
         sf::FloatRect tileBounds = gameTiles[i].getGlobalBounds();
-        logo.setScale(1.f / (float)(grid.x) * (float)(tiles.x) + 0.0011f, 1.f / (float)(grid.y) * (float)(tiles.y));
-        logo.setPosition(gameTiles[i].getPosition().x, gameTiles[i].getPosition().y);
         title.setPosition(tileBounds.left + tileBounds.width / 2, tileBounds.top + tileBounds.height + 55);
         ctx->window->getRenderWindow()->draw(title);
-        ctx->window->getRenderWindow()->draw(logo);
     }
 }
 
@@ -139,11 +151,6 @@ void State_DIYACMenu::getGames() {
         }
         Game & game = games[curGame];
 
-        // std::unique_ptr<sf::Texture> logo;
-        // logo->loadFromFile("assets/images/logo.png");
-        // game.logoTexture = std::move(logo);
-        // game.logo.setTexture(*game.logoTexture);
-
         if (line[0] == '#' || line.empty()) { continue; }
 
         std::stringstream lineStream(line);
@@ -164,7 +171,7 @@ void State_DIYACMenu::getGames() {
             std::string logoPath;
             std::getline(lineStream, logoPath);
             logoPath = logoPath.substr(1, logoPath.length());
-            game.setLogo(logoPath);
+            game.logoPath = logoPath;
             game.hasLogo = true;
         } else if (type == "START1") {
             std::string start1;
