@@ -253,7 +253,7 @@ void State_DIYACMenu::openGame(BindingDetails * details) {
     if (details->keyCode == 27) {
       if (games[selectedTile - 1].start1 == "") {
         ctx->stateMachine->changeState(StateType::Alert);
-        dynamic_cast<State_Alert *>(ctx->stateMachine->getCurrentState())->setGameMode("1 player mode");
+        dynamic_cast<State_Alert *>(ctx->stateMachine->getCurrentState())->setString(games[selectedTile - 1].name.getString() + " does not support 1 player mode");
       } else {
         games[selectedTile - 1].startButton = "Player 1 Start";
         ctx->stateMachine->changeState(StateType::Instructions);
@@ -262,7 +262,7 @@ void State_DIYACMenu::openGame(BindingDetails * details) {
     } else if (details->keyCode == 28) {
       if (games[selectedTile - 1].start2 == "") {
         ctx->stateMachine->changeState(StateType::Alert);
-        dynamic_cast<State_Alert *>(ctx->stateMachine->getCurrentState())->setGameMode("2 player mode");
+        dynamic_cast<State_Alert *>(ctx->stateMachine->getCurrentState())->setString(games[selectedTile - 1].name.getString() + " does not support 2 player mode");
       } else {
         games[selectedTile - 1].startButton = "Player 2 Start";
         ctx->stateMachine->changeState(StateType::Instructions);

@@ -50,23 +50,29 @@ void State_Alert::draw() {
     }
 
     sf::Text text;
-    text.setString("This game does not support " + this->mode);
+    text.setString(this->string);
     text.setFont(font);
     text.setCharacterSize(35);
     text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
-    text.setPosition(alertBox.getPosition().x, alertBox.getPosition().y - 50);
+    text.setPosition(alertBox.getPosition().x, alertBox.getPosition().y - (50 * this->showBack));
     ctx->window->getRenderWindow()->draw(text);
 
-    text.setString("Press the Control Button to go back to the menu");
-    text.setFont(font);
-    text.setCharacterSize(35);
-    text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
-    text.setPosition(alertBox.getPosition().x, alertBox.getPosition().y + 50);
-    ctx->window->getRenderWindow()->draw(text);
+    if (this->showBack) {
+      text.setString("Press the Control Button to go back to the menu");
+      text.setFont(font);
+      text.setCharacterSize(35);
+      text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+      text.setPosition(alertBox.getPosition().x, alertBox.getPosition().y + 50);
+      ctx->window->getRenderWindow()->draw(text);
+    }
 }
 
-void State_Alert::setGameMode(std::string mode) {
-    this->mode = mode;
+void State_Alert::setString(std::string string) {
+    this->string = string;
+}
+
+void State_Alert::setShowBack(bool showBack) {
+  this->showBack = showBack;
 }
 
 void State_Alert::backToMenu(BindingDetails * details) {

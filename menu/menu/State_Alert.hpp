@@ -20,10 +20,12 @@ public:
     void update(const sf::Time & delta);
     void draw();
 
-    void setGameMode(std::string mode);
+    void setString(std::string mode);
+    void setShowBack(bool showBack);
     void backToMenu(BindingDetails * details);
 
 private:
     sf::RectangleShape alertBox;
-    std::string mode;
+    std::string string;
+    bool showBack = true;
 };
