@@ -1,0 +1,7 @@
+{
+	"title": "Mode Zero Racing",
+	"author": "Evan Wilt, Jake White",
+	"language": "python",
+	"command": "python3 main.py",
+	"install_script": "pip3 install -r requirements.txt"
+}
