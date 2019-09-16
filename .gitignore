@@ -16,3 +16,5 @@
 **/*.db
 
 .vscode/**
+
+**/node_modules/**
