@@ -2,6 +2,7 @@
 #include "SharedContext.hpp"
 
 #include <string>
+#include <cstdlib>
 
 State_DIYACMenu::State_DIYACMenu(SharedContext * ctx) : State_Base(ctx), games() {}
 State_DIYACMenu::~State_DIYACMenu() {}
@@ -107,12 +108,20 @@ void State_DIYACMenu::draw() {
           sf::Sprite logo;
           logo.setTexture(texture);
           float scale;
-          if (tileSize.x <= tileSize.y) {
+          if ((float)(texture.getSize().x) >= (float)(texture.getSize().y)) {
             scale = (float)(tileSize.x / texture.getSize().x);
-          } else if (tileSize.y <= tileSize.x) {
+          } else if ((float)(texture.getSize().y) >= (float)(texture.getSize().x)) {
             scale = (float)(tileSize.y / texture.getSize().y);
           }
           logo.setScale(scale, scale);
+          if ((float)(texture.getSize().y) >= (float)(tileSize.y)) {
+            scale = (float)(tileSize.y / texture.getSize().y);
+            logo.setScale(scale, scale);
+          }
+          if ((float)(texture.getSize().x) >= (float)(tileSize.x)) {
+            scale = (float)(tileSize.x / texture.getSize().x);
+            logo.setScale(scale, scale);
+          }
           sf::Vector2f logoOffset = sf::Vector2f(gameTiles[i].getSize().x - logo.getGlobalBounds().width, gameTiles[i].getSize().y - logo.getGlobalBounds().height);
           logo.setPosition(gameTiles[i].getPosition().x + logoOffset.x / 2, gameTiles[i].getPosition().y + logoOffset.y / 2);
           ctx->window->getRenderWindow()->draw(logo);

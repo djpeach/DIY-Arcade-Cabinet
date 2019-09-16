@@ -1,0 +1,10 @@
+{
+    "title": "Arcade Chess",
+    "author": "Daniel Peach",
+    "language": "javascript",
+    "command": "npm start",
+    "start2": "npm start",
+    "install_script": "npm install",
+    "logo": "logo.png",
+    "backgroundColor": "#23ef67"
+}

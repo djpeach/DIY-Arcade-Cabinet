@@ -27,7 +27,7 @@ int main() {
 
     int score = 0;
     sf::Clock timer;
-    int countdown = 60;
+    int countdown = 59;
     sf::Text scoreText;
     sf::Text countdownText;
 
@@ -37,11 +37,11 @@ int main() {
     countdownText.setFont(font);
     scoreText.setFillColor(sf::Color::Yellow);
     scoreText.setCharacterSize(80);
-    scoreText.setPosition(30, 15);
+    scoreText.setPosition(40, 15);
     countdownText.setFillColor(sf::Color::Black);
     countdownText.setString(std::to_string(countdown));
     countdownText.setCharacterSize(80);
-    countdownText.setPosition(SCREEN_WIDTH - 60, 15);
+    countdownText.setPosition(SCREEN_WIDTH - 200, 15);
     scoreText.setString(std::to_string(score));
 
     sf::Texture targetT;

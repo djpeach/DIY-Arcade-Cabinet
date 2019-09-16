@@ -5,6 +5,7 @@ Window::Window(SharedContext * ctx) : ctx(ctx) {
     sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
     renderWindow.create(sf::VideoMode(desktopMode.width, desktopMode.height), "DIY Arcade Menu", sf::Style::Fullscreen);
     // renderWindow.create(sf::VideoMode(1280, 1024), "DIY Arcade Menu");
+    // renderWindow.create(sf::VideoMode(1024, 1280), "DIY Arcade Menu");
 }
 
 Window::~Window() {
