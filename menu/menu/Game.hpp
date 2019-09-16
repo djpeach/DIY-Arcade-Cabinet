@@ -5,7 +5,7 @@ public:
     Game() {
         clear();
     }
-    
+
     sf::Text name;
     sf::Text author;
     sf::Text language;
@@ -16,9 +16,9 @@ public:
     std::vector<std::string> mappings;
     std::vector<std::string> instructions;
     std::string startButton;
-    //    sf::Sprite logo;
-    //    sf::Texture logoTexture;
-    
+    // sf::Sprite logo;
+    // std::unique_ptr<sf::Texture> logoTexture;
+
     void clear() {
         name.setString("");
         author.setString("");

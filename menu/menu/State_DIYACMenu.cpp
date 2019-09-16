@@ -7,15 +7,15 @@ State_DIYACMenu::State_DIYACMenu(SharedContext * ctx) : State_Base(ctx), games()
 State_DIYACMenu::~State_DIYACMenu() {}
 
 void State_DIYACMenu::onCreate() {
-    
+
     if (ctx->stateMachine->hasState(StateType::Instructions)) {
         ctx->stateMachine->remove(StateType::Instructions);
     }
-    
+
     getGames();
-    
+
     selectedTile = 1;
-    
+
     sf::Vector2u windowSize = ctx->window->getRenderWindow()->getSize();
     windowGrid.x = windowSize.x / 13;
     windowGrid.y = windowSize.y / 7;
@@ -23,20 +23,20 @@ void State_DIYACMenu::onCreate() {
     tiles.y = 2;
     tileSize.x = windowGrid.x * tiles.x;
     tileSize.y = windowGrid.y * tiles.y;
-    
+
     for (int i=0; i<games.size(); ++i) {
         sf::RectangleShape rect(sf::Vector2f(windowGrid.x * tiles.x, windowGrid.y * tiles.y));
         rect.setPosition((((tiles.x + 1) * (i % tiles.x)) + 1) * windowGrid.x, (((tiles.y + 1) * (i / (tiles.y + 1)) + 1)) * windowGrid.y);
         rect.setFillColor(games[i].bgColor);
-        
+
         gameTiles.push_back(rect);
     }
-    
+
     selectedTileHighlight.setSize(sf::Vector2f(windowGrid.x * tiles.x, windowGrid.y * tiles.y));
     selectedTileHighlight.setFillColor(sf::Color(200, 200, 200));
     selectedTileHighlight.setOrigin(selectedTileHighlight.getSize().x / 2, selectedTileHighlight.getSize().y / 2);
     selectedTileHighlight.scale(1.1, 1.1);
-    
+
     ctx->eventManager->addCallback(StateType::DIYACMenu, "player1MoveRight", &State_DIYACMenu::moveRight, this);
     ctx->eventManager->addCallback(StateType::DIYACMenu, "player1MoveLeft", &State_DIYACMenu::moveLeft, this);
     ctx->eventManager->addCallback(StateType::DIYACMenu, "player1MoveUp", &State_DIYACMenu::moveUp, this);
@@ -47,7 +47,7 @@ void State_DIYACMenu::onCreate() {
     ctx->eventManager->addCallback(StateType::DIYACMenu, "player2MoveDown", &State_DIYACMenu::moveDown, this);
     ctx->eventManager->addCallback(StateType::DIYACMenu, "player1Go", &State_DIYACMenu::openGame, this);
     ctx->eventManager->addCallback(StateType::DIYACMenu, "player2Go", &State_DIYACMenu::openGame, this);
-    
+
     view.setCenter(windowSize.x / 2, windowSize.y / 2);
     ctx->window->getRenderWindow()->setView(view);
 }
@@ -63,7 +63,7 @@ void State_DIYACMenu::onDestroy() {
     ctx->eventManager->removeCallback(StateType::DIYACMenu, "player2MoveDown");
     ctx->eventManager->removeCallback(StateType::DIYACMenu, "player1Go");
     ctx->eventManager->removeCallback(StateType::DIYACMenu, "player2Go");
-    
+
 }
 
 void State_DIYACMenu::activate() {}
@@ -85,13 +85,14 @@ void State_DIYACMenu::update(const sf::Time & delta) {
 void State_DIYACMenu::draw() {
     ctx->window->getRenderWindow()->draw(selectedTileHighlight);
     sf::Font font;
-    
+
     if (!font.loadFromFile("assets/fonts/arial.ttf")) {
         std::cerr << "Could not load font from assets/fonts/arial.ttf" << std::endl;
         exit(1);
     }
     for (int i=0; i<games.size(); ++i) {
         ctx->window->getRenderWindow()->draw(gameTiles[i]);
+        // ctx->window->getRenderWindow()->draw(games[i].logo);
         sf::Text & title = games[i].name;
         title.setFont(font);
         title.setCharacterSize(32);
@@ -107,16 +108,16 @@ void State_DIYACMenu::getGames() {
     std::ifstream gamesStream;
     std::string filePath = "../../games/games.cfg";
     gamesStream.open(filePath);
-    
+
     if (!gamesStream.is_open()){
         std::cerr << "! Failed loading games from file: " << filePath << std::endl;
         exit(1);
     }
-    
+
     std::string line;
     bool needNewGame = true;
     int curGame = -1;
-    
+
     while (std::getline(gamesStream, line)){
         if (needNewGame) {
             Game gameToAdd = Game();
@@ -125,13 +126,18 @@ void State_DIYACMenu::getGames() {
             needNewGame = false;
         }
         Game & game = games[curGame];
-        
+
+        // std::unique_ptr<sf::Texture> logo;
+        // logo->loadFromFile("assets/images/logo.png");
+        // game.logoTexture = std::move(logo);
+        // game.logo.setTexture(*game.logoTexture);
+
         if (line[0] == '#' || line.empty()) { continue; }
-        
+
         std::stringstream lineStream(line);
         std::string type;
         lineStream >> type;
-        
+
         if (type == "NAME") {
             std::string name;
             std::getline(lineStream, name);
@@ -181,7 +187,7 @@ void State_DIYACMenu::getGames() {
         } else if (type == "END_GAME_ENTRY") {
             needNewGame = true;
         }
-        
+
     }
     gamesStream.close();
 }
@@ -212,7 +218,7 @@ std::string State_DIYACMenu::translateControlToButton(std::string & control) {
         {"N", "Player 1 Green"},
         {"M", "Player 1 Blue"},
     });
-    
+
     return mappings[control];
 }
 
@@ -245,10 +251,22 @@ void State_DIYACMenu::moveDown(BindingDetails * details) {
 
 void State_DIYACMenu::openGame(BindingDetails * details) {
     if (details->keyCode == 27) {
+      if (games[selectedTile - 1].start1 == "") {
+        ctx->stateMachine->changeState(StateType::Alert);
+        dynamic_cast<State_Alert *>(ctx->stateMachine->getCurrentState())->setGameMode("1 player mode");
+      } else {
         games[selectedTile - 1].startButton = "Player 1 Start";
+        ctx->stateMachine->changeState(StateType::Instructions);
+        dynamic_cast<State_Instructions *>(ctx->stateMachine->getCurrentState())->setGame(games[selectedTile - 1]);
+      }
     } else if (details->keyCode == 28) {
+      if (games[selectedTile - 1].start2 == "") {
+        ctx->stateMachine->changeState(StateType::Alert);
+        dynamic_cast<State_Alert *>(ctx->stateMachine->getCurrentState())->setGameMode("2 player mode");
+      } else {
         games[selectedTile - 1].startButton = "Player 2 Start";
+        ctx->stateMachine->changeState(StateType::Instructions);
+        dynamic_cast<State_Instructions *>(ctx->stateMachine->getCurrentState())->setGame(games[selectedTile - 1]);
+      }
     }
-    ctx->stateMachine->changeState(StateType::Instructions);
-    dynamic_cast<State_Instructions *>(ctx->stateMachine->getCurrentState())->setGame(games[selectedTile - 1]);
 }

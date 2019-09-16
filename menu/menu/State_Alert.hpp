@@ -1,14 +1,29 @@
-//
-//  State_Alert.hpp
-//  menu
-//
-//  Created by Daniel Peach on 8/9/19.
-//  Copyright © 2019 Daniel Peach. All rights reserved.
-//
+#pragma once
 
-#ifndef State_Alert_hpp
-#define State_Alert_hpp
+#include <vector>
 
-#include <stdio.h>
+#include "State_Base.hpp"
+#include "EventManager.hpp"
 
-#endif /* State_Alert_hpp */
+class State_Alert : public State_Base {
+
+public:
+    State_Alert(SharedContext * ctx);
+    ~State_Alert();
+
+    void onCreate();
+    void onDestroy();
+
+    void activate();
+    void deactivate();
+
+    void update(const sf::Time & delta);
+    void draw();
+
+    void setGameMode(std::string mode);
+    void backToMenu(BindingDetails * details);
+
+private:
+    sf::RectangleShape alertBox;
+    std::string mode;
+};
