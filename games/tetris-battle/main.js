@@ -3,7 +3,7 @@ const { app, BrowserWindow, globalShortcut } = electron;
 const remote = require('electron').remote;
 
 app.on('ready', () => {
-  let window = new BrowserWindow({ width: 1920, height: 1080, frame: false, webPreferences: { nodeIntegration: true }});
+  let window = new BrowserWindow({ width: 1024, height: 768, frame: false, webPreferences: { nodeIntegration: true }});
   window.maximize();
   window.loadURL(`file://${__dirname}/index.html`);
   window.show();
