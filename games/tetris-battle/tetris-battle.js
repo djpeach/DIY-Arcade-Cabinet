@@ -96,13 +96,13 @@ var Tetris = new Phaser.Class({
     this.input.keyboard.on('keydown_D', function (event) {
       moveTetrominoRight(p1);
     });
-    this.input.keyboard.on('keydown_Y', function (event) {
+    this.input.keyboard.on('keydown_F', function (event) {
       rotateTetromino(p1);
     });
-    this.input.keyboard.on('keydown_R', function (event) {
+    this.input.keyboard.on('keydown_E', function (event) {
       dropTetromino(p1);
     });
-    this.input.keyboard.on('keydown_T', function(event){
+    this.input.keyboard.on('keydown_Q', function(event){
       holdTetromino(p1);
     });
 
@@ -125,13 +125,13 @@ var Tetris = new Phaser.Class({
     this.input.keyboard.on('keydown_L', function (event) {
       moveTetrominoRight(p2);
     });
-    this.input.keyboard.on('keydown_C', function (event) {
+    this.input.keyboard.on('keydown_H', function (event) {
       rotateTetromino(p2);
     });
-    this.input.keyboard.on('keydown_Z', function (event) {
+    this.input.keyboard.on('keydown_U', function (event) {
       dropTetromino(p2);
     });
-    this.input.keyboard.on('keydown_X', function(event){
+    this.input.keyboard.on('keydown_O', function(event){
       holdTetromino(p2);
     });
 
