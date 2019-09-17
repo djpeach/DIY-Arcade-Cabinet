@@ -74,16 +74,16 @@ var Tetris = new Phaser.Class({
     map1 = this.add.tilemap('map');
     p1.map = map1;
     var tileset1 = map1.addTilesetImage('tetris-tileset');
-    layer1 = map1.createDynamicLayer('Tile Layer 1', tileset1, 300, 100);
+    layer1 = map1.createDynamicLayer('Tile Layer 1', tileset1, 100, 50);
 
-    this.p1hold = this.add.text(350, 775, "Hold: None", {fontSize: 24});
+    this.p1hold = this.add.text(200, 715, "Hold: None", {fontSize: 24});
 
     map2 = this.add.tilemap('map');
     p2.map = map2;
     var tileset2 = map2.addTilesetImage('tetris-tileset');
-    var layer2 = map2.createDynamicLayer('Tile Layer 1', tileset2, 1200, 100);
+    var layer2 = map2.createDynamicLayer('Tile Layer 1', tileset2, 550, 50);
 
-    this.p2hold = this.add.text(1250, 775, "Hold: None", {fontSize: 24});
+    this.p2hold = this.add.text(650, 715, "Hold: None", {fontSize: 24});
 
     success = this.sound.add('clear-line');
     place = this.sound.add('place-block');
@@ -159,9 +159,9 @@ var Tetris = new Phaser.Class({
       });
       if(first){
         first = false;
-        this.add.text(400, 900, "Loser", { fontFamily: 'Arial', fontSize: 48, color: '#ff0000' });
-        this.add.text(1300, 900, "Winner", { fontFamily: 'Arial', fontSize: 48, color: '#00ff00' });
-        this.add.text(850, 900, "Press Player 1, Button 1 to play again", { fontFamily: 'Arial', fontSize: 16 });
+        this.add.text(220, 375, "Loser", { fontFamily: 'Arial', fontSize: 48, color: '#ff0000' });
+        this.add.text(660, 375, "Winner", { fontFamily: 'Arial', fontSize: 48, color: '#00ff00' });
+        this.add.text(375, 350, "Press Player 1, Button 1 to play again", { fontFamily: 'Arial', fontSize: 16 });
       }
     }
     else if(p2.gameOver){
@@ -172,9 +172,9 @@ var Tetris = new Phaser.Class({
       });
       if(first){
         first = false;
-        this.add.text(400, 900, "Winner", { fontFamily: 'Arial', fontSize: 48, color: '#00ff00' });
-        this.add.text(1300, 900, "Loser", { fontFamily: 'Arial', fontSize: 48, color: '#ff0000' });
-        this.add.text(850, 900, "Press Player 1, Button 1 to play again", { fontFamily: 'Arial', fontSize: 16 });
+        this.add.text(220, 375, "Winner", { fontFamily: 'Arial', fontSize: 48, color: '#00ff00' });
+        this.add.text(660, 375, "Loser", { fontFamily: 'Arial', fontSize: 48, color: '#ff0000' });
+        this.add.text(375, 350, "Press Player 1, Button 1 to play again", { fontFamily: 'Arial', fontSize: 16 });
       }
     }
     else if(restarted){
@@ -187,7 +187,7 @@ var Tetris = new Phaser.Class({
         updateActiveTetromino(p1);
         p1.frameDelay = 0;
       }
-      this.p1hold.text = "Hold: Joystick down";
+      this.p1hold.text = "Hold: " + p1.holdText;
 
       
       p2.frameDelay++;
@@ -195,7 +195,7 @@ var Tetris = new Phaser.Class({
         updateActiveTetromino(p2);
         p2.frameDelay = 0;
       }
-      this.p2hold.text = "Hold: Joystick down";
+      this.p2hold.text = "Hold: " + p2.holdText;
     }
   }
 });
@@ -585,8 +585,12 @@ function moveBlocksDown(index, player){
 
 var config = {
   type: Phaser.AUTO,
-  width: 1920,
-  height: 1080,
+  width: 1024,
+  height: 768,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
   scene: [ Tetris ]
 };
 
